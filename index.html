@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matias Lubomirski — Life & Professional Coaching</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf8f5;
+      --text: #1a1817;
+      --text-muted: #7a726a;
+      --accent: #b8944a;
+      --accent-hover: #a38340;
+      --section-alt: #f3efe8;
+      --border: #e5ddd1;
+      --font-heading: 'Cormorant Garamond', serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .nav-left { display: flex; align-items: center; gap: 24px; }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: -2px;
+    }
+
+    .lang-switch {
+      display: flex;
+      gap: 4px;
+      background: var(--section-alt);
+      padding: 3px;
+      border-radius: 100px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn.active {
+      background: var(--bg);
+      color: var(--text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .lang-btn:hover:not(.active) { color: var(--text); }
+
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+
+    .nav-cta {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      padding: 8px 18px;
+      border-radius: 100px;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover { background: var(--accent); color: #fff; }
+
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      padding: 60px 0 100px;
+    }
+
+    .hero-content { max-width: 780px; }
+
+    .hero-tag {
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.8rem, 7vw, 4.8rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-bottom: 36px;
+      line-height: 1.75;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 44px;
+    }
+
+    .hero-tags span {
+      font-size: 0.85rem;
+      color: var(--text);
+      background: var(--section-alt);
+      padding: 6px 18px;
+      border-radius: 100px;
+      font-weight: 400;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 16px 38px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(184, 148, 74, 0.25);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 400;
+      padding: 16px 38px;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover { border-color: var(--text); }
+
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+    .hero-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 14px;
+    }
+
+    section { padding: 100px 0; }
+
+    section.alt { background: var(--section-alt); }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      line-height: 1.75;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .about-text { font-size: 1rem; color: var(--text-muted); line-height: 1.8; }
+    .about-text p + p { margin-top: 18px; }
+
+    .about-photo {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      max-width: 400px;
+      margin: 0 auto;
+      background: linear-gradient(145deg, #b8944a 0%, #2d3e2a 100%);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .offerings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .offering-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 32px;
+      transition: all 0.35s ease;
+    }
+
+    .offering-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05);
+      border-color: var(--accent);
+    }
+
+    .offering-number {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .offering-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .offering-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .value-item {
+      text-align: center;
+      padding: 32px 20px;
+      border-radius: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .value-item h3 {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .value-item p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* --- Testimonials --- */
+    .testimonials-scroll {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 12px 4px 20px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .testimonials-scroll::-webkit-scrollbar { height: 6px; }
+    .testimonials-scroll::-webkit-scrollbar-track { background: transparent; }
+    .testimonials-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .testimonial-card {
+      flex: 0 0 340px;
+      scroll-snap-align: start;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    }
+
+    .testimonial-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .testimonial-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--section-alt);
+    }
+
+    .testimonial-name {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .testimonial-card blockquote {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-style: italic;
+      quotes: none;
+    }
+
+    .testimonial-card blockquote::before { content: '\201C'; }
+    .testimonial-card blockquote::after { content: '\201D'; }
+
+    @media (max-width: 768px) {
+      .testimonial-card { flex: 0 0 280px; }
+    }
+
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-top: 48px;
+    }
+
+    .booking-info h3 {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .booking-info p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .availability-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+
+    .availability-box h4 {
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .availability-box p { font-size: 0.95rem; margin-bottom: 4px; }
+
+    .booking-form {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-group label .required { color: #c0392b; font-weight: 400; }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--text);
+      background: var(--section-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(184, 148, 74, 0.1);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    .form-footer { font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .pill-group span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--bg);
+      padding: 6px 18px;
+      border-radius: 100px;
+      font-weight: 400;
+    }
+
+    .data-note {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: var(--section-alt);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-top: 20px;
+    }
+
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-social {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      margin-bottom: 16px;
+    }
+
+    .footer-social a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-social a:hover { color: var(--accent); }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* --- Admin Panel --- */
+    .admin-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(26, 24, 23, 0.6);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .admin-overlay.open { display: flex; }
+
+    .admin-panel {
+      background: var(--bg);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 860px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 40px;
+      position: relative;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.15);
+    }
+
+    .admin-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+
+    .admin-close:hover { color: var(--text); }
+
+    .admin-login { text-align: center; padding: 40px 20px; }
+
+    .admin-login h2 {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .admin-login p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+
+    .admin-login input {
+      padding: 12px 18px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--section-alt);
+      color: var(--text);
+      width: 100%;
+      max-width: 280px;
+      outline: none;
+    }
+
+    .admin-login input:focus { border-color: var(--accent); }
+
+    .admin-login .error {
+      color: #c0392b;
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+
+    .admin-login .btn-primary { margin-top: 16px; }
+
+    .admin-dashboard { display: none; }
+
+    .admin-dashboard.show { display: block; }
+
+    .admin-dashboard h2 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+
+    .admin-stats {
+      display: flex;
+      gap: 16px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .admin-stat {
+      background: var(--section-alt);
+      border-radius: 12px;
+      padding: 16px 24px;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .admin-stat strong {
+      display: block;
+      font-size: 1.8rem;
+      font-family: var(--font-heading);
+      color: var(--accent);
+    }
+
+    .admin-stat span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .admin-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .admin-toolbar button {
+      background: var(--section-alt);
+      border: 1px solid var(--border);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .admin-toolbar button:hover { border-color: var(--accent); color: var(--accent); }
+
+    .admin-toolbar .danger:hover { border-color: #c0392b; color: #c0392b; }
+
+    .admin-table-wrap { overflow-x: auto; }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .admin-table th {
+      text-align: left;
+      padding: 10px 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .admin-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+
+    .admin-table tr:hover td { background: var(--section-alt); }
+
+    .admin-table .empty td {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 40px;
+      font-style: italic;
+    }
+
+    .admin-delete-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .admin-delete-btn:hover { color: #c0392b; background: rgba(192,57,43,0.08); }
+
+    .admin-footer-link {
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+      text-decoration: underline dotted;
+    }
+
+    .admin-footer-link:hover { color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .hero { min-height: auto; padding: 40px 0 80px; }
+      .about-grid { grid-template-columns: 1fr; gap: 36px; }
+      .about-photo { max-width: 260px; }
+      .offerings-grid { grid-template-columns: 1fr; gap: 20px; }
+      .values-grid { grid-template-columns: 1fr; gap: 16px; }
+      .booking-grid { grid-template-columns: 1fr; gap: 36px; }
+      .booking-form { padding: 28px; }
+      section { padding: 64px 0; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-actions a { text-align: center; }
+      .hero-tag { margin-bottom: 16px; }
+      nav { flex-wrap: wrap; gap: 12px; }
+      .nav-right { margin-left: auto; }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 16px 20px; }
+      .container { padding: 0 20px; }
+      .offering-card { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <a href="#" class="logo">
+        Matias Lubomirski
+        <span data-i18n="nav-subtitle">Lifecoach</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="es">ES</button>
+      </div>
+      <a href="#booking" class="nav-cta" data-i18n="nav-cta">Book a free call</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content fade-in">
+        <p class="hero-tag" data-i18n="hero-tag">Life Coaching & Professional Growth</p>
+        <h1 data-i18n-html="hero-heading">Your next chapter<br>starts <em>here</em>.</h1>
+        <p class="hero-subtitle" data-i18n="hero-sub">Fear, self-doubt, career crossroads — you don't have to navigate them alone. Whether you're queer, trans, questioning, or simply figuring things out, this is a space where you can show up as you are and build from there.</p>
+        <div class="hero-tags">
+          <span data-i18n="tag-1">Fear & self-doubt</span>
+          <span data-i18n="tag-2">Confidence & identity</span>
+          <span data-i18n="tag-3">Career growth</span>
+          <span data-i18n="tag-4">Trauma-informed</span>
+          <span data-i18n="tag-5">LGBTQ+ affirming</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#booking" class="btn-primary" data-i18n="hero-cta">Book your free 45′ discovery call</a>
+          <a href="#about" class="btn-secondary" data-i18n="hero-secondary">About me</a>
+        </div>
+        <p class="hero-note" data-i18n="hero-note">No pitch. Just a conversation to see if we're a good fit.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="alt">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text fade-in">
+          <p class="section-label" data-i18n="about-label">About me</p>
+          <h2 class="section-title" data-i18n="about-title">I'm Matias.</h2>
+          <p data-i18n="about-p1">I know what it feels like to carry fear and self-doubt while trying to figure out who you are and where you're going. My own journey — through identity, reinvention, and learning to stand in my truth — is what brought me to coaching.</p>
+          <p data-i18n="about-p2">I work with people navigating transitions: coming out, changing careers, rebuilding confidence, healing from what's held them back. Life and professional growth aren't separate — when one part of you shifts, everything else moves too.</p>
+          <p data-i18n="about-p3">If you're queer, trans, questioning, or simply someone who wants to grow — you belong here. This is a space built on empathy, not judgment.</p>
+        </div>
+        <!--
+          TO ADD YOUR PHOTO:
+          1. Upload your photo somewhere (e.g. the same folder as this file)
+          2. Replace src="..." with src="your-photo.jpg"
+          3. Remove the background gradient from .about-photo in CSS
+        -->
+        <img
+          class="about-photo fade-in"
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Crect width='400' height='400' fill='%23f3efe8'/%3E%3Ctext x='200' y='200' text-anchor='middle' dominant-baseline='central' font-family='serif' font-size='18' fill='%237a726a'%3EYour photo%3C/text%3E%3C/svg%3E"
+          alt="Matias Lubomirski"
+          data-i18n-alt="about-photo-alt"
+        >
+      </div>
+    </div>
+  </section>
+
+  <section id="offerings">
+    <div class="container">
+      <div class="fade-in" style="text-align:center;margin-bottom:8px;">
+        <p class="section-label" data-i18n="offer-label">What I help with</p>
+        <h2 class="section-title" data-i18n="offer-title">Three areas. One conversation.</h2>
+        <p class="section-desc" style="margin:0 auto;" data-i18n="offer-desc">We start wherever you are. These are the spaces I work in most — and they overlap more than you'd think.</p>
+      </div>
+      <div class="offerings-grid">
+        <div class="offering-card fade-in">
+          <div class="offering-number">01</div>
+          <h3 data-i18n="card-1-title">Fear & Self-Doubt</h3>
+          <p data-i18n="card-1-text">The inner critic, imposter syndrome, the voice that says "not yet" every time you try to grow. We'll gently untangle where it comes from — and build a new one.</p>
+        </div>
+        <div class="offering-card fade-in">
+          <div class="offering-number">02</div>
+          <h3 data-i18n="card-2-title">Confidence & Identity</h3>
+          <p data-i18n="card-2-text">Coming out, standing in your truth, owning who you are. Whether it's your identity, your voice, or your place in the world — let's amplify it together.</p>
+        </div>
+        <div class="offering-card fade-in">
+          <div class="offering-number">03</div>
+          <h3 data-i18n="card-3-title">Career & Purpose</h3>
+          <p data-i18n="card-3-text">You deserve work that aligns with who you are. From career pivots to leading with authenticity — let's design a path that actually feels like yours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="container">
+      <div class="fade-in" style="text-align:center;">
+        <p class="section-label" data-i18n="values-label">How I work</p>
+        <h2 class="section-title" data-i18n="values-title">Empathy. Honesty. No masks.</h2>
+        <p class="section-desc" style="margin:0 auto;" data-i18n="values-desc">I don't believe in one-size-fits-all coaching. Every session is shaped around who you are, what you've been through, and where you want to go.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-item fade-in">
+          <h3 data-i18n="val-1-title">Trauma-informed</h3>
+          <p data-i18n="val-1-text">We move at your pace. Healing isn't a race — it's a process of learning to trust yourself again.</p>
+        </div>
+        <div class="value-item fade-in">
+          <h3 data-i18n="val-2-title">LGBTQ+ affirming</h3>
+          <p data-i18n="val-2-text">Your identity is not a problem to be solved. It's the foundation we build from — proudly and unapologetically.</p>
+        </div>
+        <div class="value-item fade-in">
+          <h3 data-i18n="val-3-title">Whole-person focus</h3>
+          <p data-i18n="val-3-text">Your career, your confidence, your inner world — they're all connected. We don't compartmentalise. We integrate.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <div class="container">
+      <div class="fade-in" style="text-align:center;margin-bottom:8px;">
+        <p class="section-label" data-i18n="test-label">What clients say</p>
+        <h2 class="section-title" data-i18n="test-title">Real voices. Real change.</h2>
+        <p class="section-desc" style="margin:0 auto;" data-i18n="test-desc">The work we do together shows up in people's lives. Here's what some of them have shared.</p>
+      </div>
+      <div class="testimonials-scroll fade-in" id="testimonialsContainer">
+      </div>
+      <div style="text-align:center;margin-top:12px;">
+        <p style="font-size:0.85rem;color:var(--text-muted);" data-i18n="test-swipe">Scroll or swipe to see more →</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking">
+    <div class="container">
+      <div class="fade-in" style="text-align:center;">
+        <p class="section-label" data-i18n="book-label">Book a session</p>
+        <h2 class="section-title" data-i18n="book-title">Ready to begin?</h2>
+        <p class="section-desc" style="margin:0 auto;" data-i18n="book-desc">Fill in the form below and I'll reach out to schedule your free 45-minute discovery call. No commitment — just a real conversation about where you are and where you want to be.</p>
+      </div>
+
+      <div class="booking-grid">
+        <div class="booking-info fade-in">
+          <h3 data-i18n="expect-title">What to expect</h3>
+          <p data-i18n="expect-p1">A discovery call is a two-way conversation. We'll talk about what's bringing you here, what you'd like to shift, and whether we're the right fit to work together.</p>
+          <p data-i18n="expect-p2">If it feels right, I'll suggest a path forward. If not, you'll walk away with clarity and maybe a new perspective — no pressure.</p>
+
+          <div class="availability-box">
+            <h4 data-i18n="avail-title">Availability</h4>
+            <p data-i18n="avail-tz"><strong>Sydney time (AEST/AEDT)</strong></p>
+            <p data-i18n="avail-hours">Monday – Saturday: 7:00 AM – 7:00 PM</p>
+            <p style="margin-top:8px;font-style:italic;font-size:0.85rem;" data-i18n="avail-note">Sessions via video call. Flexible scheduling available.</p>
+          </div>
+
+          <div style="margin-top:24px;">
+            <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.7;">
+              <strong style="color:var(--text);" data-i18n="questions-label">Questions?</strong>
+              <span data-i18n="reach-out">Reach out on</span>
+              <a href="https://www.instagram.com/matias.lifecoach/" target="_blank" style="color:var(--accent);text-decoration:none;">Instagram</a>
+              <span data-i18n="or">or</span>
+              <a href="https://www.tiktok.com/@curious.matias" target="_blank" style="color:var(--accent);text-decoration:none;">TikTok</a>.
+            </p>
+          </div>
+        </div>
+
+        <!--
+          ═══════════════════════════════════════════════════════
+          FORM SETUP
+          ═══════════════════════════════════════════════════════
+
+          Netlify (optional): Deploy this folder to netlify.app
+          and submissions appear in Site > Forms automatically.
+
+          EmailJS: Template body is just {{html}}.
+          Set To Email: {{to_email}}, Subject: {{subject}}.
+        -->
+        <!--
+          ═══════════════════════════════════════════════════════
+          FORM SETUP — DATA COLLECTION
+          ═══════════════════════════════════════════════════════
+
+          Recommended: Deploy on Netlify (free)
+          ─────────────────────────────────────────────────────
+          1. Upload this folder to Netlify (drag & drop or Git)
+          2. Netlify automatically detects the form via the
+             `netlify` attribute — zero configuration needed
+          3. View all submissions: Netlify Dashboard > Site > Forms
+          4. Enable email notifications: Site > Forms > Notifications
+          5. That's it — submissions appear in your dashboard
+
+          Alternative: Formspree (works on any host)
+          ─────────────────────────────────────────────────────
+          1. Go to https://formspree.io — create a free account
+          2. Create a new form, copy the endpoint URL
+          3. Add action="https://formspree.io/f/YOUR_ID" to the form tag
+          4. Remove the netlify attribute and hidden input
+        -->
+        <form
+          class="booking-form fade-in"
+          method="POST"
+          netlify
+          name="booking"
+        >
+          <input type="hidden" name="form-name" value="booking">
+          <div class="form-group">
+            <label for="name">Name & Surname <span class="required">*</span></label>
+            <input type="text" id="name" name="name" required data-i18n-placeholder="form-name-ph" placeholder="e.g. Alex Chen">
+          </div>
+          <div class="form-group">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required data-i18n-placeholder="form-email-ph" placeholder="alex@example.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone <span class="required">*</span></label>
+            <input type="tel" id="phone" name="phone" required data-i18n-placeholder="form-phone-ph" placeholder="+61 4XX XXX XXX">
+          </div>
+          <div class="form-group">
+            <label for="social">Social media reference</label>
+            <input type="text" id="social" name="social" data-i18n-placeholder="form-social-ph" placeholder="Instagram / TikTok handle or where you found me">
+          </div>
+          <div class="form-group">
+            <label for="message" data-i18n="form-msg-label">What brings you here? (optional)</label>
+            <textarea id="message" name="message" data-i18n-placeholder="form-msg-ph" placeholder="A few words about what you'd like to explore..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;text-align:center;" data-i18n="form-submit">Send request</button>
+          <p class="form-footer" data-i18n="form-footer">I'll reply within 24 hours to schedule your free call. Your information is never shared.</p>
+          <div class="data-note">
+            <span>&#128274;</span>
+            <span data-i18n="data-note">Your data is stored securely and only used to contact you about coaching. You can request deletion at any time.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Admin Panel ─── -->
+  <div class="admin-overlay" id="adminOverlay">
+    <div class="admin-panel">
+      <button class="admin-close" id="adminClose" aria-label="Close">&times;</button>
+
+      <!-- Login -->
+      <div class="admin-login" id="adminLogin">
+        <h2>Admin</h2>
+        <p id="adminLoginDesc">Enter password to view submissions</p>
+        <input type="password" id="adminPasswordInput" placeholder="Password">
+        <p class="error" id="adminError"></p>
+        <button class="btn-primary" id="adminLoginBtn">Login</button>
+        <p style="margin-top:16px;font-size:0.75rem;color:var(--text-muted);">Default password: <code>admin123</code> &middot; Change it in Settings</p>
+      </div>
+
+      <!-- Dashboard -->
+      <div class="admin-dashboard" id="adminDashboard">
+        <h2>Submissions</h2>
+        <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">
+          Data stored in this browser (<span id="adminSource">localStorage</span>).
+          <span id="adminNetlifyLink" style="display:none;">All submissions also at <a href="#" target="_blank" style="color:var(--accent);">Netlify Dashboard</a>.</span>
+        </p>
+
+        <div class="admin-stats">
+          <div class="admin-stat"><strong id="statTotal">0</strong><span>Total</span></div>
+          <div class="admin-stat"><strong id="statToday">0</strong><span>Today</span></div>
+          <div class="admin-stat"><strong id="statWeek">0</strong><span>This week</span></div>
+        </div>
+
+        <div class="admin-toolbar">
+          <button id="adminExportCsv">Export CSV</button>
+          <button id="adminClearAll" class="danger">Clear all</button>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Social</th>
+                <th>Message</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody">
+              <tr class="empty"><td colspan="7">No submissions yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+          <label style="font-size:0.85rem;color:var(--text-muted);">
+            Password:
+            <input type="text" id="adminChangePassword" value="admin123" style="padding:6px 12px;font-family:var(--font-body);font-size:0.85rem;border:1px solid var(--border);border-radius:8px;background:var(--section-alt);color:var(--text);width:140px;margin-left:6px;outline:none;">
+          </label>
+          <button id="adminSavePassword" style="background:none;border:1px solid var(--border);padding:6px 14px;border-radius:100px;font-size:0.8rem;cursor:pointer;color:var(--text-muted);">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-social">
+        <a href="https://www.tiktok.com/@curious.matias" target="_blank">TikTok</a>
+        <a href="https://www.instagram.com/matias.lifecoach/" target="_blank">Instagram</a>
+        <a href="mailto:hello@matiaslubomirski.com">Email</a>
+      </div>
+      <p>&copy; 2026 Matias Lubomirski. &middot; <span class="admin-footer-link" id="adminOpenLink">Admin</span></p>
+    </div>
+  </footer>
+
+  <script>
+    const i18n = {
+      en: {
+        'nav-subtitle': 'Lifecoach',
+        'nav-cta': 'Book a free call',
+        'hero-tag': 'Life Coaching & Professional Growth',
+        'hero-heading': 'Your next chapter<br>starts <em>here</em>.',
+        'hero-sub': 'Fear, self-doubt, career crossroads — you don\'t have to navigate them alone. Whether you\'re queer, trans, questioning, or simply figuring things out, this is a space where you can show up as you are and build from there.',
+        'tag-1': 'Fear & self-doubt',
+        'tag-2': 'Confidence & identity',
+        'tag-3': 'Career growth',
+        'tag-4': 'Trauma-informed',
+        'tag-5': 'LGBTQ+ affirming',
+        'hero-cta': 'Book your free 45\u2032 discovery call',
+        'hero-secondary': 'About me',
+        'hero-note': 'No pitch. Just a conversation to see if we\'re a good fit.',
+        'about-label': 'About me',
+        'about-title': 'I\'m Matias.',
+        'about-p1': 'I know what it feels like to carry fear and self-doubt while trying to figure out who you are and where you\'re going. My own journey \u2014 through identity, reinvention, and learning to stand in my truth \u2014 is what brought me to coaching.',
+        'about-p2': 'I work with people navigating transitions: coming out, changing careers, rebuilding confidence, healing from what\'s held them back. Life and professional growth aren\'t separate \u2014 when one part of you shifts, everything else moves too.',
+        'about-p3': 'If you\'re queer, trans, questioning, or simply someone who wants to grow \u2014 you belong here. This is a space built on empathy, not judgment.',
+        'about-photo-alt': 'Matias Lubomirski portrait',
+        'offer-label': 'What I help with',
+        'offer-title': 'Three areas. One conversation.',
+        'offer-desc': 'We start wherever you are. These are the spaces I work in most \u2014 and they overlap more than you\'d think.',
+        'card-1-title': 'Fear & Self-Doubt',
+        'card-1-text': 'The inner critic, imposter syndrome, the voice that says \u201cnot yet\u201d every time you try to grow. We\'ll gently untangle where it comes from \u2014 and build a new one.',
+        'card-2-title': 'Confidence & Identity',
+        'card-2-text': 'Coming out, standing in your truth, owning who you are. Whether it\'s your identity, your voice, or your place in the world \u2014 let\'s amplify it together.',
+        'card-3-title': 'Career & Purpose',
+        'card-3-text': 'You deserve work that aligns with who you are. From career pivots to leading with authenticity \u2014 let\'s design a path that actually feels like yours.',
+        'values-label': 'How I work',
+        'values-title': 'Empathy. Honesty. No masks.',
+        'values-desc': 'I don\'t believe in one-size-fits-all coaching. Every session is shaped around who you are, what you\'ve been through, and where you want to go.',
+        'val-1-title': 'Trauma-informed',
+        'val-1-text': 'We move at your pace. Healing isn\'t a race \u2014 it\'s a process of learning to trust yourself again.',
+        'val-2-title': 'LGBTQ+ affirming',
+        'val-2-text': 'Your identity is not a problem to be solved. It\'s the foundation we build from \u2014 proudly and unapologetically.',
+        'val-3-title': 'Whole-person focus',
+        'val-3-text': 'Your career, your confidence, your inner world \u2014 they\'re all connected. We don\'t compartmentalise. We integrate.',
+        'test-label': 'What clients say',
+        'test-title': 'Real voices. Real change.',
+        'test-desc': 'The work we do together shows up in people\u2019s lives. Here\u2019s what some of them have shared.',
+        'test-swipe': 'Scroll or swipe to see more \u2192',
+        'testimonials': [
+          { name: 'Sarah', color: 'b8944a', text: 'Matias didn\'t just listen \u2014 he heard me. For the first time, I felt like someone actually understood the noise in my head. We built a plan together that turned my anxiety into action. His empathy is real, and the structure he brings is exactly what I needed to break out of old patterns.' },
+          { name: 'James', color: '2d3e2a', text: 'I came in feeling stuck in my career and my identity. Matias created a space where I could be completely honest without fear of judgment. He helped me map out where the self-doubt came from and gave me an action plan that actually made sense.' },
+          { name: 'Elena', color: '8b6b3d', text: 'The empathy Matias brings to every session is remarkable. He has a way of asking the exact question I\'ve been avoiding \u2014 and then helps me build a path forward. I\'ve never felt so held and so challenged at the same time. That\'s rare.' },
+          { name: 'Marcus', color: '5a4a3a', text: 'I was sceptical about coaching \u2014 thought it would be all talk. One session with Matias and I understood. He listens on a completely different level. We identified patterns I\'d been repeating for years and built a concrete plan to break them. Game changer.' },
+          { name: 'Alex', color: 'b8944a', text: 'Finding a coach who truly understands what it means to navigate life as a trans person felt impossible. Matias didn\'t just get it \u2014 he empowered me to own my story and take real steps forward. The action plan we built together changed everything.' },
+          { name: 'Priya', color: '2d3e2a', text: 'What sets Matias apart is his ability to translate deep, emotional conversations into concrete steps. I went from feeling paralysed by fear to having a roadmap I actually believed in. He heard what I wasn\'t saying and helped me put words to it.' },
+          { name: 'Danielle', color: '8b6b3d', text: 'I\'ve tried therapy. I\'ve tried self-help books. Nothing clicked until Matias. He doesn\'t use generic templates \u2014 he listens to your actual life and builds a plan that fits. For the first time, I feel like I\'m moving forward instead of circling the same patterns.' },
+          { name: 'Tom', color: '5a4a3a', text: 'Matias helped me see that my fear of failure wasn\'t a wall \u2014 it was a door I didn\'t know how to open. His ability to listen without rushing to fix things is a superpower. Then, when it was time, we built a step-by-step plan that made the impossible feel doable.' },
+          { name: 'Jordan', color: 'b8944a', text: 'I reached out during one of the darkest periods of my life. Matias held space for my pain without trying to fix it or rush me. When I was ready, we built a plan together \u2014 small steps that led to real shifts. Life-changing doesn\'t even cover it.' },
+          { name: 'Maya', color: '2d3e2a', text: 'Matias has this rare gift of making you feel completely safe while also challenging you to grow. Every session leaves me with something real to work on \u2014 not just insight, but action. He listens deeply and then helps you build. That combination is everything.' },
+          { name: 'Chris', color: '8b6b3d', text: 'I thought career coaching would be about resumes and networking. Matias showed me that my professional blocks were really personal blocks \u2014 fear of being seen, imposter syndrome, old stories. We untangled both, and for the first time my career path feels like mine.' },
+          { name: 'Lina', color: '5a4a3a', text: 'I was stuck in a loop of self-doubt for years. Matias helped me see the pattern clearly, understand where it came from, and actually break it \u2014 not with willpower, but with awareness and a real plan. I show up differently in my life now. I\'m a different person.' }
+        ],
+        'book-label': 'Book a session',
+        'book-title': 'Ready to begin?',
+        'book-desc': 'Fill in the form below and I\'ll reach out to schedule your free 45-minute discovery call. No commitment \u2014 just a real conversation about where you are and where you want to be.',
+        'expect-title': 'What to expect',
+        'expect-p1': 'A discovery call is a two-way conversation. We\'ll talk about what\'s bringing you here, what you\'d like to shift, and whether we\'re the right fit to work together.',
+        'expect-p2': 'If it feels right, I\'ll suggest a path forward. If not, you\'ll walk away with clarity and maybe a new perspective \u2014 no pressure.',
+        'avail-title': 'Availability',
+        'avail-tz': '<strong>Sydney time (AEST/AEDT)</strong>',
+        'avail-hours': 'Monday \u2013 Saturday: 7:00 AM \u2013 7:00 PM',
+        'avail-note': 'Sessions via video call. Flexible scheduling available.',
+        'questions-label': 'Questions?',
+        'reach-out': 'Reach out on',
+        'or': 'or',
+        'form-name-ph': 'e.g. Alex Chen',
+        'form-email-ph': 'alex@example.com',
+        'form-phone-ph': '+61 4XX XXX XXX',
+        'form-social-ph': 'Instagram / TikTok handle or where you found me',
+        'form-msg-label': 'What brings you here? (optional)',
+        'form-msg-ph': 'A few words about what you\'d like to explore...',
+        'form-submit': 'Send request',
+        'form-footer': 'I\'ll reply within 24 hours to schedule your free call. Your information is never shared.',
+        'data-note': 'Your data is stored securely and only used to contact you about coaching. You can request deletion at any time.',
+      },
+      es: {
+        'nav-subtitle': 'Life Coach',
+        'nav-cta': 'Llama gratis',
+        'hero-tag': 'Coaching de Vida y Crecimiento Profesional',
+        'hero-heading': 'Tu pr\u00f3ximo cap\u00edtulo<br>comienza <em>aqu\u00ed</em>.',
+        'hero-sub': 'El miedo, la duda, las encrucijadas profesionales — no tienes que navegarlos solo. Seas queer, trans, est\u00e9s cuestion\u00e1ndote o simplemente buscando respuestas, este es un espacio donde puedes mostrarte como eres y construir desde ah\u00ed.',
+        'tag-1': 'Miedo y autoduda',
+        'tag-2': 'Confianza e identidad',
+        'tag-3': 'Crecimiento profesional',
+        'tag-4': 'Informado en trauma',
+        'tag-5': 'Afirmativo LGBTQ+',
+        'hero-cta': 'Reserva tu llamada de descubrimiento gratuita de 45\u2032',
+        'hero-secondary': 'Sobre m\u00ed',
+        'hero-note': 'Sin compromiso. Solo una conversaci\u00f3n para ver si somos compatibles.',
+        'about-label': 'Sobre m\u00ed',
+        'about-title': 'Soy Matias.',
+        'about-p1': 'S\u00e9 lo que se siente cargar con el miedo y la duda mientras intentas descubrir qui\u00e9n eres y hacia d\u00f3nde vas. Mi propio camino — a trav\u00e9s de la identidad, la reinvenci\u00f3n y aprender a pararme en mi verdad — es lo que me trajo al coaching.',
+        'about-p2': 'Trabajo con personas que navegan transiciones: salir del cl\u00f3set, cambiar de carrera, reconstruir la confianza, sanar lo que las ha detenido. El crecimiento personal y profesional no est\u00e1n separados — cuando una parte de ti se mueve, todo lo dem\u00e1s tambi\u00e9n.',
+        'about-p3': 'Si eres queer, trans, est\u00e1s cuestion\u00e1ndote, o simplemente alguien que quiere crecer — aqu\u00ed perteneces. Este es un espacio construido sobre la empat\u00eda, no el juicio.',
+        'about-photo-alt': 'Retrato de Matias Lubomirski',
+        'offer-label': 'Con qu\u00e9 ayudo',
+        'offer-title': 'Tres \u00e1reas. Una conversaci\u00f3n.',
+        'offer-desc': 'Empezamos desde donde est\u00e9s. Estos son los espacios en los que m\u00e1s trabajo — y se superponen m\u00e1s de lo que imaginas.',
+        'card-1-title': 'Miedo y Autoduda',
+        'card-1-text': 'El cr\u00edtico interno, el s\u00edndrome del impostor, la voz que dice \u201ctodav\u00eda no\u201d cada vez que intentas crecer. Desenredaremos suavemente de d\u00f3nde viene — y construiremos una nueva.',
+        'card-2-title': 'Confianza e Identidad',
+        'card-2-text': 'Salir del cl\u00f3set, pararte en tu verdad, ser due\u00f1o de quien eres. Ya sea tu identidad, tu voz o tu lugar en el mundo — amplifiqu\u00e9moslo juntos.',
+        'card-3-title': 'Carrera y Prop\u00f3sito',
+        'card-3-text': 'Mereces un trabajo que est\u00e9 alineado con quien eres. Desde cambios de carrera hasta liderar con autenticidad — dise\u00f1emos un camino que realmente se sienta tuyo.',
+        'values-label': 'C\u00f3mo trabajo',
+        'values-title': 'Empat\u00eda. Honestidad. Sin m\u00e1scaras.',
+        'values-desc': 'No creo en el coaching estandarizado. Cada sesi\u00f3n se adapta a qui\u00e9n eres, lo que has vivido y hacia d\u00f3nde quieres ir.',
+        'val-1-title': 'Informado en trauma',
+        'val-1-text': 'Avanzamos a tu ritmo. Sanar no es una carrera — es un proceso de aprender a confiar en ti mismo nuevamente.',
+        'val-2-title': 'Afirmativo LGBTQ+',
+        'val-2-text': 'Tu identidad no es un problema a resolver. Es la base desde la que construimos — con orgullo y sin disculpas.',
+        'val-3-title': 'Enfoque integral',
+        'val-3-text': 'Tu carrera, tu confianza, tu mundo interior — todo est\u00e1 conectado. No compartimentamos. Integramos.',
+        'test-label': 'Lo que dicen mis clientes',
+        'test-title': 'Voces reales. Cambio real.',
+        'test-desc': 'El trabajo que hacemos juntos se refleja en la vida de las personas. Esto es lo que algunas de ellas han compartido.',
+        'test-swipe': 'Desliza para ver m\u00e1s \u2192',
+        'testimonials': [
+          { name: 'Sarah', color: 'b8944a', text: 'Matias no solo escuch\u00f3 \u2014 me entendi\u00f3. Por primera vez sent\u00ed que alguien comprend\u00eda el ruido en mi cabeza. Juntos construimos un plan que convirti\u00f3 mi ansiedad en acci\u00f3n. Su empat\u00eda es real, y la estructura que aporta es exactamente lo que necesitaba para romper viejos patrones.' },
+          { name: 'James', color: '2d3e2a', text: 'Llegu\u00e9 sinti\u00e9ndome estancado en mi carrera y mi identidad. Matias cre\u00f3 un espacio donde pude ser completamente honesto sin miedo al juicio. Me ayud\u00f3 a identificar de d\u00f3nde ven\u00eda la autoduda y me dio un plan de acci\u00f3n que realmente ten\u00eda sentido.' },
+          { name: 'Elena', color: '8b6b3d', text: 'La empat\u00eda que Matias aporta a cada sesi\u00f3n es notable. Tiene una forma de hacer la pregunta exacta que he estado evitando \u2014 y luego me ayuda a construir un camino hacia adelante. Nunca me hab\u00eda sentido tan contenida y desafiada al mismo tiempo.' },
+          { name: 'Marcus', color: '5a4a3a', text: 'Era esc\u00e9ptico sobre el coaching \u2014 pensaba que ser\u00eda pura charla. Una sesi\u00f3n con Matias y lo entend\u00ed. Escucha a un nivel completamente diferente. Identificamos patrones que hab\u00eda estado repitiendo durante a\u00f1os y construimos un plan concreto para romperlos.' },
+          { name: 'Alex', color: 'b8944a', text: 'Encontrar un coach que realmente entienda lo que significa navegar la vida como persona trans parec\u00eda imposible. Matias no solo lo entendi\u00f3 \u2014 me empoder\u00f3 para ser due\u00f1o de mi historia y dar pasos reales hacia adelante. El plan de acci\u00f3n que construimos juntos lo cambi\u00f3 todo.' },
+          { name: 'Priya', color: '2d3e2a', text: 'Lo que distingue a Matias es su capacidad para traducir conversaciones profundas y emocionales en pasos concretos. Pas\u00e9 de sentirme paralizada por el miedo a tener un camino que realmente cre\u00eda posible. Escuch\u00f3 lo que no estaba diciendo y me ayud\u00f3 a ponerlo en palabras.' },
+          { name: 'Danielle', color: '8b6b3d', text: 'He probado terapia. He probado libros de autoayuda. Nada funcion\u00f3 hasta Matias. No usa plantillas gen\u00e9ricas \u2014 escucha tu vida real y construye un plan que encaja. Por primera vez siento que avanzo en lugar de dar vueltas a los mismos patrones.' },
+          { name: 'Tom', color: '5a4a3a', text: 'Matias me ayud\u00f3 a ver que mi miedo al fracaso no era un muro \u2014 era una puerta que no sab\u00eda c\u00f3mo abrir. Su capacidad de escuchar sin apresurarse a arreglar las cosas es un superpoder. Luego, cuando lleg\u00f3 el momento, construimos un plan paso a paso.' },
+          { name: 'Jordan', color: 'b8944a', text: 'Lo contact\u00e9 durante uno de los per\u00edodos m\u00e1s oscuros de mi vida. Matias sostuvo espacio para mi dolor sin intentar arreglarlo o apresurarme. Cuando estuve lista, construimos un plan juntos \u2014 peque\u00f1os pasos que llevaron a cambios reales. Transformador.' },
+          { name: 'Maya', color: '2d3e2a', text: 'Matias tiene este don poco com\u00fan de hacerte sentir completamente segura mientras te desaf\u00eda a crecer. Cada sesi\u00f3n me deja con algo real para trabajar \u2014 no solo comprensi\u00f3n, sino acci\u00f3n. Escucha profundamente y luego te ayuda a construir. Esa combinaci\u00f3n lo es todo.' },
+          { name: 'Chris', color: '8b6b3d', text: 'Pensaba que el coaching profesional ser\u00eda sobre curr\u00edculums y contactos. Matias me mostr\u00f3 que mis bloqueos profesionales eran realmente bloqueos personales \u2014 miedo a ser visto, s\u00edndrome del impostor, viejas historias. Desenredamos ambos, y por primera vez mi carrera se siente m\u00eda.' },
+          { name: 'Lina', color: '5a4a3a', text: 'Estuve atrapada en un bucle de autoduda durante a\u00f1os. Matias me ayud\u00f3 a ver el patr\u00f3n claramente, entender de d\u00f3nde ven\u00eda y realmente romperlo \u2014 no con fuerza de voluntad, sino con conciencia y un plan real. Ahora me muestro diferente en mi vida. Soy una persona diferente.' }
+        ],
+        'book-label': 'Reserva una sesi\u00f3n',
+        'book-title': '\u00bfListo para empezar?',
+        'book-desc': 'Completa el formulario y te contactar\u00e9 para agendar tu llamada de descubrimiento gratuita de 45 minutos. Sin compromiso — solo una conversaci\u00f3n real sobre d\u00f3nde est\u00e1s y hacia d\u00f3nde quieres ir.',
+        'expect-title': 'Qu\u00e9 esperar',
+        'expect-p1': 'Una llamada de descubrimiento es una conversaci\u00f3n bidireccional. Hablaremos de lo que te trae aqu\u00ed, qu\u00e9 te gustar\u00eda cambiar y si somos compatibles para trabajar juntos.',
+        'expect-p2': 'Si se siente bien, te sugerir\u00e9 un camino a seguir. Si no, te ir\u00e1s con claridad y quiz\u00e1 una nueva perspectiva — sin presi\u00f3n.',
+        'avail-title': 'Disponibilidad',
+        'avail-tz': '<strong>Hora de S\u00eddney (AEST/AEDT)</strong>',
+        'avail-hours': 'Lunes \u2013 s\u00e1bado: 7:00 AM \u2013 7:00 PM',
+        'avail-note': 'Sesiones por videollamada. Horario flexible disponible.',
+        'questions-label': '\u00bfPreguntas?',
+        'reach-out': 'Escr\u00edbeme en',
+        'or': 'o',
+        'form-name-ph': 'Ej. Alex Chen',
+        'form-email-ph': 'alex@ejemplo.com',
+        'form-phone-ph': '+61 4XX XXX XXX',
+        'form-social-ph': 'Usuario de Instagram / TikTok o c\u00f3mo me encontraste',
+        'form-msg-label': '\u00bfQu\u00e9 te trae por aqu\u00ed? (opcional)',
+        'form-msg-ph': 'Algunas palabras sobre lo que te gustar\u00eda explorar...',
+        'form-submit': 'Enviar solicitud',
+        'form-footer': 'Te responder\u00e9 en menos de 24 horas para agendar tu llamada gratuita. Tu informaci\u00f3n nunca se comparte.',
+        'data-note': 'Tus datos se almacenan de forma segura y solo se usan para contactarte sobre coaching. Puedes solicitar su eliminaci\u00f3n en cualquier momento.',
+      }
+    };
+
+    let currentLang = localStorage.getItem('lang') || 'en';
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (i18n[lang][key] !== undefined) {
+          el.textContent = i18n[lang][key];
+        }
+      });
+
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.dataset.i18nHtml;
+        if (i18n[lang][key] !== undefined) {
+          el.innerHTML = i18n[lang][key];
+        }
+      });
+
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        if (i18n[lang][key] !== undefined) {
+          el.placeholder = i18n[lang][key];
+        }
+      });
+
+      document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+        const key = el.dataset.i18nAlt;
+        if (i18n[lang][key] !== undefined) {
+          el.alt = i18n[lang][key];
+        }
+      });
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      document.documentElement.lang = lang;
+      renderTestimonials(lang);
+    }
+
+    // ─── Testimonials renderer ───
+    function esc(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    const avatarColors = ['b8944a', '2d3e2a', '8b6b3d', '5a4a3a'];
+
+    function renderTestimonials(lang) {
+      const container = document.getElementById('testimonialsContainer');
+      if (!container) return;
+      const list = i18n[lang] && i18n[lang].testimonials;
+      if (!list) return;
+      container.innerHTML = list.map(t => {
+        const initial = t.name.charAt(0);
+        const initials = t.name.length <= 6 ? t.name : t.name.split(' ').map(w => w[0]).join('').slice(0, 2);
+        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=${t.color}&color=fff&size=80&font-size=0.35`;
+        return `
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <img class="testimonial-avatar" src="${avatarUrl}" alt="${esc(t.name)}" loading="lazy">
+              <div class="testimonial-name">${esc(t.name)}</div>
+            </div>
+            <blockquote>${esc(t.text)}</blockquote>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+    });
+
+    applyLanguage(currentLang);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const id = this.getAttribute('href');
+        if (id === '#') return;
+        const target = document.querySelector(id);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ─── EmailJS setup ───
+    const EMAILJS_PUBLIC_KEY = 'VphA0v_cFib2j5CE1';
+    const EMAILJS_SERVICE_ID = 'service_jqdkg8i';
+    const EMAILJS_TEMPLATE_ID = 'template_n43zatr';
+
+    if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+
+    function sendConfirmationEmail(name, email, lang) {
+      if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
+      const subject = lang === 'es'
+        ? 'Gracias por tu solicitud \u2014 Matias Lubomirski'
+        : 'Thanks for your request \u2014 Matias Lubomirski';
+
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        name: name,
+        to_email: email,
+        subject: subject
+      }).then(function(res) {
+        console.log('EmailJS sent:', res.status, res.text);
+      }).catch(function(err) {
+        console.error('EmailJS failed:', err);
+        alert('Email error: ' + (err.text || err.message || 'unknown'));
+      });
+    }
+
+    // ─── Form submission ───
+    function saveSubmission(data) {
+      const subs = JSON.parse(localStorage.getItem('coaching_submissions') || '[]');
+      const entry = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        date: new Date().toISOString(),
+        name: data.get('name') || '',
+        email: data.get('email') || '',
+        phone: data.get('phone') || '',
+        social: data.get('social') || '',
+        message: data.get('message') || ''
+      };
+      subs.unshift(entry);
+      localStorage.setItem('coaching_submissions', JSON.stringify(subs));
+      return entry;
+    }
+
+    const form = document.querySelector('form[name="booking"]');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const data = new FormData(form);
+        const entry = saveSubmission(data);
+        sendConfirmationEmail(entry.name, entry.email, currentLang);
+
+        // Also POST to Netlify Forms if deployed on a server
+        if (window.location.protocol !== 'file:') {
+          const params = new URLSearchParams();
+          for (const [k, v] of data.entries()) params.append(k, v);
+          fetch(window.location.href, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+          }).catch(() => {});
+        }
+
+        alert('\u2705 ' + (currentLang === 'es'
+          ? 'Solicitud recibida. Te responder\u00e9 en menos de 24 horas.'
+          : 'Request received. I\'ll reply within 24 hours.'));
+        form.reset();
+      });
+    }
+
+    // ─── Admin panel ───
+    const ADMIN_PW_KEY = 'coaching_admin_pw';
+    const defaultPw = 'admin123';
+    let adminPassword = localStorage.getItem(ADMIN_PW_KEY) || defaultPw;
+    let adminAuthed = sessionStorage.getItem('coaching_admin_auth') === '1';
+
+    const overlay = document.getElementById('adminOverlay');
+    const loginEl = document.getElementById('adminLogin');
+    const dashboardEl = document.getElementById('adminDashboard');
+    const loginBtn = document.getElementById('adminLoginBtn');
+    const pwInput = document.getElementById('adminPasswordInput');
+    const errorEl = document.getElementById('adminError');
+    const tableBody = document.getElementById('adminTableBody');
+    const statTotal = document.getElementById('statTotal');
+    const statToday = document.getElementById('statToday');
+    const statWeek = document.getElementById('statWeek');
+
+    function getSubmissions() {
+      return JSON.parse(localStorage.getItem('coaching_submissions') || '[]');
+    }
+
+    function renderDashboard() {
+      const subs = getSubmissions();
+      const now = new Date();
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const weekStart = new Date(todayStart);
+      weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+
+      statTotal.textContent = subs.length;
+      statToday.textContent = subs.filter(s => new Date(s.date) >= todayStart).length;
+      statWeek.textContent = subs.filter(s => new Date(s.date) >= weekStart).length;
+
+      tableBody.innerHTML = '';
+      if (subs.length === 0) {
+        tableBody.innerHTML = '<tr class="empty"><td colspan="7">No submissions yet.</td></tr>';
+        return;
+      }
+
+      subs.forEach(s => {
+        const d = new Date(s.date);
+        const dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="white-space:nowrap;font-size:0.8rem;">${dateStr}</td>
+          <td><strong>${esc(s.name)}</strong></td>
+          <td><a href="mailto:${esc(s.email)}" style="color:var(--accent);text-decoration:none;">${esc(s.email)}</a></td>
+          <td>${esc(s.phone)}</td>
+          <td style="font-size:0.8rem;">${esc(s.social)}</td>
+          <td style="font-size:0.8rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;">${esc(s.message)}</td>
+          <td><button class="admin-delete-btn" data-id="${s.id}" title="Delete">&times;</button></td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      document.querySelectorAll('.admin-delete-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          if (confirm('Delete this submission?')) {
+            let subs = getSubmissions();
+            subs = subs.filter(s => s.id !== this.dataset.id);
+            localStorage.setItem('coaching_submissions', JSON.stringify(subs));
+            renderDashboard();
+          }
+        });
+      });
+    }
+
+    function openAdmin() {
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      pwInput.value = '';
+      errorEl.textContent = '';
+      if (adminAuthed) {
+        loginEl.style.display = 'none';
+        dashboardEl.classList.add('show');
+        renderDashboard();
+      } else {
+        loginEl.style.display = 'block';
+        dashboardEl.classList.remove('show');
+        pwInput.focus();
+      }
+    }
+
+    function closeAdmin() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function doLogin() {
+      const input = pwInput.value.trim();
+      if (input === adminPassword) {
+        adminAuthed = true;
+        sessionStorage.setItem('coaching_admin_auth', '1');
+        loginEl.style.display = 'none';
+        dashboardEl.classList.add('show');
+        renderDashboard();
+      } else {
+        errorEl.textContent = currentLang === 'es' ? 'Contrase\u00f1a incorrecta' : 'Incorrect password';
+      }
+    }
+
+    document.getElementById('adminOpenLink').addEventListener('click', openAdmin);
+    document.getElementById('adminClose').addEventListener('click', closeAdmin);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeAdmin(); });
+    loginBtn.addEventListener('click', doLogin);
+    pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+
+    // Logout when overlay reopens if session expired
+    document.getElementById('adminExportCsv').addEventListener('click', function () {
+      const subs = getSubmissions();
+      if (subs.length === 0) return alert('No data to export.');
+      const headers = ['Date','Name','Email','Phone','Social','Message'];
+      const rows = subs.map(s => [
+        s.date, s.name, s.email, s.phone, s.social,
+        '"' + String(s.message).replace(/"/g, '""') + '"'
+      ]);
+      const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'submissions.csv';
+      a.click();
+    });
+
+    document.getElementById('adminClearAll').addEventListener('click', function () {
+      if (confirm('Delete ALL submissions? This cannot be undone.')) {
+        localStorage.setItem('coaching_submissions', '[]');
+        renderDashboard();
+      }
+    });
+
+    document.getElementById('adminSavePassword').addEventListener('click', function () {
+      const newPw = document.getElementById('adminChangePassword').value.trim();
+      if (newPw.length < 4) return alert('Password must be at least 4 characters.');
+      adminPassword = newPw;
+      localStorage.setItem(ADMIN_PW_KEY, newPw);
+      alert('Password updated.');
+    });
+
+    // Load saved password into field
+    document.getElementById('adminChangePassword').value = adminPassword;
+  </script>
+</body>
+</html>

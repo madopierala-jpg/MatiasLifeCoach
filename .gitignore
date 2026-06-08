@@ -1,0 +1,11 @@
+.DS_Store
+.agents/
+.opencode/
+.playwright-mcp/
+Plans/
+opencode-sign/
+landing-page.png
+New Page
+Page for coaching
+opencode.json
+skills-lock.json
