@@ -113,6 +113,15 @@
 
     .nav-cta:hover { background: var(--accent); color: #fff; }
 
+    .nav-link {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover { color: var(--text); }
+
     .hero {
       min-height: 85vh;
       display: flex;
@@ -688,6 +697,135 @@
 
     .admin-overlay.open { display: flex; }
 
+    /* Pricing overlay (subpage) */
+    .pricing-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 10000;
+      overflow-y: auto;
+      display: none;
+    }
+    .pricing-overlay.open { display: block; }
+
+    .pricing-overlay .pricing-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .pricing-overlay .pricing-header h2 {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .pricing-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 100px;
+      transition: all 0.2s ease;
+    }
+    .pricing-close:hover {
+      background: var(--section-alt);
+      color: var(--text);
+    }
+
+    .pricing-overlay .pricing-grid {
+      padding: 40px 24px 80px;
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .pricing-overlay .pricing-card {
+      background: var(--section-alt);
+      border-radius: 16px;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    .pricing-overlay .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+    }
+    .pricing-overlay .pricing-card.featured {
+      border: 2px solid var(--accent);
+      transform: scale(1.03);
+      position: relative;
+      background: var(--bg);
+    }
+    .pricing-overlay .pricing-card.featured:hover {
+      transform: scale(1.04);
+    }
+    .pricing-overlay .pricing-card .badge {
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 16px;
+      border-radius: 100px;
+      display: inline-block;
+      margin-bottom: 16px;
+      align-self: center;
+    }
+    .pricing-overlay .pricing-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .pricing-overlay .pricing-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+    .pricing-overlay .price {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .pricing-overlay .pricing-cta {
+      display: block;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      background: var(--accent);
+      color: #fff;
+    }
+    .pricing-overlay .pricing-cta.outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .pricing-overlay .pricing-cta.outline:hover { background: var(--accent); color: #fff; }
+
+    @media (max-width: 768px) {
+      .pricing-overlay .pricing-grid { grid-template-columns: 1fr; gap: 16px; padding: 20px 16px 60px; }
+      .pricing-overlay .pricing-card.featured { transform: none; }
+      .pricing-overlay .pricing-card.featured:hover { transform: none; }
+    }
+
     .admin-panel {
       background: var(--bg);
       border-radius: 20px;
@@ -939,6 +1077,7 @@
         <button class="lang-btn" data-lang="pl">PL</button>
         <button class="lang-btn" data-lang="pt">PT</button>
       </div>
+      <a href="#pricing" class="nav-link" data-i18n="nav-pricing">Pricing</a>
       <a href="#booking" class="nav-cta" data-i18n="nav-cta">Book a free call</a>
     </div>
   </nav>
@@ -1031,43 +1170,6 @@
         <div class="value-item fade-in">
           <h3 data-i18n="val-3-title">Whole-person focus</h3>
           <p data-i18n="val-3-text">Your career, your confidence, your inner world — they're all connected. We don't compartmentalise. We integrate.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="pricing" class="alt">
-    <div class="container">
-      <div class="fade-in" style="text-align:center;">
-        <p class="section-label" data-i18n="pricing-label">Investment</p>
-        <h2 class="section-title" data-i18n="pricing-title">Choose what fits your journey.</h2>
-        <p class="section-desc" style="margin:0 auto;" data-i18n="pricing-desc">Every path is different. Pick the one that resonates with where you are right now.</p>
-      </div>
-      <div class="pricing-grid">
-        <div class="pricing-card fade-in">
-          <h3 data-i18n="plan-1-title">Free Discovery Call</h3>
-          <p class="pricing-desc" data-i18n="plan-1-desc">A 45-minute conversation to explore if we're a good fit. No commitment &mdash; just clarity.</p>
-          <div class="price" data-i18n="plan-1-price">Free</div>
-          <a href="#booking" class="pricing-cta outline" data-i18n="plan-1-cta">Book now</a>
-        </div>
-        <div class="pricing-card fade-in">
-          <h3 data-i18n="plan-2-title">Personal Process</h3>
-          <p class="pricing-desc" data-i18n="plan-2-desc">An individual program of approximately 8 weeks. First session (1.5h) then weekly 1h sessions.</p>
-          <div class="price" data-i18n-html="plan-2-price">First session: $200 AUD<br>Weekly: $150 AUD</div>
-          <a href="#booking" class="pricing-cta outline" data-i18n="plan-2-cta">Start your journey</a>
-        </div>
-        <div class="pricing-card featured fade-in">
-          <div class="badge" data-i18n="pricing-badge">Most popular</div>
-          <h3 data-i18n="plan-3-title">Immersion Total</h3>
-          <p class="pricing-desc" data-i18n="plan-3-desc">For those ready for deeper transformation. 6 sessions per month with daily support and evaluation.</p>
-          <div class="price" data-i18n-html="plan-3-price">$1,500 AUD / month</div>
-          <a href="#booking" class="pricing-cta" data-i18n="plan-3-cta">Go all in</a>
-        </div>
-        <div class="pricing-card fade-in">
-          <h3 data-i18n="plan-4-title">Personalised Program</h3>
-          <p class="pricing-desc" data-i18n="plan-4-desc">A custom program adapted to your unique needs, schedule, and situation.</p>
-          <div class="price" data-i18n="plan-4-price">Ask for price</div>
-          <a href="#booking" class="pricing-cta outline" data-i18n="plan-4-cta">Get in touch</a>
         </div>
       </div>
     </div>
@@ -1321,10 +1423,46 @@
     </div>
   </footer>
 
+  <!-- Pricing subpage overlay -->
+  <div class="pricing-overlay" id="pricingOverlay">
+    <div class="pricing-header">
+      <h2 data-i18n="pricing-title-overlay">Investment Plans</h2>
+      <button class="pricing-close" id="pricingClose">&times;</button>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3 data-i18n="plan-1-title">Free Discovery Call</h3>
+        <p class="pricing-desc" data-i18n="plan-1-desc">A 45-minute conversation to explore if we're a good fit. No commitment &mdash; just clarity.</p>
+        <div class="price" data-i18n="plan-1-price">Free</div>
+        <a href="#booking" class="pricing-cta outline" data-i18n="plan-1-cta">Book now</a>
+      </div>
+      <div class="pricing-card">
+        <h3 data-i18n="plan-2-title">Personal Process</h3>
+        <p class="pricing-desc" data-i18n="plan-2-desc">An individual program of approximately 8 weeks. First session (1.5h) then weekly 1h sessions.</p>
+        <div class="price" data-i18n-html="plan-2-price">First session: $200 AUD<br>Weekly: $150 AUD</div>
+        <a href="#booking" class="pricing-cta outline" data-i18n="plan-2-cta">Start your journey</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="badge" data-i18n="pricing-badge">Most popular</div>
+        <h3 data-i18n="plan-3-title">Immersion Total</h3>
+        <p class="pricing-desc" data-i18n="plan-3-desc">For those ready for deeper transformation. 6 sessions per month with daily support and evaluation.</p>
+        <div class="price" data-i18n-html="plan-3-price">$1,500 AUD / month</div>
+        <a href="#booking" class="pricing-cta" data-i18n="plan-3-cta">Go all in</a>
+      </div>
+      <div class="pricing-card">
+        <h3 data-i18n="plan-4-title">Personalised Program</h3>
+        <p class="pricing-desc" data-i18n="plan-4-desc">A custom program adapted to your unique needs, schedule, and situation.</p>
+        <div class="price" data-i18n="plan-4-price">Ask for price</div>
+        <a href="#booking" class="pricing-cta outline" data-i18n="plan-4-cta">Get in touch</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     const i18n = {
       en: {
         'nav-subtitle': 'Lifecoach',
+        'nav-pricing': 'Pricing',
         'nav-cta': 'Book a free call',
         'hero-tag': 'Life Coaching & Professional Growth',
         'hero-heading': 'Your next chapter<br>starts <em>here</em>.',
@@ -1363,6 +1501,7 @@
         'val-3-text': 'Your career, your confidence, your inner world \u2014 they\'re all connected. We don\'t compartmentalise. We integrate.',
         'pricing-label': 'Investment',
         'pricing-title': 'Choose what fits your journey.',
+        'pricing-title-overlay': 'Investment Plans',
         'pricing-desc': 'Every path is different. Pick the one that resonates with where you are right now.',
         'pricing-badge': 'Most popular',
         'plan-1-title': 'Free Discovery Call',
@@ -1427,6 +1566,7 @@
       },
       es: {
         'nav-subtitle': 'Life Coach',
+        'nav-pricing': 'Precios',
         'nav-cta': 'Llama gratis',
         'hero-tag': 'Coaching de Vida y Crecimiento Profesional',
         'hero-heading': 'Tu pr\u00f3ximo cap\u00edtulo<br>comienza <em>aqu\u00ed</em>.',
@@ -1465,6 +1605,7 @@
         'val-3-text': 'Tu carrera, tu confianza, tu mundo interior \u2014 todo est\u00e1 conectado. No compartimentamos. Integramos.',
         'pricing-label': 'Inversi\u00f3n',
         'pricing-title': 'Elige lo que se adapte a tu camino.',
+        'pricing-title-overlay': 'Planes de Inversi\u00f3n',
         'pricing-desc': 'Cada camino es diferente. Elige el que resuene con donde est\u00e1s ahora.',
         'pricing-badge': 'M\u00e1s popular',
         'plan-1-title': 'Llamada de Descubrimiento Gratuita',
@@ -1529,6 +1670,7 @@
       },
       pl: {
         'nav-subtitle': 'Life Coach',
+        'nav-pricing': 'Cennik',
         'nav-cta': 'Darmowa rozmowa',
         'hero-tag': 'Coaching \u017cyciowy i Rozw\u00f3j Zawodowy',
         'hero-heading': 'Tw\u00f3j nast\u0119pny rozdzia\u0142<br>zaczyna si\u0119 <em>tutaj</em>.',
@@ -1567,6 +1709,7 @@
         'val-3-text': 'Twoja kariera, pewno\u015b\u0107 siebie, tw\u00f3j wewn\u0119trzny \u015bwiat \u2014 wszystko jest po\u0142\u0105czone. Nie dzielimy na kategorie. Integrujemy.',
         'pricing-label': 'Inwestycja',
         'pricing-title': 'Wybierz to, co pasuje do Twojej drogi.',
+        'pricing-title-overlay': 'Plany Inwestycyjne',
         'pricing-desc': 'Ka\u017cda \u015bcie\u017cka jest inna. Wybierz t\u0119, kt\u00f3ra rezonuje z tym, gdzie jeste\u015b teraz.',
         'pricing-badge': 'Najpopularniejszy',
         'plan-1-title': 'Bezp\u0142atna Rozmowa Odkrywcza',
@@ -1631,6 +1774,7 @@
       },
       pt: {
         'nav-subtitle': 'Life Coach',
+        'nav-pricing': 'Pre\u00e7os',
         'nav-cta': 'Liga\u00e7\u00e3o gratuita',
         'hero-tag': 'Coaching de Vida e Crescimento Profissional',
         'hero-heading': 'Seu pr\u00f3ximo cap\u00edtulo<br>come\u00e7a <em>aqui</em>.',
@@ -1669,6 +1813,7 @@
         'val-3-text': 'Sua carreira, sua confian\u00e7a, seu mundo interior \u2014 tudo est\u00e1 conectado. N\u00e3o compartimentamos. Integramos.',
         'pricing-label': 'Investimento',
         'pricing-title': 'Escolha o que se adapta \u00e0 sua jornada.',
+        'pricing-title-overlay': 'Planos de Investimento',
         'pricing-desc': 'Cada caminho \u00e9 diferente. Escolha aquele que ressoa com onde voc\u00ea est\u00e1 agora.',
         'pricing-badge': 'Mais popular',
         'plan-1-title': 'Chamada de Descoberta Gratuita',
@@ -2060,12 +2205,12 @@
       const defaultKeys = Object.keys(i18n[lang] || {}).filter(k => k !== 'testimonials' && k !== 'email-subject' && k !== 'alert-success' && k !== 'pw-error');
       
       const groups = {
-        nav: ['nav-subtitle', 'nav-cta'],
+        nav: ['nav-subtitle', 'nav-pricing', 'nav-cta'],
         hero: ['hero-tag', 'hero-heading', 'hero-sub', 'tag-1', 'tag-2', 'tag-3', 'tag-4', 'tag-5', 'hero-cta', 'hero-secondary', 'hero-note'],
         about: ['about-label', 'about-title', 'about-p1', 'about-p2', 'about-p3', 'about-photo-alt'],
         offers: ['offer-label', 'offer-title', 'offer-desc', 'card-1-title', 'card-1-text', 'card-2-title', 'card-2-text', 'card-3-title', 'card-3-text'],
         values: ['values-label', 'values-title', 'values-desc', 'val-1-title', 'val-1-text', 'val-2-title', 'val-2-text', 'val-3-title', 'val-3-text'],
-        pricing: ['pricing-label', 'pricing-title', 'pricing-desc', 'pricing-badge', 'plan-1-title', 'plan-1-desc', 'plan-1-price', 'plan-1-cta', 'plan-2-title', 'plan-2-desc', 'plan-2-price', 'plan-2-cta', 'plan-3-title', 'plan-3-desc', 'plan-3-price', 'plan-3-cta', 'plan-4-title', 'plan-4-desc', 'plan-4-price', 'plan-4-cta'],
+        pricing: ['pricing-label', 'pricing-title', 'pricing-title-overlay', 'pricing-desc', 'pricing-badge', 'plan-1-title', 'plan-1-desc', 'plan-1-price', 'plan-1-cta', 'plan-2-title', 'plan-2-desc', 'plan-2-price', 'plan-2-cta', 'plan-3-title', 'plan-3-desc', 'plan-3-price', 'plan-3-cta', 'plan-4-title', 'plan-4-desc', 'plan-4-price', 'plan-4-cta'],
         testimonials: ['test-label', 'test-title', 'test-desc', 'test-swipe'],
         booking: ['book-label', 'book-title', 'book-desc', 'expect-title', 'expect-p1', 'expect-p2', 'avail-title', 'avail-tz', 'avail-hours', 'avail-note', 'questions-label', 'reach-out', 'or'],
         form: ['form-name-ph', 'form-email-ph', 'form-phone-ph', 'form-social-ph', 'form-msg-label', 'form-msg-ph', 'form-submit', 'form-footer', 'data-note'],
@@ -2271,6 +2416,20 @@
     overlay.addEventListener('click', function (e) { if (e.target === overlay) closeAdmin(); });
     loginBtn.addEventListener('click', doLogin);
     pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+
+    // ─── Pricing overlay ───
+    const pricingOverlay = document.getElementById('pricingOverlay');
+    function openPricing() { pricingOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closePricing() { pricingOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+    document.getElementById('pricingClose').addEventListener('click', closePricing);
+    pricingOverlay.addEventListener('click', function (e) { if (e.target === pricingOverlay) closePricing(); });
+    document.querySelectorAll('a[href="#pricing"]').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); openPricing(); });
+    });
+    document.querySelectorAll('#pricingOverlay .pricing-cta').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); closePricing(); window.location.hash = 'booking'; });
+    });
+    if (window.location.hash === '#pricing') { setTimeout(openPricing, 100); }
 
     // ─── Admin tab switching ───
     document.querySelectorAll('.admin-tab').forEach(tab => {
