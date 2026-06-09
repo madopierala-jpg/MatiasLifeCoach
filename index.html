@@ -697,56 +697,112 @@
 
     .admin-overlay.open { display: flex; }
 
-    /* Pricing overlay (subpage) */
-    .pricing-overlay {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      z-index: 10000;
-      overflow-y: auto;
-      display: none;
-    }
-    .pricing-overlay.open { display: block; }
-
-    .pricing-overlay .pricing-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 24px;
-      max-width: 1120px;
-      margin: 0 auto;
-    }
-    .pricing-overlay .pricing-header h2 {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-    .pricing-close {
+    /* ─── Hamburger menu ─── */
+    .hamburger {
       background: none;
       border: none;
-      font-size: 1.5rem;
-      color: var(--text-muted);
       cursor: pointer;
-      padding: 4px 10px;
-      border-radius: 100px;
-      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 4px;
     }
-    .pricing-close:hover {
-      background: var(--section-alt);
-      color: var(--text);
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s ease;
     }
 
-    .pricing-overlay .pricing-grid {
-      padding: 40px 24px 80px;
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      display: none;
+    }
+    .menu-overlay.open { display: flex; }
+
+    .menu-panel {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+    }
+    .menu-header {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .menu-close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    .menu-nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+    }
+    .menu-link {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .menu-link:hover { color: var(--accent); }
+    .menu-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 40px;
+    }
+    .menu-bottom .btn-primary {
+      text-align: center;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    /* ─── Page routing ─── */
+    #pricing-page { display: none; padding: 80px 0; min-height: 80vh; }
+    .show-pricing .hero,
+    .show-pricing #about,
+    .show-pricing #offerings,
+    .show-pricing #values,
+    .show-pricing #testimonials,
+    .show-pricing #booking { display: none; }
+    .show-pricing #pricing-page { display: block; }
+
+    .pricing-back {
+      display: inline-block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 16px;
+      transition: color 0.2s ease;
+    }
+    .pricing-back:hover { color: var(--accent); }
+
+    #pricing-page .pricing-grid {
       max-width: 1120px;
       margin: 0 auto;
+      padding: 0 24px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
       align-items: stretch;
     }
-
-    .pricing-overlay .pricing-card {
+    #pricing-page .pricing-card {
       background: var(--section-alt);
       border-radius: 16px;
       padding: 32px 24px;
@@ -756,20 +812,18 @@
       border: 1px solid var(--border);
       transition: all 0.3s ease;
     }
-    .pricing-overlay .pricing-card:hover {
+    #pricing-page .pricing-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 8px 32px rgba(0,0,0,0.06);
     }
-    .pricing-overlay .pricing-card.featured {
+    #pricing-page .pricing-card.featured {
       border: 2px solid var(--accent);
       transform: scale(1.03);
       position: relative;
       background: var(--bg);
     }
-    .pricing-overlay .pricing-card.featured:hover {
-      transform: scale(1.04);
-    }
-    .pricing-overlay .pricing-card .badge {
+    #pricing-page .pricing-card.featured:hover { transform: scale(1.04); }
+    #pricing-page .pricing-card .badge {
       background: var(--accent);
       color: #fff;
       font-size: 0.7rem;
@@ -782,27 +836,27 @@
       margin-bottom: 16px;
       align-self: center;
     }
-    .pricing-overlay .pricing-card h3 {
+    #pricing-page .pricing-card h3 {
       font-family: var(--font-heading);
       font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: 12px;
     }
-    .pricing-overlay .pricing-desc {
+    #pricing-page .pricing-desc {
       font-size: 0.85rem;
       color: var(--text-muted);
       line-height: 1.5;
       margin-bottom: 20px;
       flex: 1;
     }
-    .pricing-overlay .price {
+    #pricing-page .price {
       font-family: var(--font-heading);
       font-size: 1.5rem;
       font-weight: 700;
       color: var(--accent);
       margin-bottom: 20px;
     }
-    .pricing-overlay .pricing-cta {
+    #pricing-page .pricing-cta {
       display: block;
       text-decoration: none;
       padding: 12px 24px;
@@ -813,17 +867,17 @@
       background: var(--accent);
       color: #fff;
     }
-    .pricing-overlay .pricing-cta.outline {
+    #pricing-page .pricing-cta.outline {
       background: transparent;
       color: var(--accent);
       border: 1px solid var(--accent);
     }
-    .pricing-overlay .pricing-cta.outline:hover { background: var(--accent); color: #fff; }
+    #pricing-page .pricing-cta.outline:hover { background: var(--accent); color: #fff; }
 
     @media (max-width: 768px) {
-      .pricing-overlay .pricing-grid { grid-template-columns: 1fr; gap: 16px; padding: 20px 16px 60px; }
-      .pricing-overlay .pricing-card.featured { transform: none; }
-      .pricing-overlay .pricing-card.featured:hover { transform: none; }
+      #pricing-page .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
+      #pricing-page .pricing-card.featured { transform: none; }
+      #pricing-page .pricing-card.featured:hover { transform: none; }
     }
 
     .admin-panel {
@@ -1077,10 +1131,38 @@
         <button class="lang-btn" data-lang="pl">PL</button>
         <button class="lang-btn" data-lang="pt">PT</button>
       </div>
-      <a href="#pricing" class="nav-link" data-i18n="nav-pricing">Pricing</a>
       <a href="#booking" class="nav-cta" data-i18n="nav-cta">Book a free call</a>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
+
+  <!-- Hamburger menu overlay -->
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="menu-panel">
+      <div class="menu-header">
+        <button class="menu-close" id="menuClose">&times;</button>
+      </div>
+      <nav class="menu-nav">
+        <a href="#about" class="menu-link" data-i18n="nav-about">About</a>
+        <a href="#offerings" class="menu-link" data-i18n="nav-offerings">Offerings</a>
+        <a href="#values" class="menu-link" data-i18n="nav-values">How I work</a>
+        <a href="#pricing" class="menu-link" data-i18n="nav-pricing">Pricing</a>
+        <a href="#testimonials" class="menu-link" data-i18n="nav-testimonials">Testimonials</a>
+        <a href="#booking" class="menu-link" data-i18n="nav-booking">Booking</a>
+      </nav>
+      <div class="menu-bottom">
+        <div class="lang-switch">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="es">ES</button>
+          <button class="lang-btn" data-lang="pl">PL</button>
+          <button class="lang-btn" data-lang="pt">PT</button>
+        </div>
+        <a href="#booking" class="btn-primary" data-i18n="hero-cta">Book your free discovery call</a>
+      </div>
+    </div>
+  </div>
 
   <section class="hero">
     <div class="container">
@@ -1151,7 +1233,7 @@
     </div>
   </section>
 
-  <section class="alt">
+  <section id="values" class="alt">
     <div class="container">
       <div class="fade-in" style="text-align:center;">
         <p class="section-label" data-i18n="values-label">How I work</p>
@@ -1170,6 +1252,45 @@
         <div class="value-item fade-in">
           <h3 data-i18n="val-3-title">Whole-person focus</h3>
           <p data-i18n="val-3-text">Your career, your confidence, your inner world — they're all connected. We don't compartmentalise. We integrate.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing subpage (hidden by default, shown via page routing) -->
+  <section id="pricing-page">
+    <div class="container">
+      <div class="fade-in visible" style="text-align:center;padding-bottom:8px;">
+        <a href="#" class="pricing-back" id="pricingBack">&larr; <span data-i18n="pricing-back">Back to home</span></a>
+        <p class="section-label" data-i18n="pricing-label">Investment</p>
+        <h2 class="section-title" data-i18n="pricing-title-overlay">Investment Plans</h2>
+        <p class="section-desc" style="margin:0 auto;" data-i18n="pricing-desc">Every path is different. Pick the one that resonates with where you are right now.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card fade-in visible">
+          <h3 data-i18n="plan-1-title">Free Discovery Call</h3>
+          <p class="pricing-desc" data-i18n="plan-1-desc">A 45-minute conversation to explore if we're a good fit. No commitment &mdash; just clarity.</p>
+          <div class="price" data-i18n="plan-1-price">Free</div>
+          <a href="#booking" class="pricing-cta outline" data-i18n="plan-1-cta">Book now</a>
+        </div>
+        <div class="pricing-card fade-in visible">
+          <h3 data-i18n="plan-2-title">Personal Process</h3>
+          <p class="pricing-desc" data-i18n="plan-2-desc">An individual program of approximately 8 weeks. First session (1.5h) then weekly 1h sessions.</p>
+          <div class="price" data-i18n-html="plan-2-price">First session: $200 AUD<br>Weekly: $150 AUD</div>
+          <a href="#booking" class="pricing-cta outline" data-i18n="plan-2-cta">Start your journey</a>
+        </div>
+        <div class="pricing-card featured fade-in visible">
+          <div class="badge" data-i18n="pricing-badge">Most popular</div>
+          <h3 data-i18n="plan-3-title">Immersion Total</h3>
+          <p class="pricing-desc" data-i18n="plan-3-desc">For those ready for deeper transformation. 6 sessions per month with daily support and evaluation.</p>
+          <div class="price" data-i18n-html="plan-3-price">$1,500 AUD / month</div>
+          <a href="#booking" class="pricing-cta" data-i18n="plan-3-cta">Go all in</a>
+        </div>
+        <div class="pricing-card fade-in visible">
+          <h3 data-i18n="plan-4-title">Personalised Program</h3>
+          <p class="pricing-desc" data-i18n="plan-4-desc">A custom program adapted to your unique needs, schedule, and situation.</p>
+          <div class="price" data-i18n="plan-4-price">Ask for price</div>
+          <a href="#booking" class="pricing-cta outline" data-i18n="plan-4-cta">Get in touch</a>
         </div>
       </div>
     </div>
@@ -1423,47 +1544,18 @@
     </div>
   </footer>
 
-  <!-- Pricing subpage overlay -->
-  <div class="pricing-overlay" id="pricingOverlay">
-    <div class="pricing-header">
-      <h2 data-i18n="pricing-title-overlay">Investment Plans</h2>
-      <button class="pricing-close" id="pricingClose">&times;</button>
-    </div>
-    <div class="pricing-grid">
-      <div class="pricing-card">
-        <h3 data-i18n="plan-1-title">Free Discovery Call</h3>
-        <p class="pricing-desc" data-i18n="plan-1-desc">A 45-minute conversation to explore if we're a good fit. No commitment &mdash; just clarity.</p>
-        <div class="price" data-i18n="plan-1-price">Free</div>
-        <a href="#booking" class="pricing-cta outline" data-i18n="plan-1-cta">Book now</a>
-      </div>
-      <div class="pricing-card">
-        <h3 data-i18n="plan-2-title">Personal Process</h3>
-        <p class="pricing-desc" data-i18n="plan-2-desc">An individual program of approximately 8 weeks. First session (1.5h) then weekly 1h sessions.</p>
-        <div class="price" data-i18n-html="plan-2-price">First session: $200 AUD<br>Weekly: $150 AUD</div>
-        <a href="#booking" class="pricing-cta outline" data-i18n="plan-2-cta">Start your journey</a>
-      </div>
-      <div class="pricing-card featured">
-        <div class="badge" data-i18n="pricing-badge">Most popular</div>
-        <h3 data-i18n="plan-3-title">Immersion Total</h3>
-        <p class="pricing-desc" data-i18n="plan-3-desc">For those ready for deeper transformation. 6 sessions per month with daily support and evaluation.</p>
-        <div class="price" data-i18n-html="plan-3-price">$1,500 AUD / month</div>
-        <a href="#booking" class="pricing-cta" data-i18n="plan-3-cta">Go all in</a>
-      </div>
-      <div class="pricing-card">
-        <h3 data-i18n="plan-4-title">Personalised Program</h3>
-        <p class="pricing-desc" data-i18n="plan-4-desc">A custom program adapted to your unique needs, schedule, and situation.</p>
-        <div class="price" data-i18n="plan-4-price">Ask for price</div>
-        <a href="#booking" class="pricing-cta outline" data-i18n="plan-4-cta">Get in touch</a>
-      </div>
-    </div>
-  </div>
-
   <script>
     const i18n = {
       en: {
         'nav-subtitle': 'Lifecoach',
+        'nav-about': 'About',
+        'nav-offerings': 'Offerings',
+        'nav-values': 'How I work',
         'nav-pricing': 'Pricing',
+        'nav-testimonials': 'Testimonials',
+        'nav-booking': 'Booking',
         'nav-cta': 'Book a free call',
+        'pricing-back': 'Back to home',
         'hero-tag': 'Life Coaching & Professional Growth',
         'hero-heading': 'Your next chapter<br>starts <em>here</em>.',
         'hero-sub': 'Fear, self-doubt, career crossroads — you don\'t have to navigate them alone. Whether you\'re queer, trans, questioning, or simply figuring things out, this is a space where you can show up as you are and build from there.',
@@ -1566,8 +1658,14 @@
       },
       es: {
         'nav-subtitle': 'Life Coach',
+        'nav-about': 'Sobre m\u00ed',
+        'nav-offerings': 'Servicios',
+        'nav-values': 'C\u00f3mo trabajo',
         'nav-pricing': 'Precios',
+        'nav-testimonials': 'Testimonios',
+        'nav-booking': 'Reservar',
         'nav-cta': 'Llama gratis',
+        'pricing-back': 'Volver al inicio',
         'hero-tag': 'Coaching de Vida y Crecimiento Profesional',
         'hero-heading': 'Tu pr\u00f3ximo cap\u00edtulo<br>comienza <em>aqu\u00ed</em>.',
         'hero-sub': 'El miedo, la duda, las encrucijadas profesionales — no tienes que navegarlos solo. Seas queer, trans, est\u00e9s cuestion\u00e1ndote o simplemente buscando respuestas, este es un espacio donde puedes mostrarte como eres y construir desde ah\u00ed.',
@@ -1670,8 +1768,14 @@
       },
       pl: {
         'nav-subtitle': 'Life Coach',
+        'nav-about': 'O mnie',
+        'nav-offerings': 'Oferta',
+        'nav-values': 'Jak pracuj\u0119',
         'nav-pricing': 'Cennik',
+        'nav-testimonials': 'Opinie',
+        'nav-booking': 'Rezerwacja',
         'nav-cta': 'Darmowa rozmowa',
+        'pricing-back': 'Powr\u00f3t do strony g\u0142\u00f3wnej',
         'hero-tag': 'Coaching \u017cyciowy i Rozw\u00f3j Zawodowy',
         'hero-heading': 'Tw\u00f3j nast\u0119pny rozdzia\u0142<br>zaczyna si\u0119 <em>tutaj</em>.',
         'hero-sub': 'Strach, zw\u0105tpienie, zawodowe rozdro\u017ca \u2014 nie musisz nawigowa\u0107 przez nie samodzielnie. Nieważne, czy jeste\u015b queer, trans, zadajesz sobie pytania, czy po prostu szukasz odpowiedzi \u2014 to przestrze\u0144, w kt\u00f3rej mo\u017cesz by\u0107 sob\u0105 i budowa\u0107 st\u0105d.',
@@ -1774,8 +1878,14 @@
       },
       pt: {
         'nav-subtitle': 'Life Coach',
+        'nav-about': 'Sobre mim',
+        'nav-offerings': 'Servi\u00e7os',
+        'nav-values': 'Como trabalho',
         'nav-pricing': 'Pre\u00e7os',
+        'nav-testimonials': 'Depoimentos',
+        'nav-booking': 'Reservar',
         'nav-cta': 'Liga\u00e7\u00e3o gratuita',
+        'pricing-back': 'Voltar ao in\u00edcio',
         'hero-tag': 'Coaching de Vida e Crescimento Profissional',
         'hero-heading': 'Seu pr\u00f3ximo cap\u00edtulo<br>come\u00e7a <em>aqui</em>.',
         'hero-sub': 'Medo, d\u00favida, encruzilhadas profissionais \u2014 voc\u00ea n\u00e3o precisa naveg\u00e1-los sozinho. Seja voc\u00ea queer, trans, esteja se questionando ou simplesmente buscando respostas, este \u00e9 um espa\u00e7o onde voc\u00ea pode se mostrar como \u00e9 e construir a partir da\u00ed.',
@@ -2205,12 +2315,12 @@
       const defaultKeys = Object.keys(i18n[lang] || {}).filter(k => k !== 'testimonials' && k !== 'email-subject' && k !== 'alert-success' && k !== 'pw-error');
       
       const groups = {
-        nav: ['nav-subtitle', 'nav-pricing', 'nav-cta'],
+        nav: ['nav-subtitle', 'nav-about', 'nav-offerings', 'nav-values', 'nav-pricing', 'nav-testimonials', 'nav-booking', 'nav-cta'],
         hero: ['hero-tag', 'hero-heading', 'hero-sub', 'tag-1', 'tag-2', 'tag-3', 'tag-4', 'tag-5', 'hero-cta', 'hero-secondary', 'hero-note'],
         about: ['about-label', 'about-title', 'about-p1', 'about-p2', 'about-p3', 'about-photo-alt'],
         offers: ['offer-label', 'offer-title', 'offer-desc', 'card-1-title', 'card-1-text', 'card-2-title', 'card-2-text', 'card-3-title', 'card-3-text'],
         values: ['values-label', 'values-title', 'values-desc', 'val-1-title', 'val-1-text', 'val-2-title', 'val-2-text', 'val-3-title', 'val-3-text'],
-        pricing: ['pricing-label', 'pricing-title', 'pricing-title-overlay', 'pricing-desc', 'pricing-badge', 'plan-1-title', 'plan-1-desc', 'plan-1-price', 'plan-1-cta', 'plan-2-title', 'plan-2-desc', 'plan-2-price', 'plan-2-cta', 'plan-3-title', 'plan-3-desc', 'plan-3-price', 'plan-3-cta', 'plan-4-title', 'plan-4-desc', 'plan-4-price', 'plan-4-cta'],
+        pricing: ['pricing-label', 'pricing-title', 'pricing-title-overlay', 'pricing-desc', 'pricing-badge', 'pricing-back', 'plan-1-title', 'plan-1-desc', 'plan-1-price', 'plan-1-cta', 'plan-2-title', 'plan-2-desc', 'plan-2-price', 'plan-2-cta', 'plan-3-title', 'plan-3-desc', 'plan-3-price', 'plan-3-cta', 'plan-4-title', 'plan-4-desc', 'plan-4-price', 'plan-4-cta'],
         testimonials: ['test-label', 'test-title', 'test-desc', 'test-swipe'],
         booking: ['book-label', 'book-title', 'book-desc', 'expect-title', 'expect-p1', 'expect-p2', 'avail-title', 'avail-tz', 'avail-hours', 'avail-note', 'questions-label', 'reach-out', 'or'],
         form: ['form-name-ph', 'form-email-ph', 'form-phone-ph', 'form-social-ph', 'form-msg-label', 'form-msg-ph', 'form-submit', 'form-footer', 'data-note'],
@@ -2417,19 +2527,34 @@
     loginBtn.addEventListener('click', doLogin);
     pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
 
-    // ─── Pricing overlay ───
-    const pricingOverlay = document.getElementById('pricingOverlay');
-    function openPricing() { pricingOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
-    function closePricing() { pricingOverlay.classList.remove('open'); document.body.style.overflow = ''; }
-    document.getElementById('pricingClose').addEventListener('click', closePricing);
-    pricingOverlay.addEventListener('click', function (e) { if (e.target === pricingOverlay) closePricing(); });
+    // ─── Hamburger menu ───
+    var menuOverlay = document.getElementById('menuOverlay');
+    document.getElementById('hamburgerBtn').addEventListener('click', function () { menuOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; });
+    document.getElementById('menuClose').addEventListener('click', function () { menuOverlay.classList.remove('open'); document.body.style.overflow = ''; });
+    menuOverlay.addEventListener('click', function (e) { if (e.target === menuOverlay) { menuOverlay.classList.remove('open'); document.body.style.overflow = ''; } });
+    document.querySelectorAll('.menu-link').forEach(function (a) {
+      a.addEventListener('click', function () { menuOverlay.classList.remove('open'); document.body.style.overflow = ''; });
+    });
+
+    // ─── Page routing (pricing subpage) ───
+    function showPricing() {
+      document.body.classList.add('show-pricing');
+      window.location.hash = 'pricing';
+      window.scrollTo(0, 0);
+    }
+    function showMain() {
+      document.body.classList.remove('show-pricing');
+      window.location.hash = '';
+      window.scrollTo(0, 0);
+    }
     document.querySelectorAll('a[href="#pricing"]').forEach(function (a) {
-      a.addEventListener('click', function (e) { e.preventDefault(); openPricing(); });
+      a.addEventListener('click', function (e) { e.preventDefault(); showPricing(); });
     });
-    document.querySelectorAll('#pricingOverlay .pricing-cta').forEach(function (a) {
-      a.addEventListener('click', function (e) { e.preventDefault(); closePricing(); window.location.hash = 'booking'; });
+    document.getElementById('pricingBack').addEventListener('click', function (e) { e.preventDefault(); showMain(); });
+    document.querySelectorAll('#pricing-page .pricing-cta').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); showMain(); window.location.hash = 'booking'; });
     });
-    if (window.location.hash === '#pricing') { setTimeout(openPricing, 100); }
+    if (window.location.hash === '#pricing') { setTimeout(showPricing, 100); }
 
     // ─── Admin tab switching ───
     document.querySelectorAll('.admin-tab').forEach(tab => {
