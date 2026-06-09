@@ -688,6 +688,33 @@
 
     .admin-toolbar .danger:hover { border-color: #c0392b; color: #c0392b; }
 
+    .admin-tabs { display:flex; gap:4px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:0; }
+    .admin-tab { padding:8px 18px; border:none; background:none; font-family:var(--font-body); font-size:0.85rem; color:var(--text-muted); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
+    .admin-tab:hover { color:var(--text); }
+    .admin-tab.active { color:var(--accent); border-bottom-color:var(--accent); font-weight:500; }
+
+    .admin-panel-section { display:none; }
+    .admin-panel-section.show { display:block; }
+
+    .content-lang-tabs { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
+    .content-lang-tab { padding:4px 14px; border:1px solid var(--border); border-radius:100px; background:none; font-family:var(--font-body); font-size:0.8rem; cursor:pointer; color:var(--text-muted); transition:all 0.15s; }
+    .content-lang-tab:hover { border-color:var(--accent); color:var(--accent); }
+    .content-lang-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+    .content-fields { display:flex; flex-direction:column; gap:10px; max-height:55vh; overflow-y:auto; padding-right:4px; }
+    .content-field-group { margin-bottom:6px; }
+    .content-field-group h4 { font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid var(--border); }
+    .content-field { display:flex; flex-direction:column; gap:2px; }
+    .content-field label { font-size:0.75rem; color:var(--text-muted); font-weight:500; }
+    .content-field input, .content-field textarea { padding:5px 8px; font-family:var(--font-body); font-size:0.82rem; border:1px solid var(--border); border-radius:6px; background:var(--section-alt); color:var(--text); outline:none; transition:border-color 0.15s; }
+    .content-field input:focus, .content-field textarea:focus { border-color:var(--accent); }
+    .content-field textarea { min-height:48px; resize:vertical; }
+    .content-field .char-count { font-size:0.65rem; color:var(--text-muted); text-align:right; }
+    .content-save-btn { margin-top:12px; padding:8px 24px; background:var(--accent); color:#fff; border:none; border-radius:100px; font-family:var(--font-body); font-size:0.85rem; cursor:pointer; transition:background 0.2s; }
+    .content-save-btn:hover { background:var(--accent-hover); }
+    .content-save-btn:disabled { opacity:0.5; cursor:not-allowed; }
+    .content-save-status { font-size:0.78rem; margin-top:6px; min-height:20px; }
+
     .admin-table-wrap { overflow-x: auto; }
 
     .admin-table {
@@ -1014,48 +1041,72 @@
 
       <!-- Dashboard -->
       <div class="admin-dashboard" id="adminDashboard">
-        <h2>Submissions</h2>
-        <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">
-          Data stored in this browser (<span id="adminSource">localStorage</span>).
-          <span id="adminNetlifyLink" style="display:none;">All submissions also at <a href="#" target="_blank" style="color:var(--accent);">Netlify Dashboard</a>.</span>
-        </p>
-
-        <div class="admin-stats">
-          <div class="admin-stat"><strong id="statTotal">0</strong><span>Total</span></div>
-          <div class="admin-stat"><strong id="statToday">0</strong><span>Today</span></div>
-          <div class="admin-stat"><strong id="statWeek">0</strong><span>This week</span></div>
+        <div class="admin-tabs">
+          <button class="admin-tab active" data-admin-tab="submissions">Submissions</button>
+          <button class="admin-tab" data-admin-tab="content">Content</button>
+          <button class="admin-tab" data-admin-tab="settings">Settings</button>
         </div>
 
-        <div class="admin-toolbar">
-          <button id="adminExportCsv">Export CSV</button>
-          <button id="adminClearAll" class="danger">Clear all</button>
+        <!-- Submissions tab -->
+        <div class="admin-panel-section show" id="adminSubmissionsPanel">
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">
+            Data stored in this browser (<span id="adminSource">localStorage</span>).
+            <span id="adminNetlifyLink" style="display:none;">All submissions also at <a href="#" target="_blank" style="color:var(--accent);">Netlify Dashboard</a>.</span>
+          </p>
+
+          <div class="admin-stats">
+            <div class="admin-stat"><strong id="statTotal">0</strong><span>Total</span></div>
+            <div class="admin-stat"><strong id="statToday">0</strong><span>Today</span></div>
+            <div class="admin-stat"><strong id="statWeek">0</strong><span>This week</span></div>
+          </div>
+
+          <div class="admin-toolbar">
+            <button id="adminExportCsv">Export CSV</button>
+            <button id="adminClearAll" class="danger">Clear all</button>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Social</th>
+                  <th>Message</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody">
+                <tr class="empty"><td colspan="7">No submissions yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Social</th>
-                <th>Message</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody">
-              <tr class="empty"><td colspan="7">No submissions yet.</td></tr>
-            </tbody>
-          </table>
+        <!-- Content tab -->
+        <div class="admin-panel-section" id="adminContentPanel">
+          <div class="content-lang-tabs" id="contentLangTabs">
+            <button class="content-lang-tab active" data-content-lang="en">EN</button>
+            <button class="content-lang-tab" data-content-lang="es">ES</button>
+            <button class="content-lang-tab" data-content-lang="pl">PL</button>
+            <button class="content-lang-tab" data-content-lang="pt">PT</button>
+          </div>
+          <div class="content-fields" id="contentFields"></div>
+          <button class="content-save-btn" id="contentSaveBtn">Save changes</button>
+          <p class="content-save-status" id="contentSaveStatus"></p>
         </div>
 
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-          <label style="font-size:0.85rem;color:var(--text-muted);">
-            Password:
-            <input type="text" id="adminChangePassword" value="admin123" style="padding:6px 12px;font-family:var(--font-body);font-size:0.85rem;border:1px solid var(--border);border-radius:8px;background:var(--section-alt);color:var(--text);width:140px;margin-left:6px;outline:none;">
-          </label>
-          <button id="adminSavePassword" style="background:none;border:1px solid var(--border);padding:6px 14px;border-radius:100px;font-size:0.8rem;cursor:pointer;color:var(--text-muted);">Save</button>
+        <!-- Settings tab -->
+        <div class="admin-panel-section" id="adminSettingsPanel">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+            <label style="font-size:0.85rem;color:var(--text-muted);">
+              Password:
+              <input type="text" id="adminChangePassword" value="admin123" style="padding:6px 12px;font-family:var(--font-body);font-size:0.85rem;border:1px solid var(--border);border-radius:8px;background:var(--section-alt);color:var(--text);width:140px;margin-left:6px;outline:none;">
+            </label>
+            <button id="adminSavePassword" style="background:none;border:1px solid var(--border);padding:6px 14px;border-radius:100px;font-size:0.8rem;cursor:pointer;color:var(--text-muted);">Save</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1412,29 +1463,33 @@
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
-        if (i18n[lang][key] !== undefined) {
-          el.textContent = i18n[lang][key];
+        const val = getTranslation(lang, key);
+        if (val !== undefined && val !== '') {
+          el.textContent = val;
         }
       });
 
       document.querySelectorAll('[data-i18n-html]').forEach(el => {
         const key = el.dataset.i18nHtml;
-        if (i18n[lang][key] !== undefined) {
-          el.innerHTML = i18n[lang][key];
+        const val = getTranslation(lang, key);
+        if (val !== undefined && val !== '') {
+          el.innerHTML = val;
         }
       });
 
       document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.dataset.i18nPlaceholder;
-        if (i18n[lang][key] !== undefined) {
-          el.placeholder = i18n[lang][key];
+        const val = getTranslation(lang, key);
+        if (val !== undefined && val !== '') {
+          el.placeholder = val;
         }
       });
 
       document.querySelectorAll('[data-i18n-alt]').forEach(el => {
         const key = el.dataset.i18nAlt;
-        if (i18n[lang][key] !== undefined) {
-          el.alt = i18n[lang][key];
+        const val = getTranslation(lang, key);
+        if (val !== undefined && val !== '') {
+          el.alt = val;
         }
       });
 
@@ -1453,7 +1508,9 @@
     function renderTestimonials(lang) {
       const container = document.getElementById('testimonialsContainer');
       if (!container) return;
-      const list = i18n[lang] && i18n[lang].testimonials;
+      const list = customTranslations[lang] && customTranslations[lang]['_testimonials']
+        ? JSON.parse(customTranslations[lang]['_testimonials'])
+        : (i18n[lang] && i18n[lang].testimonials);
       if (!list) return;
       container.innerHTML = list.map(t => {
         const initial = t.name.charAt(0);
@@ -1475,7 +1532,10 @@
       btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
     });
 
-    applyLanguage(currentLang);
+    // Load custom translations from Supabase, then apply language
+    loadCustomTranslations().then(() => {
+      applyLanguage(currentLang);
+    });
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1558,11 +1618,99 @@
       if (error) console.warn('Supabase delete failed:', error);
     }
 
+    // ─── Custom translations ───
+    let customTranslations = {}; // { lang: { key: value } }
+    let contentEditLang = 'en';
+
+    async function loadCustomTranslations() {
+      if (!supabaseClient) return;
+      const { data, error } = await supabaseClient
+        .from('translations')
+        .select('*');
+      if (error) {
+        console.warn('Failed to load custom translations:', error);
+        return;
+      }
+      customTranslations = {};
+      data.forEach(row => {
+        if (!customTranslations[row.lang]) customTranslations[row.lang] = {};
+        customTranslations[row.lang][row.key] = row.value;
+      });
+    }
+
+    function getTranslation(lang, key) {
+      if (customTranslations[lang] && customTranslations[lang][key] !== undefined) {
+        return customTranslations[lang][key];
+      }
+      return i18n[lang] && i18n[lang][key] !== undefined ? i18n[lang][key] : '';
+    }
+
+    async function saveCustomTranslation(lang, key, value) {
+      if (!supabaseClient) return;
+      const { error } = await supabaseClient.from('translations').upsert(
+        { lang, key, value },
+        { onConflict: 'lang,key' }
+      );
+      if (error) {
+        console.warn('Failed to save translation:', error);
+        throw error;
+      }
+      if (!customTranslations[lang]) customTranslations[lang] = {};
+      customTranslations[lang][key] = value;
+    }
+
+    async function saveAllContentEdits(lang, edits) {
+      for (const [key, value] of Object.entries(edits)) {
+        await saveCustomTranslation(lang, key, value);
+      }
+    }
+
+    function renderContentEditor(lang) {
+      const container = document.getElementById('contentFields');
+      if (!container) return;
+      contentEditLang = lang;
+
+      const defaultKeys = Object.keys(i18n[lang] || {}).filter(k => k !== 'testimonials' && k !== 'email-subject' && k !== 'alert-success' && k !== 'pw-error');
+      
+      const groups = {
+        nav: ['nav-subtitle', 'nav-cta'],
+        hero: ['hero-tag', 'hero-heading', 'hero-sub', 'tag-1', 'tag-2', 'tag-3', 'tag-4', 'tag-5', 'hero-cta', 'hero-secondary', 'hero-note'],
+        about: ['about-label', 'about-title', 'about-p1', 'about-p2', 'about-p3', 'about-photo-alt'],
+        offers: ['offer-label', 'offer-title', 'offer-desc', 'card-1-title', 'card-1-text', 'card-2-title', 'card-2-text', 'card-3-title', 'card-3-text'],
+        values: ['values-label', 'values-title', 'values-desc', 'val-1-title', 'val-1-text', 'val-2-title', 'val-2-text', 'val-3-title', 'val-3-text'],
+        testimonials: ['test-label', 'test-title', 'test-desc', 'test-swipe'],
+        booking: ['book-label', 'book-title', 'book-desc', 'expect-title', 'expect-p1', 'expect-p2', 'avail-title', 'avail-tz', 'avail-hours', 'avail-note', 'questions-label', 'reach-out', 'or'],
+        form: ['form-name-ph', 'form-email-ph', 'form-phone-ph', 'form-social-ph', 'form-msg-label', 'form-msg-ph', 'form-submit', 'form-footer', 'data-note'],
+      };
+
+      const groupLabels = {
+        nav: 'Navigation', hero: 'Hero Section', about: 'About Me',
+        offers: 'Offerings', values: 'Values', testimonials: 'Testimonials Section',
+        booking: 'Booking', form: 'Form'
+      };
+
+      let html = '';
+      for (const [group, keys] of Object.entries(groups)) {
+        html += `<div class="content-field-group"><h4>${groupLabels[group]}</h4>`;
+        keys.forEach(key => {
+          const val = getTranslation(lang, key);
+          const isLong = val.length > 80 || key.endsWith('-p1') || key.endsWith('-p2') || key.endsWith('-p3') || key.endsWith('-sub') || key.endsWith('-desc') || key.endsWith('-text') || key === 'hero-heading';
+          html += `<div class="content-field">
+            <label for="cf_${key}">${key}</label>
+            ${isLong
+              ? `<textarea id="cf_${key}" data-cf-key="${key}">${esc(val)}</textarea>`
+              : `<input type="text" id="cf_${key}" data-cf-key="${key}" value="${esc(val)}">`
+            }
+          </div>`;
+        });
+        html += '</div>';
+      }
+      container.innerHTML = html;
+    }
+
     function sendConfirmationEmail(name, email, lang) {
       if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
-      const subject = i18n[lang] && i18n[lang]['email-subject']
-        ? i18n[lang]['email-subject']
-        : 'Thanks for your request \u2014 Matias Lubomirski';
+      const subject = getTranslation(lang, 'email-subject') || 'Thanks for your request \u2014 Matias Lubomirski';
 
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
         name: name,
@@ -1616,9 +1764,7 @@
           }).catch(() => {});
         }
 
-        const msg = i18n[currentLang] && i18n[currentLang]['alert-success']
-          ? i18n[currentLang]['alert-success']
-          : 'Request received. I\'ll reply within 24 hours.';
+        const msg = getTranslation(currentLang, 'alert-success') || 'Request received. I\'ll reply within 24 hours.';
         alert('\u2705 ' + msg);
         form.reset();
       });
@@ -1728,9 +1874,7 @@
         dashboardEl.classList.add('show');
         renderDashboard().catch(() => {});
       } else {
-        errorEl.textContent = i18n[currentLang] && i18n[currentLang]['pw-error']
-          ? i18n[currentLang]['pw-error']
-          : 'Incorrect password';
+        errorEl.textContent = getTranslation(currentLang, 'pw-error') || 'Incorrect password';
       }
     }
 
@@ -1740,7 +1884,55 @@
     loginBtn.addEventListener('click', doLogin);
     pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
 
-    // Logout when overlay reopens if session expired
+    // ─── Admin tab switching ───
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.admin-panel-section').forEach(s => s.classList.remove('show'));
+        const panel = document.getElementById('admin' + this.dataset.adminTab.charAt(0).toUpperCase() + this.dataset.adminTab.slice(1) + 'Panel');
+        if (panel) {
+          panel.classList.add('show');
+          if (this.dataset.adminTab === 'content') {
+            renderContentEditor(contentEditLang);
+          }
+        }
+      });
+    });
+
+    // ─── Content editor language switching ───
+    document.getElementById('contentLangTabs').addEventListener('click', function (e) {
+      const btn = e.target.closest('.content-lang-tab');
+      if (!btn) return;
+      document.querySelectorAll('.content-lang-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      renderContentEditor(btn.dataset.contentLang);
+    });
+
+    // ─── Content editor save ───
+    document.getElementById('contentSaveBtn').addEventListener('click', async function () {
+      const btn = this;
+      const status = document.getElementById('contentSaveStatus');
+      btn.disabled = true;
+      status.textContent = 'Saving...';
+      status.style.color = 'var(--text-muted)';
+      const edits = {};
+      document.querySelectorAll('#contentFields [data-cf-key]').forEach(el => {
+        edits[el.dataset.cfKey] = el.value;
+      });
+      try {
+        await saveAllContentEdits(contentEditLang, edits);
+        status.textContent = '\u2705 Saved for ' + contentEditLang.toUpperCase();
+        status.style.color = '#2d3e2a';
+        applyLanguage(currentLang);
+      } catch(e) {
+        status.textContent = '\u274c Save failed: ' + (e.message || 'unknown');
+        status.style.color = '#c0392b';
+      }
+      btn.disabled = false;
+    });
+
+    // ─── Existing admin event handlers ───
     document.getElementById('adminExportCsv').addEventListener('click', async function () {
       let subs = await fetchSupabaseSubmissions();
       if (subs.length === 0) subs = getSubmissions();
