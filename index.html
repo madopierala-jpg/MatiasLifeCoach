@@ -1532,11 +1532,6 @@
       btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
     });
 
-    // Load custom translations from Supabase, then apply language
-    loadCustomTranslations().then(() => {
-      applyLanguage(currentLang);
-    });
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1578,6 +1573,11 @@
     } catch(e) {
       console.warn('Supabase init failed:', e);
     }
+
+    // Load custom translations from Supabase, then apply language
+    loadCustomTranslations().then(() => {
+      applyLanguage(currentLang);
+    });
 
     async function saveToSupabase(entry) {
       if (!supabaseClient) return;
@@ -1639,12 +1639,14 @@
         console.warn('Failed to load custom translations:', error);
         return;
       }
-      customTranslations = {};
-      data.forEach(row => {
-        if (!customTranslations[row.lang]) customTranslations[row.lang] = {};
-        customTranslations[row.lang][row.key] = row.value;
-      });
-      localStorage.setItem(CUSTOM_TRANS_CACHE_KEY, JSON.stringify(customTranslations));
+      if (data.length > 0) {
+        customTranslations = {};
+        data.forEach(row => {
+          if (!customTranslations[row.lang]) customTranslations[row.lang] = {};
+          customTranslations[row.lang][row.key] = row.value;
+        });
+        localStorage.setItem(CUSTOM_TRANS_CACHE_KEY, JSON.stringify(customTranslations));
+      }
     }
 
     function getTranslation(lang, key) {
