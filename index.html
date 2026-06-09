@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -780,6 +781,8 @@
       <div class="lang-switch">
         <button class="lang-btn active" data-lang="en">EN</button>
         <button class="lang-btn" data-lang="es">ES</button>
+        <button class="lang-btn" data-lang="pl">PL</button>
+        <button class="lang-btn" data-lang="pt">PT</button>
       </div>
       <a href="#booking" class="nav-cta" data-i18n="nav-cta">Book a free call</a>
     </div>
@@ -1156,6 +1159,9 @@
         'form-submit': 'Send request',
         'form-footer': 'I\'ll reply within 24 hours to schedule your free call. Your information is never shared.',
         'data-note': 'Your data is stored securely and only used to contact you about coaching. You can request deletion at any time.',
+        'email-subject': 'Thanks for your request \u2014 Matias Lubomirski',
+        'alert-success': 'Request received. I\'ll reply within 24 hours.',
+        'pw-error': 'Incorrect password',
       },
       es: {
         'nav-subtitle': 'Life Coach',
@@ -1235,6 +1241,173 @@
         'form-submit': 'Enviar solicitud',
         'form-footer': 'Te responder\u00e9 en menos de 24 horas para agendar tu llamada gratuita. Tu informaci\u00f3n nunca se comparte.',
         'data-note': 'Tus datos se almacenan de forma segura y solo se usan para contactarte sobre coaching. Puedes solicitar su eliminaci\u00f3n en cualquier momento.',
+        'email-subject': 'Gracias por tu solicitud \u2014 Matias Lubomirski',
+        'alert-success': 'Solicitud recibida. Te responder\u00e9 en menos de 24 horas.',
+        'pw-error': 'Contrase\u00f1a incorrecta',
+      },
+      pl: {
+        'nav-subtitle': 'Life Coach',
+        'nav-cta': 'Darmowa rozmowa',
+        'hero-tag': 'Coaching \u017cyciowy i Rozw\u00f3j Zawodowy',
+        'hero-heading': 'Tw\u00f3j nast\u0119pny rozdzia\u0142<br>zaczyna si\u0119 <em>tutaj</em>.',
+        'hero-sub': 'Strach, zw\u0105tpienie, zawodowe rozdro\u017ca \u2014 nie musisz nawigowa\u0107 przez nie samodzielnie. Nieważne, czy jeste\u015b queer, trans, zadajesz sobie pytania, czy po prostu szukasz odpowiedzi \u2014 to przestrze\u0144, w kt\u00f3rej mo\u017cesz by\u0107 sob\u0105 i budowa\u0107 st\u0105d.',
+        'tag-1': 'Strach i zw\u0105tpienie',
+        'tag-2': 'Pewno\u015b\u0107 i to\u017csamo\u015b\u0107',
+        'tag-3': 'Rozw\u00f3j kariery',
+        'tag-4': 'Trauma-informed',
+        'tag-5': 'Afirmuj\u0105ce LGBTQ+',
+        'hero-cta': 'Zarezerwuj bezp\u0142atn\u0105 45-minutow\u0105 rozmow\u0119 odkrywcz\u0105',
+        'hero-secondary': 'O mnie',
+        'hero-note': 'Bez zobowi\u0105za\u0144. Po prostu rozmowa, by sprawdzi\u0107, czy pasujemy.',
+        'about-label': 'O mnie',
+        'about-title': 'Jestem Matias.',
+        'about-p1': 'Wiem, jak to jest nosi\u0107 w sobie strach i zw\u0105tpienie, pr\u00f3buj\u0105c jednocze\u015bnie odkry\u0107, kim jeste\u015b i dok\u0105d zmierzasz. Moja w\u0142asna droga \u2014 przez to\u017csamo\u015b\u0107, reinwencj\u0119 i nauk\u0119 stania w swojej prawdzie \u2014 to, co doprowadzi\u0142o mnie do coachingu.',
+        'about-p2': 'Pracuj\u0119 z osobami przechodz\u0105cymi przez zmiany: coming out, zmian\u0119 kariery, odbudow\u0119 pewno\u015bci siebie, uzdrowienie z tego, co je blokowa\u0142o. Rozw\u00f3j osobisty i zawodowy nie s\u0105 oddzielne \u2014 gdy jedna cz\u0119\u015b\u0107 ciebie si\u0119 zmienia, wszystko inne te\u017c si\u0119 porusza.',
+        'about-p3': 'Je\u015bli jeste\u015b queer, trans, zadajesz sobie pytania, lub po prostu chcesz si\u0119 rozwija\u0107 \u2014 nale\u017cysz tutaj. To przestrze\u0144 zbudowana na empatii, a nie os\u0105dzaniu.',
+        'about-photo-alt': 'Portret Matiasa Lubomirskiego',
+        'offer-label': 'Z czym pomagam',
+        'offer-title': 'Trzy obszary. Jedna rozmowa.',
+        'offer-desc': 'Zaczynamy tam, gdzie jeste\u015b. To przestrzenie, w kt\u00f3rych pracuj\u0119 najcz\u0119\u015bciej \u2014 a nak\u0142adaj\u0105 si\u0119 bardziej, ni\u017c my\u015blisz.',
+        'card-1-title': 'Strach i Zw\u0105tpienie',
+        'card-1-text': 'Wewn\u0119trzny krytyk, syndrom oszusta, g\u0142os, kt\u00f3ry m\u00f3wi \u201enie teraz\u201d za ka\u017cdym razem, gdy pr\u00f3bujesz si\u0119 rozwija\u0107. Delikatnie rozpl\u0105czemy, sk\u0105d pochodzi \u2014 i zbudujemy nowy.',
+        'card-2-title': 'Pewno\u015b\u0107 i To\u017csamo\u015b\u0107',
+        'card-2-text': 'Coming out, stani\u0119cie w swojej prawdzie, bycie w\u0142a\u015bcicielem siebie. Niezale\u017cnie od tego, czy chodzi o twoj\u0105 to\u017csamo\u015b\u0107, g\u0142os czy miejsce w \u015bwiecie \u2014 wzmocnijmy to razem.',
+        'card-3-title': 'Kariera i Cel',
+        'card-3-text': 'Zas\u0142ugujesz na prac\u0119, kt\u00f3ra jest zgodna z tym, kim jeste\u015b. Od zmiany kariery po autentyczne przyw\u00f3dztwo \u2014 zaprojektujmy \u015bcie\u017ck\u0119, kt\u00f3ra naprawd\u0119 b\u0119dzie twoja.',
+        'values-label': 'Jak pracuj\u0119',
+        'values-title': 'Empatia. Szczero\u015b\u0107. Bez masek.',
+        'values-desc': 'Nie wierz\u0119 w coaching \u201ejeden rozmiar dla wszystkich\u201d. Ka\u017cda sesja jest dostosowana do tego, kim jeste\u015b, przez co przeszed\u0142e\u015b i dok\u0105d chcesz i\u015b\u0107.',
+        'val-1-title': 'Trauma-informed',
+        'val-1-text': 'Idziemy w twoim tempie. Uzdrowienie to nie wy\u015bcig \u2014 to proces uczenia si\u0119, jak zn\u00f3w zaufa\u0107 sobie.',
+        'val-2-title': 'Afirmuj\u0105ce LGBTQ+',
+        'val-2-text': 'Twoja to\u017csamo\u015b\u0107 nie jest problemem do rozwi\u0105zania. To fundament, na kt\u00f3rym budujemy \u2014 dumnie i bez przeprosin.',
+        'val-3-title': 'Holistyczne podej\u015bcie',
+        'val-3-text': 'Twoja kariera, pewno\u015b\u0107 siebie, tw\u00f3j wewn\u0119trzny \u015bwiat \u2014 wszystko jest po\u0142\u0105czone. Nie dzielimy na kategorie. Integrujemy.',
+        'test-label': 'Co m\u00f3wi\u0105 klienci',
+        'test-title': 'Prawdziwe g\u0142osy. Prawdziwa zmiana.',
+        'test-desc': 'Nasza wsp\u00f3lna praca odbija si\u0119 w \u017cyciu ludzi. Oto, co niekt\u00f3rzy z nich powiedzieli.',
+        'test-swipe': 'Przewi\u0144, by zobaczy\u0107 wi\u0119cej \u2192',
+        'testimonials': [
+          { name: 'Sarah', color: 'b8944a', text: 'Matias nie tylko s\u0142ucha\u0142 \u2014 on us\u0142ysza\u0142. Po raz pierwszy poczu\u0142am, \u017ce kto\u015b naprawd\u0119 rozumie ha\u0142as w mojej g\u0142owie. Razem zbudowali\u015bmy plan, kt\u00f3ry zamieni\u0142 moj\u0105 niepewno\u015b\u0107 w dzia\u0142anie. Jego empatia jest prawdziwa, a struktura, kt\u00f3r\u0105 wnosi, by\u0142a dok\u0142adnie tym, czego potrzebowa\u0142am.' },
+          { name: 'James', color: '2d3e2a', text: 'Przyszed\u0142em czuj\u0105c si\u0119 zablokowany w karierze i to\u017csamo\u015bci. Matias stworzy\u0142 przestrze\u0144, w kt\u00f3rej mog\u0142em by\u0107 ca\u0142kowicie szczery bez strachu przed ocen\u0105. Pom\u00f3g\u0142 mi zmapowa\u0107, sk\u0105d pochodzi zw\u0105tpienie i da\u0142 mi plan dzia\u0142ania, kt\u00f3ry naprawd\u0119 mia\u0142 sens.' },
+          { name: 'Elena', color: '8b6b3d', text: 'Empatia, kt\u00f3r\u0105 Matias wnosi do ka\u017cdej sesji, jest niezwyk\u0142a. Ma dar zadawania dok\u0142adnie tego pytania, kt\u00f3rego unika\u0142am \u2014 a potem pomaga mi zbudowa\u0107 \u015bcie\u017ck\u0119 naprz\u00f3d. Nigdy nie czu\u0142am si\u0119 tak jednocze\u015bnie zaopiekowana i wyzwana.' },
+          { name: 'Marcus', color: '5a4a3a', text: 'By\u0142em sceptyczny wobec coachingu \u2014 my\u015bla\u0142em, \u017ce to tylko gadanie. Jedna sesja z Matiasem i zrozumia\u0142em. S\u0142ucha na zupe\u0142nie innym poziomie. Zidentyfikowali\u015bmy wzorce, kt\u00f3re powtarza\u0142em przez lata i zbudowali\u015bmy konkretny plan, by je prze\u0142ama\u0107.' },
+          { name: 'Alex', color: 'b8944a', text: 'Znalezienie coacha, kt\u00f3ry naprawd\u0119 rozumie, co znaczy navigowa\u0107 \u017cycie jako osoba trans, wydawa\u0142o si\u0119 niemo\u017cliwe. Matias nie tylko to zrozumia\u0142 \u2014 wzmocni\u0142 mnie, bym by\u0142 w\u0142a\u015bcicielem swojej historii i robi\u0142 realne kroki naprz\u00f3d.' },
+          { name: 'Priya', color: '2d3e2a', text: 'To, co wyr\u00f3\u017cnia Matiasa, to umiej\u0119tno\u015b\u0107 prze\u0142o\u017cenia g\u0142\u0119bokich, emocjonalnych rozm\u00f3w na konkretne kroki. Przesz\u0142am od parali\u017cuj\u0105cego strachu do posiadania mapy drogowej, w kt\u00f3r\u0105 naprawd\u0119 wierzy\u0142am.' },
+          { name: 'Danielle', color: '8b6b3d', text: 'Pr\u00f3bowa\u0142am terapii. Pr\u00f3bowa\u0142am ksi\u0105\u017cek samopomocowych. Nic nie zadzia\u0142a\u0142o, a\u017c do Matiasa. Nie u\u017cywa og\u00f3lnych szablon\u00f3w \u2014 s\u0142ucha twojego prawdziwego \u017cycia i buduje plan, kt\u00f3ry pasuje.' },
+          { name: 'Tom', color: '5a4a3a', text: 'Matias pom\u00f3g\u0142 mi zobaczy\u0107, \u017ce m\u00f3j strach przed pora\u017ck\u0105 nie by\u0142 \u015bcian\u0105 \u2014 by\u0142 drzwiami, kt\u00f3rych nie umia\u0142em otworzy\u0107. Jego zdolno\u015b\u0107 s\u0142uchania bez spieszenia si\u0119 z rozwi\u0105zaniami to supermoc.' },
+          { name: 'Jordan', color: 'b8944a', text: 'Skontaktowa\u0142em si\u0119 w jednym z najciemniejszych okres\u00f3w swojego \u017cycia. Matias utrzyma\u0142 przestrze\u0144 dla mojego b\u00f3lu bez pr\u00f3by naprawiania go czy pop\u0119dzania mnie. Kiedy by\u0142em gotowy, zbudowali\u015bmy plan razem.' },
+          { name: 'Maya', color: '2d3e2a', text: 'Matias ma ten rzadki dar sprawiania, \u017ce czujesz si\u0119 ca\u0142kowicie bezpiecznie, jednocze\u015bnie wyzywaj\u0105c ci\u0119 do rozwoju. Ka\u017cda sesja zostawia mnie z czym\u015b realnym do przepracowania \u2014 nie tylko wgl\u0105dem, ale dzia\u0142aniem.' },
+          { name: 'Chris', color: '8b6b3d', text: 'My\u015bla\u0142em, \u017ce coaching kariery b\u0119dzie o CV i networkingu. Matias pokaza\u0142 mi, \u017ce moje zawodowe blokady by\u0142y tak naprawd\u0119 osobistymi blokadami \u2014 strachem przed byciem widzianym, syndromem oszusta, starymi historiami.' },
+          { name: 'Lina', color: '5a4a3a', text: 'By\u0142am uwi\u0119ziona w p\u0119tli zw\u0105tpienia przez lata. Matias pom\u00f3g\u0142 mi wyra\u017anie zobaczy\u0107 wzorzec, zrozumie\u0107, sk\u0105d pochodzi i faktycznie go prze\u0142ama\u0107 \u2014 nie si\u0142\u0105 woli, ale \u015bwiadomo\u015bci\u0105 i prawdziwym planem.' }
+        ],
+        'book-label': 'Zarezerwuj sesj\u0119',
+        'book-title': 'Got\u00f3w, by zacz\u0105\u0107?',
+        'book-desc': 'Wype\u0142nij formularz poni\u017cej, a odezw\u0119 si\u0119, by um\u00f3wi\u0107 bezp\u0142atn\u0105 45-minutow\u0105 rozmow\u0119 odkrywcz\u0105. Bez zobowi\u0105za\u0144 \u2014 po prostu prawdziwa rozmowa o tym, gdzie jeste\u015b i dok\u0105d chcesz zmierza\u0107.',
+        'expect-title': 'Czego si\u0119 spodziewa\u0107',
+        'expect-p1': 'Rozmowa odkrywcza to dwustronna konwersacja. Porozmawiamy o tym, co ci\u0119 tu sprowadza, co chcia\u0142by\u015b zmieni\u0107 i czy pasujemy do wsp\u00f3lnej pracy.',
+        'expect-p2': 'Je\u015bli to b\u0119dzie w\u0142a\u015bciwe, zaproponuj\u0119 \u015bcie\u017ck\u0119 naprz\u00f3d. Je\u015bli nie, odejdziesz z jasno\u015bci\u0105 i mo\u017ce now\u0105 perspektyw\u0105 \u2014 bez presji.',
+        'avail-title': 'Dost\u0119pno\u015b\u0107',
+        'avail-tz': '<strong>Czas Sydney (AEST/AEDT)</strong>',
+        'avail-hours': 'Poniedzia\u0142ek \u2013 Sobota: 7:00 \u2013 19:00',
+        'avail-note': 'Sesje przez wideorozmow\u0119. Elastyczny harmonogram.',
+        'questions-label': 'Pytania?',
+        'reach-out': 'Napisz do mnie na',
+        'or': 'lub',
+        'form-name-ph': 'Np. Alex Kowalski',
+        'form-email-ph': 'alex@przyk\u0142ad.pl',
+        'form-phone-ph': '+48 XXX XXX XXX',
+        'form-social-ph': 'Instagram / TikTok lub gdzie mnie znalaz\u0142e\u015b',
+        'form-msg-label': 'Co ci\u0119 tu sprowadza? (opcjonalne)',
+        'form-msg-ph': 'Kilka s\u0142\u00f3w o tym, co chcia\u0142by\u015b zbada\u0107...',
+        'form-submit': 'Wy\u015blij zapytanie',
+        'form-footer': 'Odpowiem w ci\u0105gu 24 godzin, by um\u00f3wi\u0107 bezp\u0142atn\u0105 rozmow\u0119. Twoje dane nigdy nie s\u0105 udost\u0119pniane.',
+        'data-note': 'Twoje dane s\u0105 przechowywane bezpiecznie i u\u017cywane tylko w celu kontaktu w sprawie coachingu. Mo\u017cesz w ka\u017cdej chwili poprosi\u0107 o ich usuni\u0119cie.',
+        'email-subject': 'Dzi\u0119kuj\u0119 za zapytanie \u2014 Matias Lubomirski',
+        'alert-success': 'Zapytanie otrzymane. Odpowiem w ci\u0105gu 24 godzin.',
+        'pw-error': 'Nieprawid\u0142owe has\u0142o',
+      },
+      pt: {
+        'nav-subtitle': 'Life Coach',
+        'nav-cta': 'Liga\u00e7\u00e3o gratuita',
+        'hero-tag': 'Coaching de Vida e Crescimento Profissional',
+        'hero-heading': 'Seu pr\u00f3ximo cap\u00edtulo<br>come\u00e7a <em>aqui</em>.',
+        'hero-sub': 'Medo, d\u00favida, encruzilhadas profissionais \u2014 voc\u00ea n\u00e3o precisa naveg\u00e1-los sozinho. Seja voc\u00ea queer, trans, esteja se questionando ou simplesmente buscando respostas, este \u00e9 um espa\u00e7o onde voc\u00ea pode se mostrar como \u00e9 e construir a partir da\u00ed.',
+        'tag-1': 'Medo e autod\u00favida',
+        'tag-2': 'Confian\u00e7a e identidade',
+        'tag-3': 'Crescimento profissional',
+        'tag-4': 'Informado em trauma',
+        'tag-5': 'Afirmativo LGBTQ+',
+        'hero-cta': 'Reserve sua liga\u00e7\u00e3o de descoberta gratuita de 45\u2032',
+        'hero-secondary': 'Sobre mim',
+        'hero-note': 'Sem compromisso. Apenas uma conversa para ver se somos compat\u00edveis.',
+        'about-label': 'Sobre mim',
+        'about-title': 'Sou Matias.',
+        'about-p1': 'Sei como \u00e9 carregar medo e autod\u00favida enquanto tenta descobrir quem voc\u00ea \u00e9 e para onde est\u00e1 indo. Minha pr\u00f3pria jornada \u2014 atrav\u00e9s da identidade, reinven\u00e7\u00e3o e aprender a me firmar na minha verdade \u2014 \u00e9 o que me trouxe ao coaching.',
+        'about-p2': 'Trabalho com pessoas navegando transi\u00e7\u00f5es: sair do arm\u00e1rio, mudar de carreira, reconstruir a confian\u00e7a, curar o que as prendeu. O crescimento pessoal e profissional n\u00e3o est\u00e3o separados \u2014 quando uma parte de voc\u00ea se move, tudo o resto tamb\u00e9m se move.',
+        'about-p3': 'Se voc\u00ea \u00e9 queer, trans, est\u00e1 se questionando, ou simplesmente algu\u00e9m que quer crescer \u2014 voc\u00ea pertence aqui. Este \u00e9 um espa\u00e7o constru\u00eddo sobre empatia, n\u00e3o julgamento.',
+        'about-photo-alt': 'Retrato de Matias Lubomirski',
+        'offer-label': 'Com o que ajudo',
+        'offer-title': 'Tr\u00eas \u00e1reas. Uma conversa.',
+        'offer-desc': 'Come\u00e7amos de onde voc\u00ea est\u00e1. Estes s\u00e3o os espa\u00e7os em que mais trabalho \u2014 e eles se sobrep\u00f5em mais do que voc\u00ea imagina.',
+        'card-1-title': 'Medo e Autod\u00favida',
+        'card-1-text': 'O cr\u00edtico interno, a s\u00edndrome do impostor, a voz que diz \u201cainda n\u00e3o\u201d toda vez que voc\u00ea tenta crescer. Vamos desvendar suavemente de onde vem \u2014 e construir uma nova.',
+        'card-2-title': 'Confian\u00e7a e Identidade',
+        'card-2-text': 'Sair do arm\u00e1rio, firmar-se na sua verdade, ser dono de quem voc\u00ea \u00e9. Seja sua identidade, sua voz ou seu lugar no mundo \u2014 vamos amplificar juntos.',
+        'card-3-title': 'Carreira e Prop\u00f3sito',
+        'card-3-text': 'Voc\u00ea merece um trabalho alinhado com quem voc\u00ea \u00e9. Desde mudan\u00e7as de carreira at\u00e9 liderar com autenticidade \u2014 vamos desenhar um caminho que realmente pare\u00e7a seu.',
+        'values-label': 'Como trabalho',
+        'values-title': 'Empatia. Honestidade. Sem m\u00e1scaras.',
+        'values-desc': 'N\u00e3o acredito em coaching padronizado. Cada sess\u00e3o \u00e9 moldada em torno de quem voc\u00ea \u00e9, pelo que passou e para onde quer ir.',
+        'val-1-title': 'Informado em trauma',
+        'val-1-text': 'Seguimos no seu ritmo. Curar n\u00e3o \u00e9 uma corrida \u2014 \u00e9 um processo de aprender a confiar em si mesmo novamente.',
+        'val-2-title': 'Afirmativo LGBTQ+',
+        'val-2-text': 'Sua identidade n\u00e3o \u00e9 um problema a ser resolvido. \u00c9 a base sobre a qual constru\u00edmos \u2014 com orgulho e sem desculpas.',
+        'val-3-title': 'Foco na pessoa integral',
+        'val-3-text': 'Sua carreira, sua confian\u00e7a, seu mundo interior \u2014 tudo est\u00e1 conectado. N\u00e3o compartimentamos. Integramos.',
+        'test-label': 'O que os clientes dizem',
+        'test-title': 'Vozes reais. Mudan\u00e7a real.',
+        'test-desc': 'O trabalho que fazemos juntos reflete-se na vida das pessoas. Aqui est\u00e1 o que algumas delas compartilharam.',
+        'test-swipe': 'Deslize para ver mais \u2192',
+        'testimonials': [
+          { name: 'Sarah', color: 'b8944a', text: 'Matias n\u00e3o apenas ouviu \u2014 ele me entendeu. Pela primeira vez, senti que algu\u00e9m realmente compreendia o barulho na minha cabe\u00e7a. Constru\u00edmos um plano juntos que transformou minha ansiedade em a\u00e7\u00e3o. A empatia dele \u00e9 real, e a estrutura que ele traz foi exatamente o que eu precisava.' },
+          { name: 'James', color: '2d3e2a', text: 'Cheguei me sentindo preso na minha carreira e na minha identidade. Matias criou um espa\u00e7o onde pude ser completamente honesto sem medo de julgamento. Ele me ajudou a mapear de onde vinha a autod\u00favida e me deu um plano de a\u00e7\u00e3o que realmente fazia sentido.' },
+          { name: 'Elena', color: '8b6b3d', text: 'A empatia que Matias traz a cada sess\u00e3o \u00e9 not\u00e1vel. Ele tem uma forma de fazer a pergunta exata que venho evitando \u2014 e depois me ajuda a construir um caminho para a frente. Nunca me senti t\u00e3o acolhida e desafiada ao mesmo tempo.' },
+          { name: 'Marcus', color: '5a4a3a', text: 'Eu era c\u00e9tico sobre coaching \u2014 pensei que seria s\u00f3 conversa. Uma sess\u00e3o com Matias e eu entendi. Ele ouve num n\u00edvel completamente diferente. Identificamos padr\u00f5es que eu vinha repetindo h\u00e1 anos e constru\u00edmos um plano concreto para quebr\u00e1-los.' },
+          { name: 'Alex', color: 'b8944a', text: 'Encontrar um coach que realmente entende o que significa navegar a vida como pessoa trans parecia imposs\u00edvel. Matias n\u00e3o apenas entendeu \u2014 ele me empoderou para ser dono da minha hist\u00f3ria e dar passos reais para a frente.' },
+          { name: 'Priya', color: '2d3e2a', text: 'O que diferencia Matias \u00e9 sua capacidade de traduzir conversas profundas e emocionais em passos concretos. Passei de me sentir paralisada pelo medo a ter um caminho em que realmente acreditava.' },
+          { name: 'Danielle', color: '8b6b3d', text: 'Tentei terapia. Tentei livros de autoajuda. Nada funcionou at\u00e9 Matias. Ele n\u00e3o usa modelos gen\u00e9ricos \u2014 ele ouve a sua vida real e constr\u00f3i um plano que se encaixa. Pela primeira vez sinto que estou avan\u00e7ando.' },
+          { name: 'Tom', color: '5a4a3a', text: 'Matias me ajudou a ver que meu medo do fracasso n\u00e3o era um muro \u2014 era uma porta que eu n\u00e3o sabia como abrir. A capacidade dele de ouvir sem se apressar para consertar as coisas \u00e9 um superpoder.' },
+          { name: 'Jordan', color: 'b8944a', text: 'Entrei em contato durante um dos per\u00edodos mais escuros da minha vida. Matias segurou espa\u00e7o para minha dor sem tentar consert\u00e1-la ou me apressar. Quando estive pronto, constru\u00edmos um plano juntos.' },
+          { name: 'Maya', color: '2d3e2a', text: 'Matias tem esse dom raro de fazer voc\u00ea se sentir completamente segura enquanto te desafia a crescer. Cada sess\u00e3o me deixa com algo real para trabalhar \u2014 n\u00e3o apenas entendimento, mas a\u00e7\u00e3o.' },
+          { name: 'Chris', color: '8b6b3d', text: 'Pensei que coaching de carreira seria sobre curr\u00edculos e networking. Matias me mostrou que meus bloqueios profissionais eram na verdade bloqueios pessoais \u2014 medo de ser visto, s\u00edndrome do impostor, velhas hist\u00f3rias.' },
+          { name: 'Lina', color: '5a4a3a', text: 'Fiquei presa num ciclo de autod\u00favida durante anos. Matias me ajudou a ver o padr\u00e3o claramente, entender de onde vinha e realmente quebr\u00e1-lo \u2014 n\u00e3o com for\u00e7a de vontade, mas com consci\u00eancia e um plano real.' }
+        ],
+        'book-label': 'Reserve uma sess\u00e3o',
+        'book-title': 'Pronto para come\u00e7ar?',
+        'book-desc': 'Preencha o formul\u00e1rio abaixo e entrarei em contato para agendar sua liga\u00e7\u00e3o de descoberta gratuita de 45 minutos. Sem compromisso \u2014 apenas uma conversa real sobre onde voc\u00ea est\u00e1 e para onde quer ir.',
+        'expect-title': 'O que esperar',
+        'expect-p1': 'Uma liga\u00e7\u00e3o de descoberta \u00e9 uma conversa de duas vias. Vamos falar sobre o que te traz aqui, o que gostaria de mudar e se somos compat\u00edveis para trabalharmos juntos.',
+        'expect-p2': 'Se parecer certo, sugerirei um caminho a seguir. Se n\u00e3o, voc\u00ea sair\u00e1 com clareza e talvez uma nova perspetiva \u2014 sem press\u00e3o.',
+        'avail-title': 'Disponibilidade',
+        'avail-tz': '<strong>Hor\u00e1rio de Sydney (AEST/AEDT)</strong>',
+        'avail-hours': 'Segunda \u2013 S\u00e1bado: 7:00 \u2013 19:00',
+        'avail-note': 'Sess\u00f5es por videochamada. Hor\u00e1rio flex\u00edvel dispon\u00edvel.',
+        'questions-label': 'Perguntas?',
+        'reach-out': 'Fale comigo no',
+        'or': 'ou',
+        'form-name-ph': 'Ex. Alex Silva',
+        'form-email-ph': 'alex@exemplo.com.br',
+        'form-phone-ph': '+55 XX XXXX XXXX',
+        'form-social-ph': 'Instagram / TikTok ou onde me encontrou',
+        'form-msg-label': 'O que te traz aqui? (opcional)',
+        'form-msg-ph': 'Algumas palavras sobre o que gostaria de explorar...',
+        'form-submit': 'Enviar pedido',
+        'form-footer': 'Responderei em at\u00e9 24 horas para agendar sua liga\u00e7\u00e3o gratuita. Suas informa\u00e7\u00f5es nunca s\u00e3o partilhadas.',
+        'data-note': 'Seus dados s\u00e3o armazenados de forma segura e usados apenas para contat\u00e1-lo sobre coaching. Pode solicitar a exclus\u00e3o a qualquer momento.',
+        'email-subject': 'Obrigado pelo seu pedido \u2014 Matias Lubomirski',
+        'alert-success': 'Pedido recebido. Responderei em at\u00e9 24 horas.',
+        'pw-error': 'Palavra-passe incorreta',
       }
     };
 
@@ -1343,10 +1516,59 @@
       emailjs.init(EMAILJS_PUBLIC_KEY);
     }
 
+    // ─── Supabase setup ───
+    const SUPABASE_URL = 'https://herrghyefayfsrchgfhn.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_NYYxiG1NUSLk6sHRInowxg_4fVRs7fC';
+    let supabaseClient = null;
+    try {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch(e) {
+      console.warn('Supabase init failed:', e);
+    }
+
+    async function saveToSupabase(entry) {
+      if (!supabaseClient) return;
+      const { error } = await supabaseClient.from('submissions').insert({
+        name: entry.name,
+        email: entry.email,
+        phone: entry.phone,
+        social: entry.social,
+        message: entry.message
+      });
+      if (error) console.warn('Supabase save failed:', error);
+    }
+
+    async function fetchSupabaseSubmissions() {
+      if (!supabaseClient) return [];
+      const { data, error } = await supabaseClient
+        .from('submissions')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) {
+        console.warn('Supabase fetch failed:', error);
+        return [];
+      }
+      return data.map(s => ({
+        id: s.id,
+        date: s.created_at,
+        name: s.name,
+        email: s.email,
+        phone: s.phone || '',
+        social: s.social || '',
+        message: s.message || ''
+      }));
+    }
+
+    async function deleteFromSupabase(id) {
+      if (!supabaseClient) return;
+      const { error } = await supabaseClient.from('submissions').delete().eq('id', id);
+      if (error) console.warn('Supabase delete failed:', error);
+    }
+
     function sendConfirmationEmail(name, email, lang) {
       if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
-      const subject = lang === 'es'
-        ? 'Gracias por tu solicitud \u2014 Matias Lubomirski'
+      const subject = i18n[lang] && i18n[lang]['email-subject']
+        ? i18n[lang]['email-subject']
         : 'Thanks for your request \u2014 Matias Lubomirski';
 
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
@@ -1375,6 +1597,10 @@
       };
       subs.unshift(entry);
       localStorage.setItem('coaching_submissions', JSON.stringify(subs));
+
+      // Save to Supabase in background
+      saveToSupabase(entry);
+
       return entry;
     }
 
@@ -1397,9 +1623,10 @@
           }).catch(() => {});
         }
 
-        alert('\u2705 ' + (currentLang === 'es'
-          ? 'Solicitud recibida. Te responder\u00e9 en menos de 24 horas.'
-          : 'Request received. I\'ll reply within 24 hours.'));
+        const msg = i18n[currentLang] && i18n[currentLang]['alert-success']
+          ? i18n[currentLang]['alert-success']
+          : 'Request received. I\'ll reply within 24 hours.';
+        alert('\u2705 ' + msg);
         form.reset();
       });
     }
@@ -1425,8 +1652,15 @@
       return JSON.parse(localStorage.getItem('coaching_submissions') || '[]');
     }
 
-    function renderDashboard() {
-      const subs = getSubmissions();
+    async function renderDashboard() {
+      // Try fetching from Supabase first
+      let subs = await fetchSupabaseSubmissions();
+
+      // Fall back to localStorage if Supabase returned nothing
+      if (subs.length === 0) {
+        subs = getSubmissions();
+      }
+
       const now = new Date();
       const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const weekStart = new Date(todayStart);
@@ -1459,11 +1693,12 @@
       });
 
       document.querySelectorAll('.admin-delete-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', async function () {
           if (confirm('Delete this submission?')) {
-            let subs = getSubmissions();
-            subs = subs.filter(s => s.id !== this.dataset.id);
-            localStorage.setItem('coaching_submissions', JSON.stringify(subs));
+            await deleteFromSupabase(this.dataset.id);
+            let localSubs = getSubmissions();
+            localSubs = localSubs.filter(s => s.id !== this.dataset.id);
+            localStorage.setItem('coaching_submissions', JSON.stringify(localSubs));
             renderDashboard();
           }
         });
@@ -1478,7 +1713,7 @@
       if (adminAuthed) {
         loginEl.style.display = 'none';
         dashboardEl.classList.add('show');
-        renderDashboard();
+        renderDashboard().catch(() => {});
       } else {
         loginEl.style.display = 'block';
         dashboardEl.classList.remove('show');
@@ -1498,9 +1733,11 @@
         sessionStorage.setItem('coaching_admin_auth', '1');
         loginEl.style.display = 'none';
         dashboardEl.classList.add('show');
-        renderDashboard();
+        renderDashboard().catch(() => {});
       } else {
-        errorEl.textContent = currentLang === 'es' ? 'Contrase\u00f1a incorrecta' : 'Incorrect password';
+        errorEl.textContent = i18n[currentLang] && i18n[currentLang]['pw-error']
+          ? i18n[currentLang]['pw-error']
+          : 'Incorrect password';
       }
     }
 
@@ -1511,8 +1748,9 @@
     pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
 
     // Logout when overlay reopens if session expired
-    document.getElementById('adminExportCsv').addEventListener('click', function () {
-      const subs = getSubmissions();
+    document.getElementById('adminExportCsv').addEventListener('click', async function () {
+      let subs = await fetchSupabaseSubmissions();
+      if (subs.length === 0) subs = getSubmissions();
       if (subs.length === 0) return alert('No data to export.');
       const headers = ['Date','Name','Email','Phone','Social','Message'];
       const rows = subs.map(s => [
@@ -1530,7 +1768,7 @@
     document.getElementById('adminClearAll').addEventListener('click', function () {
       if (confirm('Delete ALL submissions? This cannot be undone.')) {
         localStorage.setItem('coaching_submissions', '[]');
-        renderDashboard();
+        renderDashboard().catch(() => {});
       }
     });
 
