@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matias Lubomirski — Life & Professional Coaching</title>
+  <title>Matias Dopierala Zawada — Life & Professional Coaching</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1094,8 +1094,11 @@
 
     @media (max-width: 768px) {
       .hero { min-height: auto; padding: 40px 0 80px; }
+      .hero-content h1 { font-size: 2rem; }
+      .hero-note { font-size: 0.8rem; }
       .about-grid { grid-template-columns: 1fr; gap: 36px; }
-      .about-photo { max-width: 260px; }
+      .about-photo { max-width: 260px; margin: 0 auto; }
+      .about-text { text-align: left; }
       .offerings-grid { grid-template-columns: 1fr; gap: 20px; }
       .values-grid { grid-template-columns: 1fr; gap: 16px; }
       .booking-grid { grid-template-columns: 1fr; gap: 36px; }
@@ -1103,15 +1106,50 @@
       section { padding: 64px 0; }
       .hero-actions { flex-direction: column; align-items: stretch; }
       .hero-actions a { text-align: center; }
-      .hero-tag { margin-bottom: 16px; }
-      nav { flex-wrap: wrap; gap: 12px; }
+      .hero-tag { margin-bottom: 16px; font-size: 0.75rem; }
+      .hero-tags { flex-wrap: wrap; justify-content: center; gap: 6px; }
+      .hero-tags span { font-size: 0.7rem; padding: 4px 12px; }
+      nav { flex-wrap: wrap; gap: 8px; }
       .nav-right { margin-left: auto; }
+      .nav-cta { font-size: 0.7rem; padding: 6px 14px; }
+      .hamburger { padding: 2px; }
+      .hamburger span { width: 18px; gap: 4px; }
+      .lang-btn { font-size: 0.65rem; padding: 3px 8px; }
+      .admin-panel { padding: 24px 16px; }
+      .admin-stats { gap: 10px; }
+      .admin-stat { min-width: 80px; padding: 12px 14px; }
+      .admin-stat strong { font-size: 1.3rem; }
+      .admin-stat span { font-size: 0.65rem; }
+      .admin-table { font-size: 0.75rem; }
+      .admin-table th, .admin-table td { padding: 8px 6px; }
+      .menu-link { font-size: 1.2rem; }
+      .menu-bottom .btn-primary { font-size: 0.85rem; padding: 10px 20px; }
+      #pricing-page { padding: 40px 0; }
+      #pricing-page .section-title { font-size: 1.5rem; }
     }
 
     @media (max-width: 480px) {
-      nav { padding: 16px 20px; }
-      .container { padding: 0 20px; }
+      hero { min-height: auto; }
+      nav { padding: 12px 16px; }
+      .container { padding: 0 16px; }
       .offering-card { padding: 28px 24px; }
+      .hero-content h1 { font-size: 1.7rem; }
+      .hero-subtitle { font-size: 0.85rem; }
+      .btn-primary, .btn-secondary { font-size: 0.8rem; padding: 10px 20px; }
+      .section-title { font-size: 1.4rem; }
+      .section-desc { font-size: 0.85rem; }
+      .about-photo { max-width: 200px; }
+      .testimonial-card { flex: 0 0 240px; padding: 20px; }
+      .testimonial-card blockquote { font-size: 0.82rem; }
+      .footer-social a { font-size: 0.78rem; }
+      .pricing-back { font-size: 0.78rem; }
+      .admin-panel { padding: 16px 12px; border-radius: 12px; }
+      .admin-overlay { padding: 12px; }
+      .admin-dashboard h2 { font-size: 1.2rem; }
+      .admin-tab { font-size: 0.75rem; padding: 6px 12px; }
+      .content-lang-tab { font-size: 0.7rem; padding: 3px 10px; }
+      .content-fields { max-height: 40vh; }
+      .availability-box { padding: 16px; }
     }
   </style>
 </head>
@@ -1120,7 +1158,7 @@
   <nav>
     <div class="nav-left">
       <a href="#" class="logo">
-        Matias Lubomirski
+        Matias Dopierala Zawada
         <span data-i18n="nav-subtitle">Lifecoach</span>
       </a>
     </div>
@@ -1199,7 +1237,7 @@
         <img
           class="about-photo fade-in"
           src="matias-photo.png"
-          alt="Matias Lubomirski"
+          alt="Matias Dopierala Zawada"
           data-i18n-alt="about-photo-alt"
         >
       </div>
@@ -1538,9 +1576,9 @@
       <div class="footer-social">
         <a href="https://www.tiktok.com/@curious.matias" target="_blank">TikTok</a>
         <a href="https://www.instagram.com/matias.lifecoach/" target="_blank">Instagram</a>
-        <a href="mailto:hello@matiaslubomirski.com">Email</a>
+        <a href="mailto:hello@matiasdopieralazawada.com">Email</a>
       </div>
-      <p>&copy; 2026 Matias Lubomirski. &middot; <span class="admin-footer-link" id="adminOpenLink">Admin</span></p>
+      <p>&copy; 2026 Matias Dopierala Zawada. &middot; <span class="admin-footer-link" id="adminOpenLink">Admin</span></p>
     </div>
   </footer>
 
@@ -1572,7 +1610,7 @@
         'about-p1': 'I know what it feels like to carry fear and self-doubt while trying to figure out who you are and where you\'re going. My own journey \u2014 through identity, reinvention, and learning to stand in my truth \u2014 is what brought me to coaching.',
         'about-p2': 'I work with people navigating transitions: coming out, changing careers, rebuilding confidence, healing from what\'s held them back. Life and professional growth aren\'t separate \u2014 when one part of you shifts, everything else moves too.',
         'about-p3': 'If you\'re queer, trans, questioning, or simply someone who wants to grow \u2014 you belong here. This is a space built on empathy, not judgment.',
-        'about-photo-alt': 'Matias Lubomirski portrait',
+        'about-photo-alt': 'Matias Dopierala Zawada portrait',
         'offer-label': 'What I help with',
         'offer-title': 'Three areas. One conversation.',
         'offer-desc': 'We start wherever you are. These are the spaces I work in most \u2014 and they overlap more than you\'d think.',
@@ -1652,7 +1690,7 @@
         'form-submit': 'Send request',
         'form-footer': 'I\'ll reply within 24 hours to schedule your free call. Your information is never shared.',
         'data-note': 'Your data is stored securely and only used to contact you about coaching. You can request deletion at any time.',
-        'email-subject': 'Thanks for your request \u2014 Matias Lubomirski',
+        'email-subject': 'Thanks for your request \u2014 Matias Dopierala Zawada',
         'alert-success': 'Request received. I\'ll reply within 24 hours.',
         'pw-error': 'Incorrect password',
       },
@@ -1682,7 +1720,7 @@
         'about-p1': 'S\u00e9 lo que se siente cargar con el miedo y la duda mientras intentas descubrir qui\u00e9n eres y hacia d\u00f3nde vas. Mi propio camino — a trav\u00e9s de la identidad, la reinvenci\u00f3n y aprender a pararme en mi verdad — es lo que me trajo al coaching.',
         'about-p2': 'Trabajo con personas que navegan transiciones: salir del cl\u00f3set, cambiar de carrera, reconstruir la confianza, sanar lo que las ha detenido. El crecimiento personal y profesional no est\u00e1n separados — cuando una parte de ti se mueve, todo lo dem\u00e1s tambi\u00e9n.',
         'about-p3': 'Si eres queer, trans, est\u00e1s cuestion\u00e1ndote, o simplemente alguien que quiere crecer — aqu\u00ed perteneces. Este es un espacio construido sobre la empat\u00eda, no el juicio.',
-        'about-photo-alt': 'Retrato de Matias Lubomirski',
+        'about-photo-alt': 'Retrato de Matias Dopierala Zawada',
         'offer-label': 'Con qu\u00e9 ayudo',
         'offer-title': 'Tres \u00e1reas. Una conversaci\u00f3n.',
         'offer-desc': 'Empezamos desde donde est\u00e9s. Estos son los espacios en los que m\u00e1s trabajo — y se superponen m\u00e1s de lo que imaginas.',
@@ -1762,7 +1800,7 @@
         'form-submit': 'Enviar solicitud',
         'form-footer': 'Te responder\u00e9 en menos de 24 horas para agendar tu llamada gratuita. Tu informaci\u00f3n nunca se comparte.',
         'data-note': 'Tus datos se almacenan de forma segura y solo se usan para contactarte sobre coaching. Puedes solicitar su eliminaci\u00f3n en cualquier momento.',
-        'email-subject': 'Gracias por tu solicitud \u2014 Matias Lubomirski',
+        'email-subject': 'Gracias por tu solicitud \u2014 Matias Dopierala Zawada',
         'alert-success': 'Solicitud recibida. Te responder\u00e9 en menos de 24 horas.',
         'pw-error': 'Contrase\u00f1a incorrecta',
       },
@@ -1792,7 +1830,7 @@
         'about-p1': 'Wiem, jak to jest nosi\u0107 w sobie strach i zw\u0105tpienie, pr\u00f3buj\u0105c jednocze\u015bnie odkry\u0107, kim jeste\u015b i dok\u0105d zmierzasz. Moja w\u0142asna droga \u2014 przez to\u017csamo\u015b\u0107, reinwencj\u0119 i nauk\u0119 stania w swojej prawdzie \u2014 to, co doprowadzi\u0142o mnie do coachingu.',
         'about-p2': 'Pracuj\u0119 z osobami przechodz\u0105cymi przez zmiany: coming out, zmian\u0119 kariery, odbudow\u0119 pewno\u015bci siebie, uzdrowienie z tego, co je blokowa\u0142o. Rozw\u00f3j osobisty i zawodowy nie s\u0105 oddzielne \u2014 gdy jedna cz\u0119\u015b\u0107 ciebie si\u0119 zmienia, wszystko inne te\u017c si\u0119 porusza.',
         'about-p3': 'Je\u015bli jeste\u015b queer, trans, zadajesz sobie pytania, lub po prostu chcesz si\u0119 rozwija\u0107 \u2014 nale\u017cysz tutaj. To przestrze\u0144 zbudowana na empatii, a nie os\u0105dzaniu.',
-        'about-photo-alt': 'Portret Matiasa Lubomirskiego',
+        'about-photo-alt': 'Portret Matiasa Dopierala Zawady',
         'offer-label': 'Z czym pomagam',
         'offer-title': 'Trzy obszary. Jedna rozmowa.',
         'offer-desc': 'Zaczynamy tam, gdzie jeste\u015b. To przestrzenie, w kt\u00f3rych pracuj\u0119 najcz\u0119\u015bciej \u2014 a nak\u0142adaj\u0105 si\u0119 bardziej, ni\u017c my\u015blisz.',
@@ -1872,7 +1910,7 @@
         'form-submit': 'Wy\u015blij zapytanie',
         'form-footer': 'Odpowiem w ci\u0105gu 24 godzin, by um\u00f3wi\u0107 bezp\u0142atn\u0105 rozmow\u0119. Twoje dane nigdy nie s\u0105 udost\u0119pniane.',
         'data-note': 'Twoje dane s\u0105 przechowywane bezpiecznie i u\u017cywane tylko w celu kontaktu w sprawie coachingu. Mo\u017cesz w ka\u017cdej chwili poprosi\u0107 o ich usuni\u0119cie.',
-        'email-subject': 'Dzi\u0119kuj\u0119 za zapytanie \u2014 Matias Lubomirski',
+        'email-subject': 'Dzi\u0119kuj\u0119 za zapytanie \u2014 Matias Dopierala Zawada',
         'alert-success': 'Zapytanie otrzymane. Odpowiem w ci\u0105gu 24 godzin.',
         'pw-error': 'Nieprawid\u0142owe has\u0142o',
       },
@@ -1902,7 +1940,7 @@
         'about-p1': 'Sei como \u00e9 carregar medo e autod\u00favida enquanto tenta descobrir quem voc\u00ea \u00e9 e para onde est\u00e1 indo. Minha pr\u00f3pria jornada \u2014 atrav\u00e9s da identidade, reinven\u00e7\u00e3o e aprender a me firmar na minha verdade \u2014 \u00e9 o que me trouxe ao coaching.',
         'about-p2': 'Trabalho com pessoas navegando transi\u00e7\u00f5es: sair do arm\u00e1rio, mudar de carreira, reconstruir a confian\u00e7a, curar o que as prendeu. O crescimento pessoal e profissional n\u00e3o est\u00e3o separados \u2014 quando uma parte de voc\u00ea se move, tudo o resto tamb\u00e9m se move.',
         'about-p3': 'Se voc\u00ea \u00e9 queer, trans, est\u00e1 se questionando, ou simplesmente algu\u00e9m que quer crescer \u2014 voc\u00ea pertence aqui. Este \u00e9 um espa\u00e7o constru\u00eddo sobre empatia, n\u00e3o julgamento.',
-        'about-photo-alt': 'Retrato de Matias Lubomirski',
+        'about-photo-alt': 'Retrato de Matias Dopierala Zawada',
         'offer-label': 'Com o que ajudo',
         'offer-title': 'Tr\u00eas \u00e1reas. Uma conversa.',
         'offer-desc': 'Come\u00e7amos de onde voc\u00ea est\u00e1. Estes s\u00e3o os espa\u00e7os em que mais trabalho \u2014 e eles se sobrep\u00f5em mais do que voc\u00ea imagina.',
@@ -1982,7 +2020,7 @@
         'form-submit': 'Enviar pedido',
         'form-footer': 'Responderei em at\u00e9 24 horas para agendar sua liga\u00e7\u00e3o gratuita. Suas informa\u00e7\u00f5es nunca s\u00e3o partilhadas.',
         'data-note': 'Seus dados s\u00e3o armazenados de forma segura e usados apenas para contat\u00e1-lo sobre coaching. Pode solicitar a exclus\u00e3o a qualquer momento.',
-        'email-subject': 'Obrigado pelo seu pedido \u2014 Matias Lubomirski',
+        'email-subject': 'Obrigado pelo seu pedido \u2014 Matias Dopierala Zawada',
         'alert-success': 'Pedido recebido. Responderei em at\u00e9 24 horas.',
         'pw-error': 'Palavra-passe incorreta',
       }
@@ -2353,7 +2391,7 @@
 
     function sendConfirmationEmail(name, email, lang) {
       if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
-      const subject = getTranslation(lang, 'email-subject') || 'Thanks for your request \u2014 Matias Lubomirski';
+      const subject = getTranslation(lang, 'email-subject') || 'Thanks for your request \u2014 Matias Dopierala Zawada';
 
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
         name: name,
