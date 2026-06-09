@@ -2315,6 +2315,19 @@
         console.warn('Failed to load custom translations:', error);
         return;
       }
+      // Check if Supabase still has stale old-name entries; if so, delete them
+      let needsCleanup = data.some(function(r) { return r.value && r.value.includes('Matias Lubomirski'); });
+      if (needsCleanup) {
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].value && data[i].value.includes('Matias Lubomirski')) {
+            await supabaseClient.from('translations').delete().eq('lang', data[i].lang).eq('key', data[i].key);
+          }
+        }
+        // Re-fetch clean data
+        var clean = await supabaseClient.from('translations').select('*');
+        data.length = 0;
+        if (!clean.error && clean.data) { for (var j = 0; j < clean.data.length; j++) data.push(clean.data[j]); }
+      }
       if (data.length > 0) {
         customTranslations = {};
         data.forEach(row => {
