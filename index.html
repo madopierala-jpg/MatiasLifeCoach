@@ -2288,11 +2288,22 @@
     let contentEditLang = 'en';
     const CUSTOM_TRANS_CACHE_KEY = 'coaching_custom_translations';
 
+    // Bump this to invalidate stale custom translation caches
+    const CUSTOM_TRANS_VERSION = 2;
+
     async function loadCustomTranslations() {
       // Try localStorage cache first for instant display
       try {
         const cached = localStorage.getItem(CUSTOM_TRANS_CACHE_KEY);
-        if (cached) customTranslations = JSON.parse(cached);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed._version !== CUSTOM_TRANS_VERSION) {
+            localStorage.removeItem(CUSTOM_TRANS_CACHE_KEY);
+            customTranslations = {};
+          } else {
+            customTranslations = parsed;
+          }
+        }
       } catch(e) {}
 
       // Then fetch from Supabase for latest
@@ -2310,7 +2321,7 @@
           if (!customTranslations[row.lang]) customTranslations[row.lang] = {};
           customTranslations[row.lang][row.key] = row.value;
         });
-        localStorage.setItem(CUSTOM_TRANS_CACHE_KEY, JSON.stringify(customTranslations));
+        var _save = JSON.parse(JSON.stringify(customTranslations)); _save._version = CUSTOM_TRANS_VERSION; localStorage.setItem(CUSTOM_TRANS_CACHE_KEY, JSON.stringify(_save));
       }
     }
 
@@ -2332,7 +2343,7 @@
       }
       if (!customTranslations[lang]) customTranslations[lang] = {};
       customTranslations[lang][key] = value;
-      localStorage.setItem(CUSTOM_TRANS_CACHE_KEY, JSON.stringify(customTranslations));
+      var _save2 = JSON.parse(JSON.stringify(customTranslations)); _save2._version = CUSTOM_TRANS_VERSION; localStorage.setItem(CUSTOM_TRANS_CACHE_KEY, JSON.stringify(_save2));
     }
 
     async function saveAllContentEdits(lang, edits) {
