@@ -331,6 +331,135 @@
       line-height: 1.6;
     }
 
+    /* --- Pricing --- */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.35s ease;
+      position: relative;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05);
+      border-color: var(--accent);
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+      border-width: 2px;
+      box-shadow: 0 8px 32px rgba(184, 148, 74, 0.12);
+      transform: scale(1.03);
+    }
+
+    .pricing-card.featured:hover {
+      transform: scale(1.03) translateY(-6px);
+      box-shadow: 0 20px 48px rgba(184, 148, 74, 0.2);
+    }
+
+    .pricing-card .badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 16px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .pricing-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .pricing-card .pricing-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 20px;
+    }
+
+    .pricing-card .price {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+
+    .pricing-card .price small {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .pricing-card .pricing-cta {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 100px;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .pricing-card .pricing-cta:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(184, 148, 74, 0.25);
+    }
+
+    .pricing-card .pricing-cta.outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .pricing-card .pricing-cta.outline:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    @media (max-width: 1024px) {
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing-card.featured { transform: none; }
+      .pricing-card.featured:hover { transform: translateY(-6px); }
+    }
+
+    @media (max-width: 640px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+
     /* --- Testimonials --- */
     .testimonials-scroll {
       display: flex;
@@ -907,12 +1036,49 @@
     </div>
   </section>
 
+  <section id="pricing" class="alt">
+    <div class="container">
+      <div class="fade-in" style="text-align:center;">
+        <p class="section-label" data-i18n="pricing-label">Investment</p>
+        <h2 class="section-title" data-i18n="pricing-title">Choose what fits your journey.</h2>
+        <p class="section-desc" style="margin:0 auto;" data-i18n="pricing-desc">Every path is different. Pick the one that resonates with where you are right now.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card fade-in">
+          <h3 data-i18n="plan-1-title">Free Discovery Call</h3>
+          <p class="pricing-desc" data-i18n="plan-1-desc">A 45-minute conversation to explore if we're a good fit. No commitment &mdash; just clarity.</p>
+          <div class="price" data-i18n="plan-1-price">Free</div>
+          <a href="#booking" class="pricing-cta outline" data-i18n="plan-1-cta">Book now</a>
+        </div>
+        <div class="pricing-card fade-in">
+          <h3 data-i18n="plan-2-title">Personal Process</h3>
+          <p class="pricing-desc" data-i18n="plan-2-desc">An individual program of approximately 8 weeks. First session (1.5h) then weekly 1h sessions.</p>
+          <div class="price" data-i18n-html="plan-2-price">First session: $200 AUD<br>Weekly: $150 AUD</div>
+          <a href="#booking" class="pricing-cta outline" data-i18n="plan-2-cta">Start your journey</a>
+        </div>
+        <div class="pricing-card featured fade-in">
+          <div class="badge" data-i18n="pricing-badge">Most popular</div>
+          <h3 data-i18n="plan-3-title">Immersion Total</h3>
+          <p class="pricing-desc" data-i18n="plan-3-desc">For those ready for deeper transformation. 6 sessions per month with daily support and evaluation.</p>
+          <div class="price" data-i18n-html="plan-3-price">$1,500 AUD / month</div>
+          <a href="#booking" class="pricing-cta" data-i18n="plan-3-cta">Go all in</a>
+        </div>
+        <div class="pricing-card fade-in">
+          <h3 data-i18n="plan-4-title">Personalised Program</h3>
+          <p class="pricing-desc" data-i18n="plan-4-desc">A custom program adapted to your unique needs, schedule, and situation.</p>
+          <div class="price" data-i18n="plan-4-price">Ask for price</div>
+          <a href="#booking" class="pricing-cta outline" data-i18n="plan-4-cta">Get in touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="testimonials">
     <div class="container">
       <div class="fade-in" style="text-align:center;margin-bottom:8px;">
         <p class="section-label" data-i18n="test-label">What clients say</p>
         <h2 class="section-title" data-i18n="test-title">Real voices. Real change.</h2>
-        <p class="section-desc" style="margin:0 auto;" data-i18n="test-desc">The work we do together shows up in people's lives. Here's what some of them have shared.</p>
+        <p class="section-desc" style="margin:0 auto;" data-i18n="test-desc">The work we do together shows up in people&rsquo;s lives. Here&rsquo;s what some of them have shared.</p>
       </div>
       <div class="testimonials-scroll fade-in" id="testimonialsContainer">
       </div>
@@ -1044,6 +1210,7 @@
         <div class="admin-tabs">
           <button class="admin-tab active" data-admin-tab="submissions">Submissions</button>
           <button class="admin-tab" data-admin-tab="content">Content</button>
+          <button class="admin-tab" data-admin-tab="visits">Visits</button>
           <button class="admin-tab" data-admin-tab="settings">Settings</button>
         </div>
 
@@ -1096,6 +1263,37 @@
           <div class="content-fields" id="contentFields"></div>
           <button class="content-save-btn" id="contentSaveBtn">Save changes</button>
           <p class="content-save-status" id="contentSaveStatus"></p>
+        </div>
+
+        <!-- Visits tab -->
+        <div class="admin-panel-section" id="adminVisitsPanel">
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:12px;">
+            Page views tracked since implementation. Location data is approximate (IP-based).
+          </p>
+          <div class="admin-stats">
+            <div class="admin-stat"><strong id="visitTotal">0</strong><span>Total visits</span></div>
+            <div class="admin-stat"><strong id="visitToday">0</strong><span>Today</span></div>
+            <div class="admin-stat"><strong id="visitWeek">0</strong><span>This week</span></div>
+          </div>
+          <div class="admin-toolbar">
+            <button id="adminClearVisits" class="danger">Clear local visits</button>
+          </div>
+          <div id="visitCountries" style="margin-top: 16px;"></div>
+          <div class="admin-table-wrap" style="margin-top: 12px;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Country</th>
+                  <th>City</th>
+                  <th>Page</th>
+                </tr>
+              </thead>
+              <tbody id="visitsTableBody">
+                <tr class="empty"><td colspan="4">No visits recorded yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <!-- Settings tab -->
@@ -1163,6 +1361,26 @@
         'val-2-text': 'Your identity is not a problem to be solved. It\'s the foundation we build from \u2014 proudly and unapologetically.',
         'val-3-title': 'Whole-person focus',
         'val-3-text': 'Your career, your confidence, your inner world \u2014 they\'re all connected. We don\'t compartmentalise. We integrate.',
+        'pricing-label': 'Investment',
+        'pricing-title': 'Choose what fits your journey.',
+        'pricing-desc': 'Every path is different. Pick the one that resonates with where you are right now.',
+        'pricing-badge': 'Most popular',
+        'plan-1-title': 'Free Discovery Call',
+        'plan-1-desc': 'A 45-minute conversation to explore if we\'re a good fit. No commitment \u2014 just clarity.',
+        'plan-1-price': 'Free',
+        'plan-1-cta': 'Book now',
+        'plan-2-title': 'Personal Process',
+        'plan-2-desc': 'An individual program of approximately 8 weeks. First session (1.5h) then weekly 1h sessions.',
+        'plan-2-price': 'First session: $200 AUD<br>Weekly: $150 AUD',
+        'plan-2-cta': 'Start your journey',
+        'plan-3-title': 'Immersion Total',
+        'plan-3-desc': 'For those ready for deeper transformation. 6 sessions per month with daily support and evaluation.',
+        'plan-3-price': '$1,500 AUD / month',
+        'plan-3-cta': 'Go all in',
+        'plan-4-title': 'Personalised Program',
+        'plan-4-desc': 'A custom program adapted to your unique needs, schedule, and situation.',
+        'plan-4-price': 'Ask for price',
+        'plan-4-cta': 'Get in touch',
         'test-label': 'What clients say',
         'test-title': 'Real voices. Real change.',
         'test-desc': 'The work we do together shows up in people\u2019s lives. Here\u2019s what some of them have shared.',
@@ -1244,7 +1462,27 @@
         'val-2-title': 'Afirmativo LGBTQ+',
         'val-2-text': 'Tu identidad no es un problema a resolver. Es la base desde la que construimos — con orgullo y sin disculpas.',
         'val-3-title': 'Enfoque integral',
-        'val-3-text': 'Tu carrera, tu confianza, tu mundo interior — todo est\u00e1 conectado. No compartimentamos. Integramos.',
+        'val-3-text': 'Tu carrera, tu confianza, tu mundo interior \u2014 todo est\u00e1 conectado. No compartimentamos. Integramos.',
+        'pricing-label': 'Inversi\u00f3n',
+        'pricing-title': 'Elige lo que se adapte a tu camino.',
+        'pricing-desc': 'Cada camino es diferente. Elige el que resuene con donde est\u00e1s ahora.',
+        'pricing-badge': 'M\u00e1s popular',
+        'plan-1-title': 'Llamada de Descubrimiento Gratuita',
+        'plan-1-desc': 'Una conversaci\u00f3n de 45 minutos para explorar si somos compatibles. Sin compromiso \u2014 solo claridad.',
+        'plan-1-price': 'Gratis',
+        'plan-1-cta': 'Reservar ahora',
+        'plan-2-title': 'Proceso Personal',
+        'plan-2-desc': 'Un programa individual de aproximadamente 8 semanas. Primera sesi\u00f3n (1.5h) luego sesiones semanales de 1h.',
+        'plan-2-price': 'Primera sesi\u00f3n: 120 \u20ac<br>Semanal: 90 \u20ac',
+        'plan-2-cta': 'Comienza tu camino',
+        'plan-3-title': 'Inmersi\u00f3n Total',
+        'plan-3-desc': 'Para quienes est\u00e1n listos para una transformaci\u00f3n m\u00e1s profunda. 6 sesiones al mes con apoyo diario y evaluaci\u00f3n.',
+        'plan-3-price': '900 \u20ac / mes',
+        'plan-3-cta': 'A por todas',
+        'plan-4-title': 'Programa Personalizado',
+        'plan-4-desc': 'Un programa a medida adaptado a tus necesidades, horario y situaci\u00f3n.',
+        'plan-4-price': 'Consultar precio',
+        'plan-4-cta': 'Contacta',
         'test-label': 'Lo que dicen mis clientes',
         'test-title': 'Voces reales. Cambio real.',
         'test-desc': 'El trabajo que hacemos juntos se refleja en la vida de las personas. Esto es lo que algunas de ellas han compartido.',
@@ -1327,6 +1565,26 @@
         'val-2-text': 'Twoja to\u017csamo\u015b\u0107 nie jest problemem do rozwi\u0105zania. To fundament, na kt\u00f3rym budujemy \u2014 dumnie i bez przeprosin.',
         'val-3-title': 'Holistyczne podej\u015bcie',
         'val-3-text': 'Twoja kariera, pewno\u015b\u0107 siebie, tw\u00f3j wewn\u0119trzny \u015bwiat \u2014 wszystko jest po\u0142\u0105czone. Nie dzielimy na kategorie. Integrujemy.',
+        'pricing-label': 'Inwestycja',
+        'pricing-title': 'Wybierz to, co pasuje do Twojej drogi.',
+        'pricing-desc': 'Ka\u017cda \u015bcie\u017cka jest inna. Wybierz t\u0119, kt\u00f3ra rezonuje z tym, gdzie jeste\u015b teraz.',
+        'pricing-badge': 'Najpopularniejszy',
+        'plan-1-title': 'Bezp\u0142atna Rozmowa Odkrywcza',
+        'plan-1-desc': '45-minutowa rozmowa, aby sprawdzi\u0107, czy pasujemy. Bez zobowi\u0105za\u0144 \u2014 po prostu jasno\u015b\u0107.',
+        'plan-1-price': 'Bezp\u0142atnie',
+        'plan-1-cta': 'Rezerwuj teraz',
+        'plan-2-title': 'Proces Osobisty',
+        'plan-2-desc': 'Indywidualny program oko\u0142o 8 tygodni. Pierwsza sesja (1.5h), potem cotygodniowe sesje 1h.',
+        'plan-2-price': 'Pierwsza sesja: 520 z\u0142<br>Tygodniowo: 390 z\u0142',
+        'plan-2-cta': 'Rozpocznij podr\u00f3\u017c',
+        'plan-3-title': 'Ca\u0142kowite Zanurzenie',
+        'plan-3-desc': 'Dla os\u00f3b gotowych na g\u0142\u0119bsz\u0105 transformacj\u0119. 6 sesji miesi\u0119cznie z codziennym wsparciem i ocen\u0105.',
+        'plan-3-price': '3 900 z\u0142 / miesi\u0105c',
+        'plan-3-cta': 'Id\u0119 na ca\u0142o\u015b\u0107',
+        'plan-4-title': 'Program Spersonalizowany',
+        'plan-4-desc': 'Program dostosowany do Twoich unikalnych potrzeb, harmonogramu i sytuacji.',
+        'plan-4-price': 'Zapytaj o cen\u0119',
+        'plan-4-cta': 'Skontaktuj si\u0119',
         'test-label': 'Co m\u00f3wi\u0105 klienci',
         'test-title': 'Prawdziwe g\u0142osy. Prawdziwa zmiana.',
         'test-desc': 'Nasza wsp\u00f3lna praca odbija si\u0119 w \u017cyciu ludzi. Oto, co niekt\u00f3rzy z nich powiedzieli.',
@@ -1409,6 +1667,26 @@
         'val-2-text': 'Sua identidade n\u00e3o \u00e9 um problema a ser resolvido. \u00c9 a base sobre a qual constru\u00edmos \u2014 com orgulho e sem desculpas.',
         'val-3-title': 'Foco na pessoa integral',
         'val-3-text': 'Sua carreira, sua confian\u00e7a, seu mundo interior \u2014 tudo est\u00e1 conectado. N\u00e3o compartimentamos. Integramos.',
+        'pricing-label': 'Investimento',
+        'pricing-title': 'Escolha o que se adapta \u00e0 sua jornada.',
+        'pricing-desc': 'Cada caminho \u00e9 diferente. Escolha aquele que ressoa com onde voc\u00ea est\u00e1 agora.',
+        'pricing-badge': 'Mais popular',
+        'plan-1-title': 'Chamada de Descoberta Gratuita',
+        'plan-1-desc': 'Uma conversa de 45 minutos para explorar se somos compat\u00edveis. Sem compromisso \u2014 apenas clareza.',
+        'plan-1-price': 'Gr\u00e1tis',
+        'plan-1-cta': 'Reserve agora',
+        'plan-2-title': 'Processo Pessoal',
+        'plan-2-desc': 'Um programa individual de aproximadamente 8 semanas. Primeira sess\u00e3o (1.5h) depois sess\u00f5es semanais de 1h.',
+        'plan-2-price': 'Primeira sess\u00e3o: R$ 660<br>Semanal: R$ 495',
+        'plan-2-cta': 'Comece sua jornada',
+        'plan-3-title': 'Imers\u00e3o Total',
+        'plan-3-desc': 'Para quem est\u00e1 pronto para uma transforma\u00e7\u00e3o mais profunda. 6 sess\u00f5es por m\u00eas com suporte di\u00e1rio e avalia\u00e7\u00e3o.',
+        'plan-3-price': 'R$ 4.950 / m\u00eas',
+        'plan-3-cta': 'V\u00e1 fundo',
+        'plan-4-title': 'Programa Personalizado',
+        'plan-4-desc': 'Um programa personalizado adaptado \u00e0s suas necessidades, hor\u00e1rio e situa\u00e7\u00e3o.',
+        'plan-4-price': 'Sob consulta',
+        'plan-4-cta': 'Entre em contato',
         'test-label': 'O que os clientes dizem',
         'test-title': 'Vozes reais. Mudan\u00e7a real.',
         'test-desc': 'O trabalho que fazemos juntos reflete-se na vida das pessoas. Aqui est\u00e1 o que algumas delas compartilharam.',
@@ -1579,6 +1857,100 @@
       applyLanguage(currentLang);
     });
 
+    // ─── Visit tracking ───
+    // To enable Supabase persistence, run this SQL in your Supabase SQL Editor:
+    // CREATE TABLE page_visits (
+    //   id BIGSERIAL PRIMARY KEY,
+    //   created_at TIMESTAMPTZ DEFAULT NOW(),
+    //   country TEXT,
+    //   city TEXT,
+    //   page_url TEXT
+    // );
+    const VISITS_KEY = 'coaching_visits';
+    let visitorGeo = null;
+
+    async function trackVisit() {
+      const visited = sessionStorage.getItem('visit_tracked');
+      if (visited) return;
+      sessionStorage.setItem('visit_tracked', '1');
+
+      // Try to get geolocation
+      try {
+        const res = await fetch('https://ip-api.com/json/?fields=country,city,query');
+        if (res.ok) visitorGeo = await res.json();
+      } catch(e) {}
+
+      const entry = {
+        date: new Date().toISOString(),
+        country: visitorGeo ? visitorGeo.country : '',
+        city: visitorGeo ? visitorGeo.city : '',
+        ip: visitorGeo ? visitorGeo.query : '',
+        page: location.pathname
+      };
+
+      // Store in localStorage
+      try {
+        const visits = JSON.parse(localStorage.getItem(VISITS_KEY) || '[]');
+        visits.unshift(entry);
+        if (visits.length > 500) visits.length = 500;
+        localStorage.setItem(VISITS_KEY, JSON.stringify(visits));
+      } catch(e) {}
+
+      // Try to store in Supabase (silent fail if table doesn't exist)
+      if (supabaseClient) {
+        supabaseClient.from('page_visits').insert({
+          country: entry.country,
+          city: entry.city,
+          page_url: entry.page
+        }).then().catch(() => {});
+      }
+    }
+
+    function getVisits() {
+      try { return JSON.parse(localStorage.getItem(VISITS_KEY) || '[]'); }
+      catch(e) { return []; }
+    }
+
+    function renderVisitStats() {
+      const visits = getVisits();
+      document.getElementById('visitTotal').textContent = visits.length;
+
+      const now = new Date();
+      const todayStr = now.toISOString().slice(0, 10);
+      const weekAgo = new Date(now);
+      weekAgo.setDate(weekAgo.getDate() - 7);
+
+      const today = visits.filter(v => v.date && v.date.slice(0, 10) === todayStr).length;
+      const thisWeek = visits.filter(v => v.date && new Date(v.date) >= weekAgo).length;
+      document.getElementById('visitToday').textContent = today;
+      document.getElementById('visitWeek').textContent = thisWeek;
+
+      // Country breakdown
+      const countries = {};
+      visits.forEach(v => {
+        if (v.country) countries[v.country] = (countries[v.country] || 0) + 1;
+      });
+      const countryHtml = Object.entries(countries)
+        .sort((a, b) => b[1] - a[1])
+        .map(([c, n]) => `<span style="display:inline-block;background:var(--section-alt);padding:4px 12px;border-radius:100px;font-size:0.8rem;margin:3px;">${esc(c)}: ${n}</span>`)
+        .join('');
+      document.getElementById('visitCountries').innerHTML = countryHtml
+        ? `<strong style="font-size:0.85rem;color:var(--text-muted);display:block;margin-bottom:6px;">By country</strong><div>${countryHtml}</div>`
+        : '';
+
+      // Table rows
+      const tbody = document.getElementById('visitsTableBody');
+      tbody.innerHTML = visits.length === 0
+        ? `<tr class="empty"><td colspan="4">No visits recorded yet.</td></tr>`
+        : visits.slice(0, 50).map(v => {
+            const d = v.date ? new Date(v.date).toLocaleString() : '-';
+            return `<tr><td>${esc(d)}</td><td>${esc(v.country || '-')}</td><td>${esc(v.city || '-')}</td><td>${esc(v.page || '-')}</td></tr>`;
+          }).join('');
+    }
+
+    // Track visit on page load (after a short delay to not block rendering)
+    setTimeout(trackVisit, 1000);
+
     async function saveToSupabase(entry) {
       if (!supabaseClient) return;
       const { error } = await supabaseClient.from('submissions').insert({
@@ -1693,6 +2065,7 @@
         about: ['about-label', 'about-title', 'about-p1', 'about-p2', 'about-p3', 'about-photo-alt'],
         offers: ['offer-label', 'offer-title', 'offer-desc', 'card-1-title', 'card-1-text', 'card-2-title', 'card-2-text', 'card-3-title', 'card-3-text'],
         values: ['values-label', 'values-title', 'values-desc', 'val-1-title', 'val-1-text', 'val-2-title', 'val-2-text', 'val-3-title', 'val-3-text'],
+        pricing: ['pricing-label', 'pricing-title', 'pricing-desc', 'pricing-badge', 'plan-1-title', 'plan-1-desc', 'plan-1-price', 'plan-1-cta', 'plan-2-title', 'plan-2-desc', 'plan-2-price', 'plan-2-cta', 'plan-3-title', 'plan-3-desc', 'plan-3-price', 'plan-3-cta', 'plan-4-title', 'plan-4-desc', 'plan-4-price', 'plan-4-cta'],
         testimonials: ['test-label', 'test-title', 'test-desc', 'test-swipe'],
         booking: ['book-label', 'book-title', 'book-desc', 'expect-title', 'expect-p1', 'expect-p2', 'avail-title', 'avail-tz', 'avail-hours', 'avail-note', 'questions-label', 'reach-out', 'or'],
         form: ['form-name-ph', 'form-email-ph', 'form-phone-ph', 'form-social-ph', 'form-msg-label', 'form-msg-ph', 'form-submit', 'form-footer', 'data-note'],
@@ -1700,7 +2073,7 @@
 
       const groupLabels = {
         nav: 'Navigation', hero: 'Hero Section', about: 'About Me',
-        offers: 'Offerings', values: 'Values', testimonials: 'Testimonials Section',
+        offers: 'Offerings', values: 'Values', pricing: 'Pricing', testimonials: 'Testimonials Section',
         booking: 'Booking', form: 'Form'
       };
 
@@ -1911,6 +2284,9 @@
           if (this.dataset.adminTab === 'content') {
             renderContentEditor(contentEditLang);
           }
+          if (this.dataset.adminTab === 'visits') {
+            renderVisitStats();
+          }
         }
       });
     });
@@ -1969,6 +2345,13 @@
       if (confirm('Delete ALL submissions? This cannot be undone.')) {
         localStorage.setItem('coaching_submissions', '[]');
         renderDashboard().catch(() => {});
+      }
+    });
+
+    document.getElementById('adminClearVisits').addEventListener('click', function () {
+      if (confirm('Delete ALL local visit data? This cannot be undone.')) {
+        localStorage.removeItem('coaching_visits');
+        renderVisitStats();
       }
     });
 
