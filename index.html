@@ -677,6 +677,8 @@
       cursor: pointer;
     }
 
+    .form-group select option { font-size: 0.85rem; }
+
     .form-footer { font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; }
 
     .pill-group {
@@ -1151,13 +1153,15 @@
     .status-select.s-closed { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
 
     .admin-footer-link {
-      color: var(--text-muted);
+      color: var(--accent);
       cursor: pointer;
       font-size: 0.8rem;
-      text-decoration: underline dotted;
+      text-decoration: underline;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
     }
 
-    .admin-footer-link:hover { color: var(--accent); }
+    .admin-footer-link:hover { opacity: 1; }
 
     @media (max-width: 768px) {
       .hero { min-height: auto; padding: 40px 0 80px; }
@@ -1500,7 +1504,7 @@
           </div>
           <div class="form-group">
             <label for="social">Social media reference</label>
-            <input type="text" id="social" name="social" data-i18n-placeholder="form-social-ph" placeholder="Instagram / TikTok handle or where you found me">
+            <input type="text" id="social" name="social" data-i18n-placeholder="form-social-ph" placeholder="Your social media handle or where you found me">
           </div>
           <div class="form-group">
             <label for="preferredTime" data-i18n="form-time-label">Preferred time to contact</label>
@@ -1529,6 +1533,8 @@
       </div>
     </div>
   </section>
+  </main>
+
   </main>
 
   <!-- ─── Admin Panel ─── -->
@@ -1772,7 +1778,7 @@
         'form-name-ph': 'e.g. Alex Chen',
         'form-email-ph': 'alex@example.com',
         'form-phone-ph': '+61 4XX XXX XXX',
-        'form-social-ph': 'Instagram / TikTok handle or where you found me',
+        'form-social-ph': 'Your social media handle or where you found me',
         'form-time-label': 'Preferred time to contact',
         'form-tz-label': 'Country / Timezone',
         'form-tz-ph': 'e.g. Brazil (BRT) or Poland (CET)',
@@ -1890,7 +1896,7 @@
         'form-name-ph': 'Ej. Alex Chen',
         'form-email-ph': 'alex@ejemplo.com',
         'form-phone-ph': '+61 4XX XXX XXX',
-        'form-social-ph': 'Usuario de Instagram / TikTok o c\u00f3mo me encontraste',
+        'form-social-ph': 'Tu usuario de redes sociales o d\u00f3nde me encontraste',
         'form-time-label': 'Horario preferido para contactar',
         'form-tz-label': 'Pa\u00eds / Zona horaria',
         'form-tz-ph': 'Ej. Brasil (BRT) o Espa\u00f1a (CET)',
@@ -2008,7 +2014,7 @@
         'form-name-ph': 'Np. Alex Kowalski',
         'form-email-ph': 'alex@przyk\u0142ad.pl',
         'form-phone-ph': '+48 XXX XXX XXX',
-        'form-social-ph': 'Instagram / TikTok lub gdzie mnie znalaz\u0142e\u015b',
+        'form-social-ph': 'Tw\u00f3j profil w mediach spo\u0142eczno\u015ciowych lub gdzie mnie znalaz\u0142e\u015b',
         'form-time-label': 'Preferowany czas kontaktu',
         'form-tz-label': 'Kraj / Strefa czasowa',
         'form-tz-ph': 'Np. Brazylia (BRT) lub Polska (CET)',
@@ -2126,7 +2132,7 @@
         'form-name-ph': 'Ex. Alex Silva',
         'form-email-ph': 'alex@exemplo.com.br',
         'form-phone-ph': '+55 XX XXXX XXXX',
-        'form-social-ph': 'Instagram / TikTok ou onde me encontrou',
+        'form-social-ph': 'Seu perfil em redes sociais ou onde me encontrou',
         'form-time-label': 'Hor\u00e1rio preferido para contato',
         'form-tz-label': 'Pa\u00eds / Fuso hor\u00e1rio',
         'form-tz-ph': 'Ex. Brasil (BRT) ou Portugal (WET)',
