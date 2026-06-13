@@ -2151,16 +2151,52 @@
     });
 
     // ─── Visit tracking ───
-    // To enable Supabase persistence, run this SQL in your Supabase SQL Editor:
-    // CREATE TABLE page_visits (
-    //   id BIGSERIAL PRIMARY KEY,
-    //   created_at TIMESTAMPTZ DEFAULT NOW(),
-    //   country TEXT,
-    //   city TEXT,
-    //   page_url TEXT
-    // );
+    // Visits are stored in the existing `translations` table so no extra setup is needed.
+    // The admin panel reads from Supabase centrally, so all visitors' data is visible.
     const VISITS_KEY = 'coaching_visits';
+    const VISIT_LOG_KEY = '_visit_log';
     let visitorGeo = null;
+
+    function getVisits() {
+      try { return JSON.parse(localStorage.getItem(VISITS_KEY) || '[]'); }
+      catch(e) { return []; }
+    }
+
+    // Read the centralized visit log from the translations table
+    async function fetchSupabaseVisits() {
+      if (!supabaseClient) return null;
+      try {
+        var _vl = await supabaseClient.from('translations').select('value').eq('lang', 'en').eq('key', VISIT_LOG_KEY).maybeSingle();
+        if (_vl.error) return null;
+        if (!_vl.data || !_vl.data.value) return null;
+        var parsed = JSON.parse(_vl.data.value);
+        if (!Array.isArray(parsed)) return null;
+        return parsed;
+      } catch(e) { return null; }
+    }
+
+    // Sync the current visit to the centralized log in translations table
+    async function syncVisitToSupabase(entry) {
+      if (!supabaseClient) return;
+      try {
+        var cur = await supabaseClient.from('translations').select('value').eq('lang', 'en').eq('key', VISIT_LOG_KEY).maybeSingle();
+        var visits = [];
+        if (!cur.error && cur.data && cur.data.value) {
+          try { visits = JSON.parse(cur.data.value); } catch(e) {}
+          if (!Array.isArray(visits)) visits = [];
+        }
+        visits.unshift(entry);
+        if (visits.length > 500) visits.length = 500;
+        var payload = JSON.stringify(visits);
+        if (cur.data) {
+          await supabaseClient.from('translations').update({ value: payload }).eq('lang', 'en').eq('key', VISIT_LOG_KEY);
+        } else {
+          await supabaseClient.from('translations').insert({ lang: 'en', key: VISIT_LOG_KEY, value: payload });
+        }
+      } catch(e) {
+        console.warn('Visit sync to Supabase failed', e);
+      }
+    }
 
     async function trackVisit() {
       const visited = sessionStorage.getItem('visit_tracked');
@@ -2189,60 +2225,20 @@
         localStorage.setItem(VISITS_KEY, JSON.stringify(visits));
       } catch(e) {}
 
-      // Store in Supabase (centralized — visible to admin)
-      if (supabaseClient) {
-        var _pvErr = null;
-        try {
-          var _pvRes = await supabaseClient.from('page_visits').insert({
-            country: entry.country,
-            city: entry.city,
-            page_url: entry.page
-          });
-          if (_pvRes && _pvRes.error) _pvErr = _pvRes.error;
-        } catch(e) { _pvErr = e; }
-        if (_pvErr) {
-          console.log('Visit: page_visits insert failed, trying translations fallback', _pvErr);
-          var _fbOk = await storeVisitInTranslations(entry);
-          console.log('Visit: translations fallback ' + (_fbOk ? 'succeeded' : 'FAILED'));
-        }
-      }
-    }
-
-    function getVisits() {
-      try { return JSON.parse(localStorage.getItem(VISITS_KEY) || '[]'); }
-      catch(e) { return []; }
-    }
-
-    async function fetchSupabaseVisits() {
-      if (!supabaseClient) return null;
-      // Try primary page_visits table first
-      try {
-        const { data, error } = await supabaseClient
-          .from('page_visits')
-          .select('*')
-          .order('created_at', { ascending: false });
-        if (!error && data && data.length > 0) {
-          return data.map(v => ({
-            date: v.created_at || '',
-            country: v.country || '',
-            city: v.city || '',
-            page: v.page_url || ''
-          }));
-        }
-      } catch(e) {}
-      // Fallback: read from translations table
-      return await fetchSupabaseVisitsFallback();
+      // Sync to Supabase (centralized — visible to admin)
+      await syncVisitToSupabase(entry);
     }
 
     async function renderVisitStats() {
       // Try Supabase first (centralized), fall back to localStorage
       let visits = await fetchSupabaseVisits();
-      if (!visits || visits.length === 0) {
-        console.log('Visits: Supabase returned nothing, using localStorage');
-        visits = getVisits();
+      var source = 'localStorage';
+      if (visits && visits.length > 0) {
+        source = 'Supabase';
       } else {
-        console.log('Visits: loaded ' + visits.length + ' entries from Supabase');
+        visits = getVisits();
       }
+      console.log('Visits: ' + visits.length + ' entries from ' + source);
 
       document.getElementById('visitTotal').textContent = visits.length;
 
@@ -2277,64 +2273,6 @@
             const d = v.date ? new Date(v.date).toLocaleString() : '-';
             return `<tr><td>${esc(d)}</td><td>${esc(v.country || '-')}</td><td>${esc(v.city || '-')}</td><td>${esc(v.page || '-')}</td></tr>`;
           }).join('');
-    }
-
-    // Fallback: store visit in translations table if page_visits doesn't exist
-    let _visitFallbackKey = 0;
-
-    async function storeVisitInTranslations(entry) {
-      if (!supabaseClient) return;
-      try {
-        _visitFallbackKey++;
-        const key = 'visit_' + Date.now() + '_' + _visitFallbackKey;
-        await supabaseClient.from('translations').insert({
-          lang: '__visit__',
-          key: key,
-          value: JSON.stringify({ date: entry.date, country: entry.country, city: entry.city, page_url: entry.page })
-        });
-        return true;
-      } catch(e) {
-        return false;
-      }
-    }
-
-    async function createPageVisitsTable() {
-      // Attempt to create via raw SQL endpoint
-      try {
-        const res = await fetch('https://herrghyefayfsrchgfhn.supabase.co/rest/v1/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': SB_ANON_KEY,
-            'Authorization': 'Bearer ' + SB_ANON_KEY,
-            'Prefer': 'resolution=merge-duplicates'
-          },
-          body: JSON.stringify({
-            query: "CREATE TABLE IF NOT EXISTS page_visits (id BIGSERIAL PRIMARY KEY, created_at TIMESTAMPTZ DEFAULT NOW(), country TEXT, city TEXT, page_url TEXT);"
-          })
-        });
-        if (res.ok) return true;
-      } catch(e) {}
-      return false;
-    }
-
-    async function fetchSupabaseVisitsFallback() {
-      if (!supabaseClient) return null;
-      try {
-        const { data, error } = await supabaseClient
-          .from('translations')
-          .select('*')
-          .eq('lang', '__visit__')
-          .order('key', { ascending: false });
-        if (error) throw error;
-        if (!data || data.length === 0) return null;
-        return data.map(v => {
-          try { var p = JSON.parse(v.value); return { date: p.date || '', country: p.country || '', city: p.city || '', page: p.page_url || '' }; }
-          catch(e) { return null; }
-        }).filter(Boolean);
-      } catch(e) {
-        return null;
-      }
     }
 
     // Track visit on page load (after a short delay to not block rendering)
@@ -2427,7 +2365,7 @@
       if (data.length > 0) {
         customTranslations = {};
         data.forEach(row => {
-          if (row.lang === '__visit__') return;
+          if (row.lang === '__visit__' || row.key === '_visit_log') return;
           if (!customTranslations[row.lang]) customTranslations[row.lang] = {};
           customTranslations[row.lang][row.key] = row.value;
         });
@@ -2795,8 +2733,7 @@
       if (confirm('Delete ALL visit data? This cannot be undone.')) {
         localStorage.removeItem('coaching_visits');
         if (supabaseClient) {
-          try { await supabaseClient.from('page_visits').delete().neq('id', 0); } catch(e) {}
-          try { await supabaseClient.from('translations').delete().eq('lang', '__visit__'); } catch(e) {}
+          try { await supabaseClient.from('translations').delete().eq('lang', 'en').eq('key', '_visit_log'); } catch(e) {}
         }
         renderVisitStats();
       }
