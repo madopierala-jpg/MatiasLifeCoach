@@ -1083,6 +1083,15 @@
 
     .admin-delete-btn:hover { color: #c0392b; background: rgba(192,57,43,0.08); }
 
+    .status-select {
+      font-family: var(--font-body); font-size: 0.75rem; padding: 3px 6px; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer;
+      max-width: 110px;
+    }
+    .status-select option[value="New Request"] { font-weight: 600; color: #b8944a; }
+    .status-select option[value="Contacted"] { color: #2d6a4f; }
+    .status-select option[value="Closed"] { color: #7a726a; }
+
     .admin-footer-link {
       color: var(--text-muted);
       cursor: pointer;
@@ -1503,11 +1512,12 @@
                   <th>Phone</th>
                   <th>Social</th>
                   <th>Message</th>
+                  <th>Status</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody id="adminTableBody">
-                <tr class="empty"><td colspan="7">No submissions yet.</td></tr>
+                <tr class="empty"><td colspan="8">No submissions yet.</td></tr>
               </tbody>
             </table>
           </div>
@@ -1576,7 +1586,7 @@
       <div class="footer-social">
         <a href="https://www.tiktok.com/@curious.matias" target="_blank">TikTok</a>
         <a href="https://www.instagram.com/matias.lifecoach/" target="_blank">Instagram</a>
-        <a href="mailto:hello@matiasdopieralazawada.com">Email</a>
+        <a href="mailto:matias.courios.coach@gmail.com">Email</a>
       </div>
       <p>&copy; 2026 Matias Dopierala Zawada. &middot; <span class="admin-footer-link" id="adminOpenLink">Admin</span></p>
     </div>
@@ -2278,6 +2288,8 @@
     // Track visit on page load (after a short delay to not block rendering)
     setTimeout(trackVisit, 1000);
 
+    const STATUS_STORAGE_KEY = '_submission_statuses';
+
     async function saveToSupabase(entry) {
       if (!supabaseClient) return;
       const { error } = await supabaseClient.from('submissions').insert({
@@ -2288,6 +2300,40 @@
         message: entry.message
       });
       if (error) console.warn('Supabase save failed:', error);
+      // Store status separately (submissions table may not have a status column)
+      await saveSubmissionStatus(entry.id, 'New Request');
+    }
+
+    async function saveSubmissionStatus(id, status) {
+      if (!supabaseClient) return;
+      try {
+        var _cur = await supabaseClient.from('translations').select('value').eq('lang', 'en').eq('key', STATUS_STORAGE_KEY).maybeSingle();
+        var map = {};
+        if (!_cur.error && _cur.data && _cur.data.value) {
+          try { map = JSON.parse(_cur.data.value); } catch(e) { map = {}; }
+        }
+        map[id] = status;
+        var payload = JSON.stringify(map);
+        if (_cur.data) {
+          await supabaseClient.from('translations').update({ value: payload }).eq('lang', 'en').eq('key', STATUS_STORAGE_KEY);
+        } else {
+          await supabaseClient.from('translations').insert({ lang: 'en', key: STATUS_STORAGE_KEY, value: payload });
+        }
+      } catch(e) {
+        console.warn('Status save failed:', e);
+      }
+    }
+
+    async function loadSubmissionStatuses() {
+      if (!supabaseClient) return {};
+      try {
+        var _cur = await supabaseClient.from('translations').select('value').eq('lang', 'en').eq('key', STATUS_STORAGE_KEY).maybeSingle();
+        if (!_cur.error && _cur.data && _cur.data.value) {
+          var parsed = JSON.parse(_cur.data.value);
+          return typeof parsed === 'object' && parsed !== null ? parsed : {};
+        }
+      } catch(e) {}
+      return {};
     }
 
     async function fetchSupabaseSubmissions() {
@@ -2300,6 +2346,7 @@
         console.warn('Supabase fetch failed:', error);
         return [];
       }
+      var statuses = await loadSubmissionStatuses();
       return data.map(s => ({
         id: s.id,
         date: s.created_at,
@@ -2307,7 +2354,8 @@
         email: s.email,
         phone: s.phone || '',
         social: s.social || '',
-        message: s.message || ''
+        message: s.message || '',
+        status: statuses[s.id] || (statuses[String(s.id)] || 'New Request')
       }));
     }
 
@@ -2365,7 +2413,7 @@
       if (data.length > 0) {
         customTranslations = {};
         data.forEach(row => {
-          if (row.lang === '__visit__' || row.key === '_visit_log') return;
+          if (row.lang === '__visit__' || row.key === '_visit_log' || row.key === '_submission_statuses') return;
           if (!customTranslations[row.lang]) customTranslations[row.lang] = {};
           customTranslations[row.lang][row.key] = row.value;
         });
@@ -2465,6 +2513,8 @@
     }
 
     // ─── Form submission ───
+    const ADMIN_EMAIL = 'matias.courios.coach@gmail.com';
+
     function saveSubmission(data) {
       const subs = JSON.parse(localStorage.getItem('coaching_submissions') || '[]');
       const entry = {
@@ -2474,7 +2524,8 @@
         email: data.get('email') || '',
         phone: data.get('phone') || '',
         social: data.get('social') || '',
-        message: data.get('message') || ''
+        message: data.get('message') || '',
+        status: 'New Request'
       };
       subs.unshift(entry);
       localStorage.setItem('coaching_submissions', JSON.stringify(subs));
@@ -2485,6 +2536,20 @@
       return entry;
     }
 
+    function sendAdminNotification(entry) {
+      if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
+      var subject = 'New booking request from ' + entry.name + ' <' + entry.email + '>';
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        name: entry.name,
+        to_email: ADMIN_EMAIL,
+        subject: subject
+      }).then(function(res) {
+        console.log('Admin notification sent:', res.status);
+      }).catch(function(err) {
+        console.warn('Admin notification failed:', err);
+      });
+    }
+
     const form = document.querySelector('form[name="booking"]');
     if (form) {
       form.addEventListener('submit', function (e) {
@@ -2492,6 +2557,7 @@
         const data = new FormData(form);
         const entry = saveSubmission(data);
         sendConfirmationEmail(entry.name, entry.email, currentLang);
+        sendAdminNotification(entry);
 
         // Also POST to Netlify Forms if deployed on a server
         if (window.location.protocol !== 'file:') {
@@ -2551,7 +2617,7 @@
 
       tableBody.innerHTML = '';
       if (subs.length === 0) {
-        tableBody.innerHTML = '<tr class="empty"><td colspan="7">No submissions yet.</td></tr>';
+        tableBody.innerHTML = '<tr class="empty"><td colspan="8">No submissions yet.</td></tr>';
         return;
       }
 
@@ -2559,6 +2625,13 @@
         const d = new Date(s.date);
         const dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const tr = document.createElement('tr');
+        var st = s.status || 'New Request';
+        var statusOptions = ['New Request', 'Pending', 'Contacted', 'Closed'];
+        var statusHtml = '<select class="status-select" data-id="' + esc(s.id) + '">';
+        statusOptions.forEach(function(opt) {
+          statusHtml += '<option value="' + opt + '"' + (opt === st ? ' selected' : '') + '>' + opt + '</option>';
+        });
+        statusHtml += '</select>';
         tr.innerHTML = `
           <td style="white-space:nowrap;font-size:0.8rem;">${dateStr}</td>
           <td><strong>${esc(s.name)}</strong></td>
@@ -2566,6 +2639,7 @@
           <td>${esc(s.phone)}</td>
           <td style="font-size:0.8rem;">${esc(s.social)}</td>
           <td style="font-size:0.8rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;">${esc(s.message)}</td>
+          <td style="white-space:nowrap;">${statusHtml}</td>
           <td><button class="admin-delete-btn" data-id="${s.id}" title="Delete">&times;</button></td>
         `;
         tableBody.appendChild(tr);
@@ -2580,6 +2654,26 @@
             localStorage.setItem('coaching_submissions', JSON.stringify(localSubs));
             renderDashboard();
           }
+        });
+      });
+
+      document.querySelectorAll('.status-select').forEach(sel => {
+        sel.addEventListener('change', async function () {
+          var newStatus = this.value;
+          var id = this.dataset.id;
+          // Save to localStorage
+          var localSubs = getSubmissions();
+          var found = false;
+          for (var _i = 0; _i < localSubs.length; _i++) {
+            if (String(localSubs[_i].id) === String(id)) {
+              localSubs[_i].status = newStatus;
+              found = true;
+              break;
+            }
+          }
+          if (found) localStorage.setItem('coaching_submissions', JSON.stringify(localSubs));
+          // Save to Supabase
+          await saveSubmissionStatus(id, newStatus);
         });
       });
     }
@@ -2709,10 +2803,11 @@
       let subs = await fetchSupabaseSubmissions();
       if (subs.length === 0) subs = getSubmissions();
       if (subs.length === 0) return alert('No data to export.');
-      const headers = ['Date','Name','Email','Phone','Social','Message'];
+      const headers = ['Date','Name','Email','Phone','Social','Message','Status'];
       const rows = subs.map(s => [
         s.date, s.name, s.email, s.phone, s.social,
-        '"' + String(s.message).replace(/"/g, '""') + '"'
+        '"' + String(s.message).replace(/"/g, '""') + '"',
+        s.status || 'New Request'
       ]);
       const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
       const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
