@@ -2201,8 +2201,9 @@
           if (_pvRes && _pvRes.error) _pvErr = _pvRes.error;
         } catch(e) { _pvErr = e; }
         if (_pvErr) {
-          // Table doesn't exist — store in translations table instead
-          await storeVisitInTranslations(entry);
+          console.log('Visit: page_visits insert failed, trying translations fallback', _pvErr);
+          var _fbOk = await storeVisitInTranslations(entry);
+          console.log('Visit: translations fallback ' + (_fbOk ? 'succeeded' : 'FAILED'));
         }
       }
     }
@@ -2237,7 +2238,10 @@
       // Try Supabase first (centralized), fall back to localStorage
       let visits = await fetchSupabaseVisits();
       if (!visits || visits.length === 0) {
+        console.log('Visits: Supabase returned nothing, using localStorage');
         visits = getVisits();
+      } else {
+        console.log('Visits: loaded ' + visits.length + ' entries from Supabase');
       }
 
       document.getElementById('visitTotal').textContent = visits.length;
