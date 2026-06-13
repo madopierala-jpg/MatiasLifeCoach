@@ -2456,7 +2456,7 @@
     const CUSTOM_TRANS_CACHE_KEY = 'coaching_custom_translations';
 
     // Bump this to invalidate stale custom translation caches
-    const CUSTOM_TRANS_VERSION = 2;
+    const CUSTOM_TRANS_VERSION = 3;
 
     async function loadCustomTranslations() {
       // Try localStorage cache first for instant display
@@ -2482,7 +2482,7 @@
         console.warn('Failed to load custom translations:', error);
         return;
       }
-      // Check if Supabase still has stale old-name entries; if so, delete them
+      // Clean up stale old-name entries
       let needsCleanup = data.some(function(r) { return r.value && r.value.includes('Matias Lubomirski'); });
       if (needsCleanup) {
         for (var i = 0; i < data.length; i++) {
@@ -2490,10 +2490,21 @@
             await supabaseClient.from('translations').delete().eq('lang', data[i].lang).eq('key', data[i].key);
           }
         }
-        // Re-fetch clean data
         var clean = await supabaseClient.from('translations').select('*');
         data.length = 0;
         if (!clean.error && clean.data) { for (var j = 0; j < clean.data.length; j++) data.push(clean.data[j]); }
+      }
+      // Clean up stale About section content (old paragraphs saved as custom translations)
+      let needsAboutCleanup = data.some(function(r) { return r.key && r.key.startsWith('about-p') && r.lang !== undefined; });
+      if (needsAboutCleanup) {
+        for (var k = 0; k < data.length; k++) {
+          if (data[k].key && data[k].key.startsWith('about-p')) {
+            await supabaseClient.from('translations').delete().eq('lang', data[k].lang).eq('key', data[k].key);
+          }
+        }
+        var clean2 = await supabaseClient.from('translations').select('*');
+        data.length = 0;
+        if (!clean2.error && clean2.data) { for (var l = 0; l < clean2.data.length; l++) data.push(clean2.data[l]); }
       }
       if (data.length > 0) {
         customTranslations = {};
