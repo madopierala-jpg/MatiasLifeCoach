@@ -299,21 +299,22 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 60px;
-      align-items: center;
+      align-items: start;
     }
 
     .about-text { font-size: 1rem; color: var(--text-muted); line-height: 1.8; }
-    .about-text p + p { margin-top: 18px; }
+    .about-text p + p { margin-top: 16px; }
+    .about-text-rest p + p { margin-top: 16px; }
 
     .about-photo {
       width: 100%;
-      aspect-ratio: 1;
-      border-radius: 50%;
+      border-radius: 16px;
       object-fit: cover;
       display: block;
-      max-width: 400px;
+      max-width: 380px;
       margin: 0 auto;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.12);
+      grid-row: span 2;
     }
 
     .offerings-grid {
@@ -1153,8 +1154,8 @@
       .hero { min-height: auto; padding: 40px 0 80px; }
       .hero-content h1 { font-size: 2rem; }
       .hero-note { font-size: 0.8rem; }
-      .about-grid { grid-template-columns: 1fr; gap: 36px; }
-      .about-photo { max-width: 260px; margin: 0 auto; }
+      .about-grid { grid-template-columns: 1fr; gap: 24px; }
+      .about-photo { max-width: 260px; grid-row: auto; }
       .about-text { text-align: left; }
       .offerings-grid { grid-template-columns: 1fr; gap: 20px; }
       .values-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -1195,7 +1196,7 @@
       .btn-primary, .btn-secondary { font-size: 0.8rem; padding: 10px 20px; }
       .section-title { font-size: 1.4rem; }
       .section-desc { font-size: 0.85rem; }
-      .about-photo { max-width: 200px; }
+      .about-photo { max-width: 200px; grid-row: auto; }
       .testimonial-card { flex: 0 0 240px; padding: 20px; }
       .testimonial-card blockquote { font-size: 0.82rem; }
       .footer-social a { font-size: 0.78rem; }
@@ -1291,8 +1292,6 @@
           <p class="section-label" data-i18n="about-label">About me</p>
           <h2 class="section-title" data-i18n="about-title">I'm Matias.</h2>
           <p data-i18n="about-p1">I know what it feels like to carry fear and self-doubt while trying to figure out who you are and where you're going — because I've lived it too. As an LGBTQ+ person, my journey has taken me through incredible highs and emotionally challenging lows. I've had to overcome my fears, learn to stop living as someone I wasn't, embrace my life as it is, and truly love myself. Every reinvention — from Poland to Spain to Sydney, from journalism to banking to coaching — taught me that growth doesn't happen despite our struggles, it happens through them.</p>
-          <p data-i18n="about-p2">That work of becoming who you are — I learned it doesn't happen in isolation. Whether leading transformation at Santander Group and BBVA or sitting with someone ready to rewrite their story, I've always been drawn to the same question: how do we navigate the unknown? Being named a Santander Group Young Leader in 2024 reminded me that strategic clarity and deep empathy aren't opposites — they come from the same place. Career, confidence, purpose — they're all connected because you are.</p>
-          <p data-i18n="about-p3">Today, I help others walk the same path I had to walk for myself: overcoming fear, learning to belong to yourself, and building a life that actually feels like yours. If you're queer, trans, questioning, or simply someone who wants to grow — you belong here. Let's discover your next chapter, together.</p>
         </div>
         <img
           class="about-photo fade-in"
@@ -1302,6 +1301,10 @@
           width="450" height="600"
           loading="lazy"
         >
+        <div class="about-text fade-in">
+          <p data-i18n="about-p2">That work of becoming who you are — I learned it doesn't happen in isolation. Whether leading transformation at Santander Group and BBVA or sitting with someone ready to rewrite their story, I've always been drawn to the same question: how do we navigate the unknown? Being named a Santander Group Young Leader in 2024 reminded me that strategic clarity and deep empathy aren't opposites — they come from the same place. Career, confidence, purpose — they're all connected because you are.</p>
+          <p data-i18n="about-p3">Today, I help others walk the same path I had to walk for myself: overcoming fear, learning to belong to yourself, and building a life that actually feels like yours. If you're queer, trans, questioning, or simply someone who wants to grow — you belong here. Let's discover your next chapter, together.</p>
+        </div>
       </div>
     </div>
   </section>
