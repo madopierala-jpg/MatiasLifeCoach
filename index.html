@@ -971,6 +971,65 @@
 
     .admin-close:hover { color: var(--text); }
 
+    /* ─── Admin new-request notification popup ─── */
+    .admin-notif-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(26, 24, 23, 0.5);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .admin-notif-overlay.open { display: flex; }
+
+    .admin-notif-modal {
+      background: var(--bg);
+      border-radius: 20px;
+      padding: 40px 36px 32px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    .admin-notif-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+    }
+    .admin-notif-close:hover { color: var(--text); }
+    .admin-notif-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .admin-notif-modal h3 {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+    .admin-notif-modal p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 24px; }
+    .admin-notif-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .admin-notif-actions .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+    .admin-notif-actions .btn-secondary:hover { border-color: #bbb; color: var(--text); }
+
+    @media (max-width: 480px) {
+      .admin-notif-modal { padding: 28px 20px 24px; }
+    }
+
     .admin-login { text-align: center; padding: 40px 20px; }
 
     .admin-login h2 {
@@ -1170,6 +1229,19 @@
     }
 
     .admin-footer-link:hover { border-color: #aaa; color: #555; }
+
+    .admin-badge {
+      display: inline-block;
+      background: #e74c3c;
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 100px;
+      vertical-align: super;
+      line-height: 1.2;
+      margin-left: 2px;
+    }
 
     @media (max-width: 768px) {
       .hero { min-height: auto; padding: 40px 0 80px; }
@@ -1525,7 +1597,60 @@
           </div>
           <div class="form-group">
             <label for="countryTz" data-i18n="form-tz-label">Country / Timezone</label>
-            <input type="text" id="countryTz" name="countryTz" data-i18n-placeholder="form-tz-ph" placeholder="e.g. Brazil (BRT) or Poland (CET)">
+            <input type="text" id="countryTz" name="countryTz" list="countryTzList" autocomplete="off" data-i18n-placeholder="form-tz-ph" placeholder="e.g. Brazil (BRT) or Poland (CET)">
+            <datalist id="countryTzList">
+              <option value="Australia (AEDT - Sydney)">
+              <option value="Australia (AEST - Brisbane)">
+              <option value="Australia (AWST - Perth)">
+              <option value="Brazil (BRT)">
+              <option value="Canada (EST - Toronto)">
+              <option value="Canada (PST - Vancouver)">
+              <option value="China (CST - Beijing)">
+              <option value="Colombia (COT)">
+              <option value="Denmark (CET)">
+              <option value="Egypt (EET)">
+              <option value="Finland (EET)">
+              <option value="France (CET)">
+              <option value="Germany (CET)">
+              <option value="Greece (EET)">
+              <option value="Hong Kong (HKT)">
+              <option value="Iceland (GMT)">
+              <option value="India (IST)">
+              <option value="Indonesia (WIB - Jakarta)">
+              <option value="Ireland (GMT)">
+              <option value="Israel (IST)">
+              <option value="Italy (CET)">
+              <option value="Japan (JST)">
+              <option value="Malaysia (MYT)">
+              <option value="Mexico (CST - Mexico City)">
+              <option value="Netherlands (CET)">
+              <option value="New Zealand (NZDT - Wellington)">
+              <option value="Nigeria (WAT)">
+              <option value="Norway (CET)">
+              <option value="Philippines (PHT)">
+              <option value="Poland (CET)">
+              <option value="Portugal (WET)">
+              <option value="Romania (EET)">
+              <option value="Singapore (SGT)">
+              <option value="South Africa (SAST)">
+              <option value="South Korea (KST)">
+              <option value="Spain (CET)">
+              <option value="Sweden (CET)">
+              <option value="Switzerland (CET)">
+              <option value="Taiwan (TST)">
+              <option value="Thailand (ICT)">
+              <option value="Turkey (TRT)">
+              <option value="Ukraine (EET)">
+              <option value="United Arab Emirates (GST)">
+              <option value="United Kingdom (GMT)">
+              <option value="United States (EST - New York)">
+              <option value="United States (CST - Chicago)">
+              <option value="United States (MST - Denver)">
+              <option value="United States (PST - Los Angeles)">
+              <option value="United States (AKST - Anchorage)">
+              <option value="United States (HST - Honolulu)">
+              <option value="Vietnam (ICT)">
+            </datalist>
           </div>
           <div class="form-group">
             <label for="message" data-i18n="form-msg-label">What brings you here? (optional)</label>
@@ -1666,6 +1791,26 @@
     </div>
   </div>
 
+  <!-- ─── New Submissions Notification Popup ─── -->
+  <div class="admin-notif-overlay" id="adminNotifOverlay">
+    <div class="admin-notif-modal">
+      <button class="admin-notif-close" id="adminNotifClose">&times;</button>
+      <div class="admin-notif-icon">&#x1f514;</div>
+      <h3>New requests available</h3>
+      <p>There <span id="adminNotifCountText">are <strong id="adminNotifCount">0</strong> new submission(s)</span> since your last visit.</p>
+      <div id="adminNotifPreview" style="background:var(--section-alt);border-radius:12px;padding:16px;margin-bottom:20px;text-align:left;font-size:0.85rem;display:none;">
+        <div style="font-weight:500;margin-bottom:6px;color:var(--text);">Latest:</div>
+        <div id="adminNotifName" style="color:var(--text);"></div>
+        <div id="adminNotifEmail" style="color:var(--text-muted);font-size:0.8rem;"></div>
+        <div id="adminNotifMsg" style="color:var(--text-muted);font-size:0.8rem;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></div>
+      </div>
+      <div class="admin-notif-actions">
+        <button class="btn-primary" id="adminNotifView">View submissions</button>
+        <button class="btn-secondary" id="adminNotifDismiss">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <div class="container">
       <div class="footer-social">
@@ -1675,7 +1820,7 @@
         <a href="mailto:matias.courios.coach@gmail.com">Email</a>
       </div>
       <p>&copy; 2026 Matias Dopierala Zawada.</p>
-      <p style="margin-top:4px;"><span class="admin-footer-link" id="adminOpenLink">&#x1f512; Admin panel</span></p>
+      <p style="margin-top:4px;"><span class="admin-footer-link" id="adminOpenLink">&#x1f512; Admin panel <span id="adminBadge" class="admin-badge" style="display:none;">0</span></span></p>
     </div>
   </footer>
 
@@ -2940,7 +3085,7 @@
       if (adminAuthed) {
         loginEl.style.display = 'none';
         dashboardEl.classList.add('show');
-        renderDashboard().catch(() => {});
+        renderDashboard().then(checkForNewSubmissions).catch(function() {});
       } else {
         loginEl.style.display = 'block';
         dashboardEl.classList.remove('show');
@@ -2960,7 +3105,7 @@
         sessionStorage.setItem('coaching_admin_auth', '1');
         loginEl.style.display = 'none';
         dashboardEl.classList.add('show');
-        renderDashboard().catch(() => {});
+        renderDashboard().then(checkForNewSubmissions).catch(function() {});
       } else {
         errorEl.textContent = getTranslation(currentLang, 'pw-error') || 'Incorrect password';
       }
@@ -2971,6 +3116,98 @@
     overlay.addEventListener('click', function (e) { if (e.target === overlay) closeAdmin(); });
     loginBtn.addEventListener('click', doLogin);
     pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+
+    // ─── New-submission notification popup ───
+    const ADMIN_LAST_LOGIN_KEY = '_admin_last_login';
+
+    async function checkForNewSubmissions() {
+      var lastLogin = localStorage.getItem(ADMIN_LAST_LOGIN_KEY);
+      if (!lastLogin) {
+        localStorage.setItem(ADMIN_LAST_LOGIN_KEY, Date.now().toString());
+        return;
+      }
+      var lastLoginTime = parseInt(lastLogin, 10);
+
+      var subs = await fetchSupabaseSubmissions();
+      var localSubs = getSubmissions();
+      var allSubs = subs.concat(localSubs);
+
+      var seen = {};
+      var newCount = 0;
+      for (var i = 0; i < allSubs.length; i++) {
+        var id = allSubs[i].id;
+        if (seen[id]) continue;
+        seen[id] = true;
+        var subDate = new Date(allSubs[i].date).getTime();
+        if (!isNaN(subDate) && subDate > lastLoginTime) {
+          newCount++;
+        }
+      }
+
+      if (newCount > 0) {
+        document.getElementById('adminNotifCount').textContent = newCount;
+        document.getElementById('adminNotifCountText').innerHTML = 'are <strong>' + newCount + '</strong> new submission(s)';
+        // Show latest submission preview
+        var latestNew = null;
+        for (var j = 0; j < allSubs.length; j++) {
+          if (seen[allSubs[j].id] === undefined) continue;
+          var dd = new Date(allSubs[j].date).getTime();
+          if (!isNaN(dd) && dd > lastLoginTime) {
+            if (!latestNew || dd > new Date(latestNew.date).getTime()) {
+              latestNew = allSubs[j];
+            }
+          }
+        }
+        if (latestNew) {
+          document.getElementById('adminNotifName').textContent = latestNew.name || 'Unknown';
+          document.getElementById('adminNotifEmail').textContent = latestNew.email || '';
+          document.getElementById('adminNotifMsg').textContent = latestNew.message ? latestNew.message.substring(0, 80) : '';
+          document.getElementById('adminNotifPreview').style.display = '';
+        }
+        document.getElementById('adminNotifOverlay').classList.add('open');
+      }
+
+      localStorage.setItem(ADMIN_LAST_LOGIN_KEY, Date.now().toString());
+    }
+
+    var notifOverlay = document.getElementById('adminNotifOverlay');
+    document.getElementById('adminNotifView').addEventListener('click', function () {
+      notifOverlay.classList.remove('open');
+      // Switch to submissions tab
+      document.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelector('[data-admin-tab="submissions"]').classList.add('active');
+      document.getElementById('adminSubmissionsPanel').style.display = 'block';
+      document.getElementById('adminContentPanel').style.display = 'none';
+      document.getElementById('adminVisitsPanel').style.display = 'none';
+      document.getElementById('adminSettingsPanel').style.display = 'none';
+    });
+    document.getElementById('adminNotifDismiss').addEventListener('click', function () { notifOverlay.classList.remove('open'); });
+    document.getElementById('adminNotifClose').addEventListener('click', function () { notifOverlay.classList.remove('open'); });
+    notifOverlay.addEventListener('click', function (e) { if (e.target === notifOverlay) notifOverlay.classList.remove('open'); });
+
+    // ─── Admin badge update on footer link ───
+    async function updateAdminBadge() {
+      var lastLogin = localStorage.getItem(ADMIN_LAST_LOGIN_KEY);
+      if (!lastLogin) { localStorage.setItem(ADMIN_LAST_LOGIN_KEY, Date.now().toString()); return; }
+      var lastLoginTime = parseInt(lastLogin, 10);
+      var subs = await fetchSupabaseSubmissions();
+      var localSubs = getSubmissions();
+      var allSubs = subs.concat(localSubs);
+      var seen = {};
+      var newCount = 0;
+      for (var i = 0; i < allSubs.length; i++) {
+        if (seen[allSubs[i].id]) continue;
+        seen[allSubs[i].id] = true;
+        var d = new Date(allSubs[i].date).getTime();
+        if (!isNaN(d) && d > lastLoginTime) newCount++;
+      }
+      var badge = document.getElementById('adminBadge');
+      if (newCount > 0) { badge.textContent = newCount; badge.style.display = ''; }
+      else { badge.style.display = 'none'; }
+    }
+    // Update badge on page load and every 60 seconds
+    updateAdminBadge();
+    setInterval(updateAdminBadge, 60000);
 
     // ─── Hamburger menu ───
     var menuOverlay = document.getElementById('menuOverlay');
