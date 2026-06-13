@@ -2495,10 +2495,10 @@
         if (!clean.error && clean.data) { for (var j = 0; j < clean.data.length; j++) data.push(clean.data[j]); }
       }
       // Clean up stale About section content (old paragraphs saved as custom translations)
-      let needsAboutCleanup = data.some(function(r) { return r.key && r.key.startsWith('about-p') && r.lang !== undefined; });
+      let needsAboutCleanup = data.some(function(r) { return r.key && /^about-p\d+$/.test(r.key) && r.lang !== undefined; });
       if (needsAboutCleanup) {
         for (var k = 0; k < data.length; k++) {
-          if (data[k].key && data[k].key.startsWith('about-p')) {
+          if (data[k].key && /^about-p\d+$/.test(data[k].key)) {
             await supabaseClient.from('translations').delete().eq('lang', data[k].lang).eq('key', data[k].key);
           }
         }
