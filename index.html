@@ -2189,13 +2189,18 @@
         localStorage.setItem(VISITS_KEY, JSON.stringify(visits));
       } catch(e) {}
 
-      // Try to store in Supabase (silent fail if table doesn't exist)
+      // Store in Supabase (centralized — visible to admin)
       if (supabaseClient) {
-        supabaseClient.from('page_visits').insert({
-          country: entry.country,
-          city: entry.city,
-          page_url: entry.page
-        }).then().catch(() => {});
+        try {
+          await supabaseClient.from('page_visits').insert({
+            country: entry.country,
+            city: entry.city,
+            page_url: entry.page
+          });
+        } catch(e) {
+          // Table doesn't exist — store in translations table instead
+          await storeVisitInTranslations(entry);
+        }
       }
     }
 
@@ -2204,8 +2209,34 @@
       catch(e) { return []; }
     }
 
-    function renderVisitStats() {
-      const visits = getVisits();
+    async function fetchSupabaseVisits() {
+      if (!supabaseClient) return null;
+      // Try primary page_visits table first
+      try {
+        const { data, error } = await supabaseClient
+          .from('page_visits')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (!error && data && data.length > 0) {
+          return data.map(v => ({
+            date: v.created_at || '',
+            country: v.country || '',
+            city: v.city || '',
+            page: v.page_url || ''
+          }));
+        }
+      } catch(e) {}
+      // Fallback: read from translations table
+      return await fetchSupabaseVisitsFallback();
+    }
+
+    async function renderVisitStats() {
+      // Try Supabase first (centralized), fall back to localStorage
+      let visits = await fetchSupabaseVisits();
+      if (!visits || visits.length === 0) {
+        visits = getVisits();
+      }
+
       document.getElementById('visitTotal').textContent = visits.length;
 
       const now = new Date();
@@ -2239,6 +2270,64 @@
             const d = v.date ? new Date(v.date).toLocaleString() : '-';
             return `<tr><td>${esc(d)}</td><td>${esc(v.country || '-')}</td><td>${esc(v.city || '-')}</td><td>${esc(v.page || '-')}</td></tr>`;
           }).join('');
+    }
+
+    // Fallback: store visit in translations table if page_visits doesn't exist
+    let _visitFallbackKey = 0;
+
+    async function storeVisitInTranslations(entry) {
+      if (!supabaseClient) return;
+      try {
+        _visitFallbackKey++;
+        const key = 'visit_' + Date.now() + '_' + _visitFallbackKey;
+        await supabaseClient.from('translations').insert({
+          lang: '__visit__',
+          key: key,
+          value: JSON.stringify({ date: entry.date, country: entry.country, city: entry.city, page_url: entry.page })
+        });
+        return true;
+      } catch(e) {
+        return false;
+      }
+    }
+
+    async function createPageVisitsTable() {
+      // Attempt to create via raw SQL endpoint
+      try {
+        const res = await fetch('https://herrghyefayfsrchgfhn.supabase.co/rest/v1/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SB_ANON_KEY,
+            'Authorization': 'Bearer ' + SB_ANON_KEY,
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify({
+            query: "CREATE TABLE IF NOT EXISTS page_visits (id BIGSERIAL PRIMARY KEY, created_at TIMESTAMPTZ DEFAULT NOW(), country TEXT, city TEXT, page_url TEXT);"
+          })
+        });
+        if (res.ok) return true;
+      } catch(e) {}
+      return false;
+    }
+
+    async function fetchSupabaseVisitsFallback() {
+      if (!supabaseClient) return null;
+      try {
+        const { data, error } = await supabaseClient
+          .from('translations')
+          .select('*')
+          .eq('lang', '__visit__')
+          .order('key', { ascending: false });
+        if (error) throw error;
+        if (!data || data.length === 0) return null;
+        return data.map(v => {
+          try { var p = JSON.parse(v.value); return { date: p.date || '', country: p.country || '', city: p.city || '', page: p.page_url || '' }; }
+          catch(e) { return null; }
+        }).filter(Boolean);
+      } catch(e) {
+        return null;
+      }
     }
 
     // Track visit on page load (after a short delay to not block rendering)
@@ -2331,6 +2420,7 @@
       if (data.length > 0) {
         customTranslations = {};
         data.forEach(row => {
+          if (row.lang === '__visit__') return;
           if (!customTranslations[row.lang]) customTranslations[row.lang] = {};
           customTranslations[row.lang][row.key] = row.value;
         });
@@ -2694,9 +2784,13 @@
       }
     });
 
-    document.getElementById('adminClearVisits').addEventListener('click', function () {
-      if (confirm('Delete ALL local visit data? This cannot be undone.')) {
+    document.getElementById('adminClearVisits').addEventListener('click', async function () {
+      if (confirm('Delete ALL visit data? This cannot be undone.')) {
         localStorage.removeItem('coaching_visits');
+        if (supabaseClient) {
+          try { await supabaseClient.from('page_visits').delete().neq('id', 0); } catch(e) {}
+          try { await supabaseClient.from('translations').delete().eq('lang', '__visit__'); } catch(e) {}
+        }
         renderVisitStats();
       }
     });
