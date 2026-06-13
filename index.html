@@ -306,33 +306,16 @@
     .about-text p + p { margin-top: 16px; }
 
     .about-photo-triptych {
-      display: grid;
-      grid-template-columns: 0.8fr 1.2fr 0.8fr;
-      gap: 6px;
       width: 100%;
-      height: 28vw;
-      max-height: 400px;
-      min-height: 260px;
-    }
-
-    .triptych-panel {
+      aspect-ratio: 1;
+      border-radius: 50%;
       background-image: url('matias-photo.png');
       background-size: cover;
-      background-repeat: no-repeat;
-      border-radius: 4px;
-      background-position: 0% 50%;
+      background-position: 50% 50%;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     }
 
-    .triptych-panel:first-child::after,
-    .triptych-panel:last-child::after {
-      content: '';
-      display: block;
-      height: 100%;
-      pointer-events: none;
-    }
-    .triptych-panel:first-child::after { background: linear-gradient(90deg, rgba(0,0,0,0.1) 0%, transparent 70%); }
-    .triptych-panel:last-child::after { background: linear-gradient(270deg, rgba(0,0,0,0.1) 0%, transparent 70%); }
+    .triptych-panel { display: none; }
 
     .offerings-grid {
       display: grid;
@@ -1172,13 +1155,24 @@
       .hero-content h1 { font-size: 2rem; }
       .hero-note { font-size: 0.8rem; }
       .about-grid { display: flex; flex-direction: column; gap: 16px; align-items: center; }
-      .about-photo-triptych { display: flex; justify-content: center; height: auto; max-height: none; min-height: 0; order: -1; gap: 0; }
-      .about-photo-triptych .triptych-panel { display: none; }
-      .about-photo-triptych .triptych-panel:nth-child(2) {
-        display: block; max-width: 220px; width: 100%; height: auto;
-        aspect-ratio: 3/4; border-radius: 16px !important;
-        background-position: 50% 50% !important; background-size: cover;
+      .about-photo-triptych {
+        display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px;
+        width: 100%; max-width: 340px;
+        aspect-ratio: auto; border-radius: 0; box-shadow: none;
+        background: none; order: -1;
       }
+      .about-photo-triptych .triptych-panel {
+        display: block;
+        aspect-ratio: 0.55;
+        background-image: url('matias-photo.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      }
+      .about-photo-triptych .triptych-panel:first-child { background-position: 0% 50%; border-radius: 10px 0 0 10px; }
+      .about-photo-triptych .triptych-panel:nth-child(2) { background-position: 50% 50%; }
+      .about-photo-triptych .triptych-panel:last-child { background-position: 100% 50%; border-radius: 0 10px 10px 0; }
       .about-text { text-align: left; }
       .offerings-grid { grid-template-columns: 1fr; gap: 20px; }
       .values-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -1219,7 +1213,10 @@
       .btn-primary, .btn-secondary { font-size: 0.8rem; padding: 10px 20px; }
       .section-title { font-size: 1.4rem; }
       .section-desc { font-size: 0.85rem; }
-      .about-photo-triptych .triptych-panel:nth-child(2) { max-width: 180px; }
+      .about-photo-triptych { max-width: 260px; gap: 3px; }
+      .about-photo-triptych .triptych-panel { aspect-ratio: 0.5; border-radius: 3px; }
+      .about-photo-triptych .triptych-panel:first-child { border-radius: 8px 0 0 8px; }
+      .about-photo-triptych .triptych-panel:last-child { border-radius: 0 8px 8px 0; }
       .testimonial-card { flex: 0 0 240px; padding: 20px; }
       .testimonial-card blockquote { font-size: 0.82rem; }
       .footer-social a { font-size: 0.78rem; }
@@ -1319,9 +1316,9 @@
           <p data-i18n="about-p3">Today, I help others walk the same path I had to walk for myself: overcoming fear, learning to belong to yourself, and building a life that actually feels like yours. If you're queer, trans, questioning, or simply someone who wants to grow — you belong here. Let's discover your next chapter, together.</p>
         </div>
         <div class="about-photo-triptych fade-in" role="img" aria-label="Matias Dopierala Zawada" data-i18n-aria="about-photo-alt">
-          <div class="triptych-panel" aria-hidden="true" style="background-position: 0% 50%; border-radius: 8px 0 0 8px;"></div>
-          <div class="triptych-panel" aria-hidden="true" style="background-position: 50% 50%;"></div>
-          <div class="triptych-panel" aria-hidden="true" style="background-position: 100% 50%; border-radius: 0 8px 8px 0;"></div>
+          <div class="triptych-panel" aria-hidden="true"></div>
+          <div class="triptych-panel" aria-hidden="true"></div>
+          <div class="triptych-panel" aria-hidden="true"></div>
         </div>
       </div>
     </div>
