@@ -2191,13 +2191,16 @@
 
       // Store in Supabase (centralized — visible to admin)
       if (supabaseClient) {
+        var _pvErr = null;
         try {
-          await supabaseClient.from('page_visits').insert({
+          var _pvRes = await supabaseClient.from('page_visits').insert({
             country: entry.country,
             city: entry.city,
             page_url: entry.page
           });
-        } catch(e) {
+          if (_pvRes && _pvRes.error) _pvErr = _pvRes.error;
+        } catch(e) { _pvErr = e; }
+        if (_pvErr) {
           // Table doesn't exist — store in translations table instead
           await storeVisitInTranslations(entry);
         }
