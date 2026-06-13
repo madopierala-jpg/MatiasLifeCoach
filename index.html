@@ -644,7 +644,8 @@
     .form-group label .required { color: #c0392b; font-weight: 400; }
 
     .form-group input,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
       width: 100%;
       padding: 12px 16px;
       font-family: var(--font-body);
@@ -659,12 +660,22 @@
     }
 
     .form-group input:focus,
-    .form-group textarea:focus {
+    .form-group textarea:focus,
+    .form-group select:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(184, 148, 74, 0.1);
     }
 
     .form-group textarea { resize: vertical; min-height: 80px; }
+
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M1.41.59 6 5.17 10.59.59 12 2l-6 6-6-6z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 12px;
+      cursor: pointer;
+    }
 
     .form-footer { font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; }
 
@@ -1492,6 +1503,19 @@
             <input type="text" id="social" name="social" data-i18n-placeholder="form-social-ph" placeholder="Instagram / TikTok handle or where you found me">
           </div>
           <div class="form-group">
+            <label for="preferredTime" data-i18n="form-time-label">Preferred time to contact</label>
+            <select id="preferredTime" name="preferredTime">
+              <option value="any">Any time (within my availability)</option>
+              <option value="morning">Morning (7:00 – 12:00 Sydney time)</option>
+              <option value="afternoon">Afternoon (12:00 – 17:00 Sydney time)</option>
+              <option value="evening">Evening (17:00 – 19:00 Sydney time)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="countryTz" data-i18n="form-tz-label">Country / Timezone</label>
+            <input type="text" id="countryTz" name="countryTz" data-i18n-placeholder="form-tz-ph" placeholder="e.g. Brazil (BRT) or Poland (CET)">
+          </div>
+          <div class="form-group">
             <label for="message" data-i18n="form-msg-label">What brings you here? (optional)</label>
             <textarea id="message" name="message" data-i18n-placeholder="form-msg-ph" placeholder="A few words about what you'd like to explore..."></textarea>
           </div>
@@ -1558,13 +1582,15 @@
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Social</th>
+                  <th>Preferred time</th>
+                  <th>Country / TZ</th>
                   <th>Message</th>
                   <th>Status</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody id="adminTableBody">
-                <tr class="empty"><td colspan="8">No submissions yet.</td></tr>
+                <tr class="empty"><td colspan="10">No submissions yet.</td></tr>
               </tbody>
             </table>
           </div>
@@ -1747,6 +1773,10 @@
         'form-email-ph': 'alex@example.com',
         'form-phone-ph': '+61 4XX XXX XXX',
         'form-social-ph': 'Instagram / TikTok handle or where you found me',
+        'form-time-label': 'Preferred time to contact',
+        'form-tz-label': 'Country / Timezone',
+        'form-tz-ph': 'e.g. Brazil (BRT) or Poland (CET)',
+        'form-email-required': 'Please enter a valid email address.',
         'form-msg-label': 'What brings you here? (optional)',
         'form-msg-ph': 'A few words about what you\'d like to explore...',
         'form-submit': 'Send request',
@@ -1861,6 +1891,10 @@
         'form-email-ph': 'alex@ejemplo.com',
         'form-phone-ph': '+61 4XX XXX XXX',
         'form-social-ph': 'Usuario de Instagram / TikTok o c\u00f3mo me encontraste',
+        'form-time-label': 'Horario preferido para contactar',
+        'form-tz-label': 'Pa\u00eds / Zona horaria',
+        'form-tz-ph': 'Ej. Brasil (BRT) o Espa\u00f1a (CET)',
+        'form-email-required': 'Por favor ingresa un correo electr\u00f3nico v\u00e1lido.',
         'form-msg-label': '\u00bfQu\u00e9 te trae por aqu\u00ed? (opcional)',
         'form-msg-ph': 'Algunas palabras sobre lo que te gustar\u00eda explorar...',
         'form-submit': 'Enviar solicitud',
@@ -1975,6 +2009,10 @@
         'form-email-ph': 'alex@przyk\u0142ad.pl',
         'form-phone-ph': '+48 XXX XXX XXX',
         'form-social-ph': 'Instagram / TikTok lub gdzie mnie znalaz\u0142e\u015b',
+        'form-time-label': 'Preferowany czas kontaktu',
+        'form-tz-label': 'Kraj / Strefa czasowa',
+        'form-tz-ph': 'Np. Brazylia (BRT) lub Polska (CET)',
+        'form-email-required': 'Prosz\u0119 poda\u0107 prawid\u0142owy adres email.',
         'form-msg-label': 'Co ci\u0119 tu sprowadza? (opcjonalne)',
         'form-msg-ph': 'Kilka s\u0142\u00f3w o tym, co chcia\u0142by\u015b zbada\u0107...',
         'form-submit': 'Wy\u015blij zapytanie',
@@ -2089,6 +2127,10 @@
         'form-email-ph': 'alex@exemplo.com.br',
         'form-phone-ph': '+55 XX XXXX XXXX',
         'form-social-ph': 'Instagram / TikTok ou onde me encontrou',
+        'form-time-label': 'Hor\u00e1rio preferido para contato',
+        'form-tz-label': 'Pa\u00eds / Fuso hor\u00e1rio',
+        'form-tz-ph': 'Ex. Brasil (BRT) ou Portugal (WET)',
+        'form-email-required': 'Por favor insira um e-mail v\u00e1lido.',
         'form-msg-label': 'O que te traz aqui? (opcional)',
         'form-msg-ph': 'Algumas palavras sobre o que gostaria de explorar...',
         'form-submit': 'Enviar pedido',
@@ -2382,6 +2424,8 @@
         email: entry.email,
         phone: entry.phone,
         social: entry.social,
+        preferred_time: entry.preferredTime,
+        country_tz: entry.countryTz,
         message: entry.message
       });
       if (error) console.warn('Supabase save failed:', error);
@@ -2439,6 +2483,8 @@
         email: s.email,
         phone: s.phone || '',
         social: s.social || '',
+        preferredTime: s.preferred_time || '',
+        countryTz: s.country_tz || '',
         message: s.message || '',
         status: statuses[s.id] || (statuses[String(s.id)] || 'New')
       }));
@@ -2565,7 +2611,7 @@
         pricing: ['pricing-label', 'pricing-title', 'pricing-title-overlay', 'pricing-desc', 'pricing-badge', 'pricing-back', 'plan-1-title', 'plan-1-desc', 'plan-1-price', 'plan-1-cta', 'plan-2-title', 'plan-2-desc', 'plan-2-price', 'plan-2-cta', 'plan-3-title', 'plan-3-desc', 'plan-3-price', 'plan-3-cta', 'plan-4-title', 'plan-4-desc', 'plan-4-price', 'plan-4-cta'],
         testimonials: ['test-label', 'test-title', 'test-desc', 'test-swipe'],
         booking: ['book-label', 'book-title', 'book-desc', 'expect-title', 'expect-p1', 'expect-p2', 'avail-title', 'avail-tz', 'avail-hours', 'avail-note', 'questions-label', 'reach-out', 'or'],
-        form: ['form-name-ph', 'form-email-ph', 'form-phone-ph', 'form-social-ph', 'form-msg-label', 'form-msg-ph', 'form-submit', 'form-footer', 'data-note'],
+        form: ['form-name-ph', 'form-email-ph', 'form-phone-ph', 'form-social-ph', 'form-time-label', 'form-tz-label', 'form-tz-ph', 'form-email-required', 'form-msg-label', 'form-msg-ph', 'form-submit', 'form-footer', 'data-note'],
       };
 
       const groupLabels = {
@@ -2622,6 +2668,8 @@
         email: data.get('email') || '',
         phone: data.get('phone') || '',
         social: data.get('social') || '',
+        preferredTime: data.get('preferredTime') || '',
+        countryTz: data.get('countryTz') || '',
         message: data.get('message') || '',
         status: 'New'
       };
@@ -2653,6 +2701,12 @@
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         const data = new FormData(form);
+        const emailVal = data.get('email') || '';
+        if (!emailVal.trim() || !emailVal.includes('@')) {
+          const errMsg = getTranslation(currentLang, 'form-email-required') || 'Please enter a valid email address.';
+          alert(errMsg);
+          return;
+        }
         const entry = saveSubmission(data);
         sendConfirmationEmail(entry.name, entry.email, currentLang);
         sendAdminNotification(entry);
@@ -2715,7 +2769,7 @@
 
       tableBody.innerHTML = '';
       if (subs.length === 0) {
-        tableBody.innerHTML = '<tr class="empty"><td colspan="8">No submissions yet.</td></tr>';
+        tableBody.innerHTML = '<tr class="empty"><td colspan="10">No submissions yet.</td></tr>';
         return;
       }
 
@@ -2737,7 +2791,9 @@
           <td><a href="mailto:${esc(s.email)}" style="color:var(--accent);text-decoration:none;">${esc(s.email)}</a></td>
           <td>${esc(s.phone)}</td>
           <td style="font-size:0.8rem;">${esc(s.social)}</td>
-          <td style="font-size:0.8rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;">${esc(s.message)}</td>
+          <td style="font-size:0.8rem;">${esc(s.preferredTime)}</td>
+          <td style="font-size:0.8rem;">${esc(s.countryTz)}</td>
+          <td style="font-size:0.8rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;">${esc(s.message)}</td>
           <td style="white-space:nowrap;">${statusHtml}</td>
           <td><button class="admin-delete-btn" data-id="${s.id}" title="Delete">&times;</button></td>
         `;
@@ -2903,9 +2959,9 @@
       let subs = await fetchSupabaseSubmissions();
       if (subs.length === 0) subs = getSubmissions();
       if (subs.length === 0) return alert('No data to export.');
-      const headers = ['Date','Name','Email','Phone','Social','Message','Status'];
+      const headers = ['Date','Name','Email','Phone','Social','Preferred time','Country / TZ','Message','Status'];
       const rows = subs.map(s => [
-        s.date, s.name, s.email, s.phone, s.social,
+        s.date, s.name, s.email, s.phone, s.social, s.preferredTime, s.countryTz,
         '"' + String(s.message).replace(/"/g, '""') + '"',
         s.status || 'New'
       ]);
