@@ -298,8 +298,8 @@
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
+      gap: 48px;
+      align-items: start;
     }
 
     .about-text { font-size: 1rem; color: var(--text-muted); line-height: 1.8; grid-column: 1; }
@@ -307,13 +307,14 @@
 
     .about-photo {
       width: 100%;
-      border-radius: 16px;
+      max-width: 420px;
+      aspect-ratio: 3/4;
       object-fit: cover;
+      border-radius: 16px;
       display: block;
-      max-width: 380px;
-      margin: 0 auto;
-      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.1);
       grid-column: 2;
+      justify-self: start;
     }
 
     .offerings-grid {
@@ -1154,7 +1155,7 @@
       .hero-content h1 { font-size: 2rem; }
       .hero-note { font-size: 0.8rem; }
       .about-grid { grid-template-columns: 1fr; gap: 24px; }
-      .about-photo { max-width: 260px; grid-column: 1; margin-bottom: 8px; }
+      .about-photo { max-width: 240px; grid-column: 1; justify-self: center; margin-bottom: 4px; }
       .about-text { text-align: left; grid-column: 1; }
       .offerings-grid { grid-template-columns: 1fr; gap: 20px; }
       .values-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -1195,7 +1196,7 @@
       .btn-primary, .btn-secondary { font-size: 0.8rem; padding: 10px 20px; }
       .section-title { font-size: 1.4rem; }
       .section-desc { font-size: 0.85rem; }
-      .about-photo { max-width: 200px; grid-column: 1; }
+      .about-photo { max-width: 180px; grid-column: 1; justify-self: center; }
       .testimonial-card { flex: 0 0 240px; padding: 20px; }
       .testimonial-card blockquote { font-size: 0.82rem; }
       .footer-social a { font-size: 0.78rem; }
