@@ -71,7 +71,7 @@
       --font-body: 'Inter', -apple-system, sans-serif;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; height: 100%; }
 
     body {
       font-family: var(--font-body);
@@ -80,7 +80,12 @@
       line-height: 1.6;
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
     }
+
+    main { flex: 1; }
 
     .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
@@ -649,7 +654,7 @@
       width: 100%;
       padding: 12px 16px;
       font-family: var(--font-body);
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 300;
       color: var(--text);
       background: var(--section-alt);
@@ -677,7 +682,7 @@
       cursor: pointer;
     }
 
-    .form-group select option { font-size: 0.85rem; }
+    .form-group select option { font-size: 0.8rem; }
 
     .form-footer { font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; }
 
@@ -2426,8 +2431,11 @@
 
     const STATUS_STORAGE_KEY = '_submission_statuses';
 
+    const SUB_FALLBACK_KEY = '_submissions_fallback';
+
     async function saveToSupabase(entry) {
       if (!supabaseClient) return;
+      // Try the submissions table first
       const { error } = await supabaseClient.from('submissions').insert({
         name: entry.name,
         email: entry.email,
@@ -2437,9 +2445,47 @@
         country_tz: entry.countryTz,
         message: entry.message
       });
-      if (error) console.warn('Supabase save failed:', error);
-      // Store status separately (submissions table may not have a status column)
+      if (error) {
+        console.warn('Supabase submissions table insert failed, using fallback:', error);
+        // Fallback: store in the translations table (which definitely exists)
+        await saveSubmissionFallback(entry);
+      }
+      // Store status separately (works for both primary & fallback)
       await saveSubmissionStatus(entry.id, 'New');
+    }
+
+    async function saveSubmissionFallback(entry) {
+      try {
+        var _cur = await supabaseClient.from('translations').select('value').eq('lang', 'en').eq('key', SUB_FALLBACK_KEY).maybeSingle();
+        var list = [];
+        if (!_cur.error && _cur.data && _cur.data.value) {
+          try { list = JSON.parse(_cur.data.value); } catch(e) { list = []; }
+          if (!Array.isArray(list)) list = [];
+        }
+        // Only keep last 500 to stay under limits
+        if (list.length > 500) list = list.slice(0, 500);
+        list.unshift(entry);
+        var payload = JSON.stringify(list);
+        if (_cur.data) {
+          await supabaseClient.from('translations').update({ value: payload }).eq('lang', 'en').eq('key', SUB_FALLBACK_KEY);
+        } else {
+          await supabaseClient.from('translations').insert({ lang: 'en', key: SUB_FALLBACK_KEY, value: payload });
+        }
+      } catch(e) {
+        console.warn('Fallback save also failed:', e);
+      }
+    }
+
+    async function fetchFallbackSubmissions() {
+      if (!supabaseClient) return [];
+      try {
+        var _cur = await supabaseClient.from('translations').select('value').eq('lang', 'en').eq('key', SUB_FALLBACK_KEY).maybeSingle();
+        if (!_cur.error && _cur.data && _cur.data.value) {
+          var parsed = JSON.parse(_cur.data.value);
+          return Array.isArray(parsed) ? parsed : [];
+        }
+      } catch(e) {}
+      return [];
     }
 
     async function saveSubmissionStatus(id, status) {
@@ -2476,33 +2522,73 @@
 
     async function fetchSupabaseSubmissions() {
       if (!supabaseClient) return [];
-      const { data, error } = await supabaseClient
-        .from('submissions')
-        .select('*')
-        .order('created_at', { ascending: false });
+      var subs = [];
+      var statuses = {};
+
+      // Try the submissions table
+      var subResult = await supabaseClient.from('submissions').select('*').order('created_at', { ascending: false });
+      var data = subResult.data, error = subResult.error;
       if (error) {
-        console.warn('Supabase fetch failed:', error);
-        return [];
+        console.warn('Supabase submissions table fetch failed:', error);
+      } else {
+        statuses = await loadSubmissionStatuses();
+        subs = data.map(s => ({
+          id: s.id,
+          date: s.created_at,
+          name: s.name,
+          email: s.email,
+          phone: s.phone || '',
+          social: s.social || '',
+          preferredTime: s.preferred_time || '',
+          countryTz: s.country_tz || '',
+          message: s.message || '',
+          status: statuses[s.id] || (statuses[String(s.id)] || 'New')
+        }));
       }
-      var statuses = await loadSubmissionStatuses();
-      return data.map(s => ({
-        id: s.id,
-        date: s.created_at,
-        name: s.name,
-        email: s.email,
-        phone: s.phone || '',
-        social: s.social || '',
-        preferredTime: s.preferred_time || '',
-        countryTz: s.country_tz || '',
-        message: s.message || '',
-        status: statuses[s.id] || (statuses[String(s.id)] || 'New')
-      }));
+
+      // Also merge fallback entries (from translations table)
+      var fallback = await fetchFallbackSubmissions();
+      if (fallback.length > 0) {
+        subs = subs.concat(fallback.map((e, i) => ({
+          id: e.id || 'fb-' + i,
+          date: e.date,
+          name: e.name,
+          email: e.email,
+          phone: e.phone || '',
+          social: e.social || '',
+          preferredTime: e.preferredTime || '',
+          countryTz: e.countryTz || '',
+          message: e.message || '',
+          status: statuses[e.id] || (statuses[String(e.id)] || 'New')
+        })));
+        // Sort by date descending
+        subs.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+      }
+
+      return subs;
     }
 
     async function deleteFromSupabase(id) {
       if (!supabaseClient) return;
-      const { error } = await supabaseClient.from('submissions').delete().eq('id', id);
-      if (error) console.warn('Supabase delete failed:', error);
+      // If id is numeric (from submissions table), try that first
+      if (/^\d+$/.test(id)) {
+        const { error } = await supabaseClient.from('submissions').delete().eq('id', parseInt(id, 10));
+        if (error) console.warn('Supabase delete failed:', error);
+        return;
+      }
+      // Fallback: remove from translations-based storage
+      try {
+        var _cur = await supabaseClient.from('translations').select('value').eq('lang', 'en').eq('key', SUB_FALLBACK_KEY).maybeSingle();
+        if (!_cur.error && _cur.data && _cur.data.value) {
+          var list = JSON.parse(_cur.data.value);
+          if (Array.isArray(list)) {
+            list = list.filter(function(e) { return e.id !== id; });
+            await supabaseClient.from('translations').update({ value: JSON.stringify(list) }).eq('lang', 'en').eq('key', SUB_FALLBACK_KEY);
+          }
+        }
+      } catch(e) {
+        console.warn('Fallback delete failed:', e);
+      }
     }
 
     // ─── Custom translations ───
@@ -2684,9 +2770,6 @@
       subs.unshift(entry);
       localStorage.setItem('coaching_submissions', JSON.stringify(subs));
 
-      // Save to Supabase in background
-      saveToSupabase(entry);
-
       return entry;
     }
 
@@ -2711,7 +2794,7 @@
 
     const form = document.querySelector('form[name="booking"]');
     if (form) {
-      form.addEventListener('submit', function (e) {
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
         const data = new FormData(form);
         const emailVal = data.get('email') || '';
@@ -2723,6 +2806,8 @@
         const entry = saveSubmission(data);
         sendConfirmationEmail(entry.name, entry.email, currentLang);
         sendAdminNotification(entry);
+        // Wait for Supabase storage before showing alert
+        await saveToSupabase(entry);
 
         // Also POST to Netlify Forms if deployed on a server
         if (window.location.protocol !== 'file:') {
@@ -2986,9 +3071,19 @@
       a.click();
     });
 
-    document.getElementById('adminClearAll').addEventListener('click', function () {
+    document.getElementById('adminClearAll').addEventListener('click', async function () {
       if (confirm('Delete ALL submissions? This cannot be undone.')) {
         localStorage.setItem('coaching_submissions', '[]');
+        if (supabaseClient) {
+          try {
+            // Clear submissions table
+            await supabaseClient.from('submissions').delete().not('id', 'is', null);
+          } catch(e) {}
+          try {
+            // Clear fallback
+            await supabaseClient.from('translations').update({ value: '[]' }).eq('lang', 'en').eq('key', SUB_FALLBACK_KEY);
+          } catch(e) {}
+        }
         renderDashboard().catch(() => {});
       }
     });
