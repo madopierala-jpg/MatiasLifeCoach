@@ -1086,11 +1086,12 @@
     .status-select {
       font-family: var(--font-body); font-size: 0.75rem; padding: 3px 6px; border-radius: 6px;
       border: 1px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer;
-      max-width: 110px;
+      max-width: 120px; font-weight: 600;
     }
-    .status-select option[value="New Request"] { font-weight: 600; color: #b8944a; }
-    .status-select option[value="Contacted"] { color: #2d6a4f; }
-    .status-select option[value="Closed"] { color: #7a726a; }
+    .status-select.s-new { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+    .status-select.s-pending { background: #fff3cd; color: #856404; border-color: #ffeeba; }
+    .status-select.s-contacted { background: #cce5ff; color: #004085; border-color: #b8daff; }
+    .status-select.s-closed { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
 
     .admin-footer-link {
       color: var(--text-muted);
@@ -2301,7 +2302,7 @@
       });
       if (error) console.warn('Supabase save failed:', error);
       // Store status separately (submissions table may not have a status column)
-      await saveSubmissionStatus(entry.id, 'New Request');
+      await saveSubmissionStatus(entry.id, 'New');
     }
 
     async function saveSubmissionStatus(id, status) {
@@ -2355,7 +2356,7 @@
         phone: s.phone || '',
         social: s.social || '',
         message: s.message || '',
-        status: statuses[s.id] || (statuses[String(s.id)] || 'New Request')
+        status: statuses[s.id] || (statuses[String(s.id)] || 'New')
       }));
     }
 
@@ -2525,7 +2526,7 @@
         phone: data.get('phone') || '',
         social: data.get('social') || '',
         message: data.get('message') || '',
-        status: 'New Request'
+        status: 'New'
       };
       subs.unshift(entry);
       localStorage.setItem('coaching_submissions', JSON.stringify(subs));
@@ -2625,9 +2626,10 @@
         const d = new Date(s.date);
         const dateStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const tr = document.createElement('tr');
-        var st = s.status || 'New Request';
-        var statusOptions = ['New Request', 'Pending', 'Contacted', 'Closed'];
-        var statusHtml = '<select class="status-select" data-id="' + esc(s.id) + '">';
+        var st = s.status || 'New';
+        var statusOptions = ['New', 'Pending', 'Contacted', 'Closed'];
+        var stClass = st.toLowerCase().replace(/\s+/g, '-');
+        var statusHtml = '<select class="status-select s-' + stClass + '" data-id="' + esc(s.id) + '">';
         statusOptions.forEach(function(opt) {
           statusHtml += '<option value="' + opt + '"' + (opt === st ? ' selected' : '') + '>' + opt + '</option>';
         });
@@ -2661,6 +2663,7 @@
         sel.addEventListener('change', async function () {
           var newStatus = this.value;
           var id = this.dataset.id;
+          this.className = 'status-select s-' + newStatus.toLowerCase().replace(/\s+/g, '-');
           // Save to localStorage
           var localSubs = getSubmissions();
           var found = false;
@@ -2807,7 +2810,7 @@
       const rows = subs.map(s => [
         s.date, s.name, s.email, s.phone, s.social,
         '"' + String(s.message).replace(/"/g, '""') + '"',
-        s.status || 'New Request'
+        s.status || 'New'
       ]);
       const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
       const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
