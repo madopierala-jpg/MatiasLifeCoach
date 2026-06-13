@@ -324,6 +324,16 @@
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     }
 
+    .triptych-panel:first-child::after,
+    .triptych-panel:last-child::after {
+      content: '';
+      display: block;
+      height: 100%;
+      pointer-events: none;
+    }
+    .triptych-panel:first-child::after { background: linear-gradient(90deg, rgba(0,0,0,0.1) 0%, transparent 70%); }
+    .triptych-panel:last-child::after { background: linear-gradient(270deg, rgba(0,0,0,0.1) 0%, transparent 70%); }
+
     .offerings-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1308,10 +1318,10 @@
           <p data-i18n="about-p2">That work of becoming who you are — I learned it doesn't happen in isolation. Whether leading transformation at Santander Group and BBVA or sitting with someone ready to rewrite their story, I've always been drawn to the same question: how do we navigate the unknown? Being named a Santander Group Young Leader in 2024 reminded me that strategic clarity and deep empathy aren't opposites — they come from the same place. Career, confidence, purpose — they're all connected because you are.</p>
           <p data-i18n="about-p3">Today, I help others walk the same path I had to walk for myself: overcoming fear, learning to belong to yourself, and building a life that actually feels like yours. If you're queer, trans, questioning, or simply someone who wants to grow — you belong here. Let's discover your next chapter, together.</p>
         </div>
-        <div class="about-photo-triptych fade-in">
-          <div class="triptych-panel" style="background-position: 0% 50%; border-radius: 8px 0 0 8px;"></div>
-          <div class="triptych-panel" style="background-position: 50% 50%;"></div>
-          <div class="triptych-panel" style="background-position: 100% 50%; border-radius: 0 8px 8px 0;"></div>
+        <div class="about-photo-triptych fade-in" role="img" aria-label="Matias Dopierala Zawada" data-i18n-aria="about-photo-alt">
+          <div class="triptych-panel" aria-hidden="true" style="background-position: 0% 50%; border-radius: 8px 0 0 8px;"></div>
+          <div class="triptych-panel" aria-hidden="true" style="background-position: 50% 50%;"></div>
+          <div class="triptych-panel" aria-hidden="true" style="background-position: 100% 50%; border-radius: 0 8px 8px 0;"></div>
         </div>
       </div>
     </div>
@@ -2154,6 +2164,14 @@
         const val = getTranslation(lang, key);
         if (val !== undefined && val !== '') {
           el.alt = val;
+        }
+      });
+
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const key = el.dataset.i18nAria;
+        const val = getTranslation(lang, key);
+        if (val !== undefined && val !== '') {
+          el.setAttribute('aria-label', val);
         }
       });
 
