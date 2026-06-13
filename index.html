@@ -2580,8 +2580,8 @@
 
     async function saveToSupabase(entry) {
       if (!supabaseClient) return;
-      // Try the submissions table first
-      const { error } = await supabaseClient.from('submissions').insert({
+      // Attempt with full columns; some may be missing if schema cache is stale
+      const fullPayload = {
         name: entry.name,
         email: entry.email,
         phone: entry.phone,
@@ -2589,13 +2589,22 @@
         preferred_time: entry.preferredTime,
         country_tz: entry.countryTz,
         message: entry.message
-      });
-      if (error) {
+      };
+      const { error } = await supabaseClient.from('submissions').insert(fullPayload);
+      if (error && error.code === 'PGRST204') {
+        // Schema cache missing columns — retry with the subset that exists
+        const slim = { name: entry.name, email: entry.email, message: entry.message };
+        if (entry.phone) slim.phone = entry.phone;
+        if (entry.social) slim.social = entry.social;
+        const { error: e2 } = await supabaseClient.from('submissions').insert(slim);
+        if (e2) {
+          console.warn('Supabase submissions slim insert also failed, using fallback:', e2);
+          await saveSubmissionFallback(entry);
+        }
+      } else if (error) {
         console.warn('Supabase submissions table insert failed, using fallback:', error);
-        // Fallback: store in the translations table (which definitely exists)
         await saveSubmissionFallback(entry);
       }
-      // Store status separately (works for both primary & fallback)
       await saveSubmissionStatus(entry.id, 'New');
     }
 
