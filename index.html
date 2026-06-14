@@ -3211,7 +3211,7 @@
     }
 
     document.addEventListener('click', function(e) {
-      var payBtn = e.target.closest('.stripe-pay-btn');
+      var payBtn = e.target.closest('.stripe-pay-btn, .payment-btn');
       if (payBtn) {
         e.preventDefault();
         var key = 'stripe_buy_id_' + payBtn.dataset.buy;
