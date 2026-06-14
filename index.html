@@ -3682,14 +3682,26 @@
       });
     }
 
+    function resetAdminPanels() {
+      document.querySelectorAll('.admin-panel-section').forEach(function(s) {
+        s.classList.remove('show');
+      });
+      document.querySelectorAll('.admin-tab').forEach(function(t) {
+        t.classList.remove('active');
+      });
+    }
+
     function openAdmin() {
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
       pwInput.value = '';
       errorEl.textContent = '';
+      resetAdminPanels();
       if (adminAuthed) {
         loginEl.style.display = 'none';
         dashboardEl.classList.add('show');
+        document.querySelector('[data-admin-tab="submissions"]').classList.add('active');
+        document.getElementById('adminSubmissionsPanel').classList.add('show');
         renderDashboard().then(checkForNewSubmissions).catch(function() {});
       } else {
         loginEl.style.display = 'block';
@@ -3701,6 +3713,8 @@
     function closeAdmin() {
       overlay.classList.remove('open');
       document.body.style.overflow = '';
+      resetAdminPanels();
+      dashboardEl.classList.remove('show');
     }
 
     function doLogin() {
