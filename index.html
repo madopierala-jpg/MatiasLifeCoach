@@ -761,6 +761,58 @@
 
     .admin-overlay.open { display: flex; }
 
+    /* ─── Customer modal ─── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(26, 24, 23, 0.6);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .overlay.open { display: flex; }
+    .overlay-content {
+      background: #fff;
+      border-radius: 20px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    .overlay-content::-webkit-scrollbar { width: 6px; }
+    .overlay-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .overlay-close {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 0 4px;
+    }
+    .overlay-close:hover { color: var(--text); }
+    .cust-input {
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border 0.15s ease;
+    }
+    .cust-input:focus { border-color: var(--accent); }
+
+    @media (max-width:600px) {
+      .overlay { padding: 12px; }
+      .overlay-content { border-radius: 16px; }
+    }
+
     /* ─── Hamburger menu ─── */
     .hamburger {
       background: none;
@@ -1132,7 +1184,7 @@
 
     .admin-toolbar .danger:hover { border-color: #c0392b; color: #c0392b; }
 
-    .admin-tabs { display:flex; gap:4px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:0; }
+    .admin-tabs { display:flex; gap:4px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:0; flex-wrap:wrap; }
     .admin-tab { padding:8px 18px; border:none; background:none; font-family:var(--font-body); font-size:0.85rem; color:var(--text-muted); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; }
     .admin-tab:hover { color:var(--text); }
     .admin-tab.active { color:var(--accent); border-bottom-color:var(--accent); font-weight:500; }
@@ -1215,6 +1267,19 @@
     .status-select.s-pending { background: #fff3cd; color: #856404; border-color: #ffeeba; }
     .status-select.s-contacted { background: #cce5ff; color: #004085; border-color: #b8daff; }
     .status-select.s-closed { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+    /* Customer statuses */
+    .status-select.s-active { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+    .status-select.s-lead { background: #cce5ff; color: #004085; border-color: #b8daff; }
+    .status-select.s-inactive { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+    .status-select.s-completed { background: #e9ecef; color: #495057; border-color: #ced4da; }
+    /* Meeting statuses */
+    .status-select.s-scheduled { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+    .status-select.s-done { background: #cce5ff; color: #004085; border-color: #b8daff; }
+    .status-select.s-cancelled { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+    /* Payment statuses */
+    .status-select.s-paid { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+    .status-select.s-pending { background: #fff3cd; color: #856404; border-color: #ffeeba; }
+    .status-select.s-unpaid { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
 
     .admin-footer-link {
       color: #888;
@@ -1297,11 +1362,15 @@
       .admin-panel { padding: 16px 12px; border-radius: 12px; }
       .admin-overlay { padding: 12px; }
       .admin-dashboard h2 { font-size: 1.2rem; }
-      .admin-tab { font-size: 0.75rem; padding: 6px 12px; }
+      .admin-tab { font-size: 0.75rem; padding: 6px 10px; }
       .content-lang-tab { font-size: 0.7rem; padding: 3px 10px; }
       .content-fields { max-height: 40vh; }
       .availability-box { padding: 16px; }
     }
+
+    /* Toast */
+    #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 99999; background: #1a3a2a; color: #fff; padding: 12px 24px; border-radius: 100px; font-size: 0.9rem; font-weight: 500; box-shadow: 0 4px 20px rgba(0,0,0,0.25); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; white-space: nowrap; }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
@@ -1689,6 +1758,10 @@
           <button class="admin-tab active" data-admin-tab="submissions">Submissions</button>
           <button class="admin-tab" data-admin-tab="content">Content</button>
           <button class="admin-tab" data-admin-tab="visits">Visits</button>
+          <button class="admin-tab" data-admin-tab="customers">Customers</button>
+          <button class="admin-tab" data-admin-tab="meetings">Meetings</button>
+          <button class="admin-tab" data-admin-tab="pnl">P&amp;L</button>
+          <button class="admin-tab" data-admin-tab="calendar">Calendar</button>
           <button class="admin-tab" data-admin-tab="settings">Settings</button>
         </div>
 
@@ -1724,10 +1797,11 @@
                   <th>Message</th>
                   <th>Status</th>
                   <th></th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody id="adminTableBody">
-                <tr class="empty"><td colspan="10">No submissions yet.</td></tr>
+                  <tr class="empty"><td colspan="11">No submissions yet.</td></tr>
               </tbody>
             </table>
           </div>
@@ -1782,11 +1856,366 @@
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
             <label style="font-size:0.85rem;color:var(--text-muted);">
               Password:
-              <input type="text" id="adminChangePassword" value="admin123" style="padding:6px 12px;font-family:var(--font-body);font-size:0.85rem;border:1px solid var(--border);border-radius:8px;background:var(--section-alt);color:var(--text);width:140px;margin-left:6px;outline:none;">
+              <input type="password" id="adminChangePassword" placeholder="Enter new password" autocomplete="off" style="padding:6px 12px;font-family:var(--font-body);font-size:0.85rem;border:1px solid var(--border);border-radius:8px;background:var(--section-alt);color:var(--text);width:200px;margin-left:6px;outline:none;">
             </label>
             <button id="adminSavePassword" style="background:none;border:1px solid var(--border);padding:6px 14px;border-radius:100px;font-size:0.8rem;cursor:pointer;color:var(--text-muted);">Save</button>
           </div>
         </div>
+
+        <!-- Calendar tab -->
+        <div class="admin-panel-section" id="adminCalendarPanel">
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">
+            Schedule sessions and view your Google Calendar side by side.
+          </p>
+
+          <!-- Quick session form -->
+          <div style="background:var(--section-alt);padding:16px;border-radius:10px;margin-bottom:16px;">
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:10px;">New session</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;">
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Customer:
+                <select id="calMtgCustomer" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);cursor:pointer;min-width:180px;margin-top:4px;">
+                  <option value="">Select customer</option>
+                </select>
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Date:
+                <input type="date" id="calMtgDate" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;margin-top:4px;">
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Time:
+                <input type="time" id="calMtgTime" value="10:00" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;margin-top:4px;">
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Duration:
+                <input type="number" id="calMtgDuration" value="45" min="15" step="15" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:70px;margin-top:4px;">
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Notes:
+                <input type="text" id="calMtgNotes" placeholder="Optional" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:180px;margin-top:4px;">
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Payment:
+                <select id="calMtgPayment" style="display:block;padding:6px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.8rem;background:var(--bg);cursor:pointer;margin-top:4px;">
+                  <option value="Paid">Paid</option>
+                  <option value="Pending">Payment Pending</option>
+                  <option value="Unpaid">Unpaid</option>
+                </select>
+              </label>
+              <button id="calMtgSaveBtn" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:100px;font-size:0.85rem;cursor:pointer;">Schedule</button>
+            </div>
+          </div>
+
+          <!-- Calendar connection -->
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
+            <label style="font-size:0.85rem;color:var(--text-muted);">
+              Calendar ID or Gmail:
+              <input type="text" id="calendarIdInput" value="" placeholder="your.email@gmail.com" style="padding:6px 12px;font-family:var(--font-body);font-size:0.85rem;border:1px solid var(--border);border-radius:8px;background:var(--section-alt);color:var(--text);width:280px;margin-left:6px;outline:none;">
+            </label>
+            <button id="calendarConnectBtn" style="background:var(--accent);color:#fff;border:none;padding:6px 16px;border-radius:100px;font-size:0.8rem;cursor:pointer;">Connect</button>
+            <span id="calendarStatus" style="font-size:0.8rem;color:var(--text-muted);"></span>
+          </div>
+          <div id="calendarEmbedWrap" style="width:100%;height:500px;border-radius:12px;overflow:hidden;border:1px solid var(--border);display:none;">
+            <iframe id="calendarIframe" style="width:100%;height:100%;border:none;" scrolling="yes"></iframe>
+          </div>
+          <div id="calendarHelp" style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;line-height:1.6;">
+            <strong>How to find your Calendar ID:</strong><br>
+            1. Go to <a href="https://calendar.google.com" target="_blank" style="color:var(--accent);">Google Calendar</a><br>
+            2. Click the <strong>&#9881;</strong> (Settings) gear icon &rarr; <strong>Settings</strong><br>
+            3. Under <strong>Settings for my calendars</strong>, click your calendar name<br>
+            4. Scroll to <strong>Integrate calendar</strong> &rarr; copy the <strong>Calendar ID</strong><br>
+            5. For your primary Gmail calendar, just enter your email address (e.g. <code>your.name@gmail.com</code>)<br>
+            6. Make sure <strong>Make available to public</strong> is checked in the calendar's Access Permissions for the embed to work without login
+          </div>
+        </div>
+
+        <!-- Customers tab -->
+        <div class="admin-panel-section" id="adminCustomersPanel">
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">
+            Customer database. Convert submissions into customer files to track observations, payments, and more.
+          </p>
+          <div class="admin-stats">
+            <div class="admin-stat"><strong id="custTotal">0</strong><span>Customers</span></div>
+            <div class="admin-stat"><strong id="custActive">0</strong><span>Active</span></div>
+            <div class="admin-stat"><strong id="custRevenue">$0</strong><span>Total revenue</span></div>
+          </div>
+          <div class="admin-toolbar">
+            <button id="custAddBtn">+ Add customer</button>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Price option</th>
+                  <th>Paid</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="custTableBody">
+                <tr class="empty"><td colspan="7">No customers yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- P&L tab -->
+        <div class="admin-panel-section" id="adminPnlPanel">
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">
+            Profit &amp; Loss — income tracking. All figures in EUR.
+          </p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+            <label style="font-size:0.85rem;color:var(--text-muted);display:flex;align-items:center;gap:6px;">
+              Year:
+              <select id="pnlYearSelect" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;"></select>
+            </label>
+            <label style="font-size:0.85rem;color:var(--text-muted);display:flex;align-items:center;gap:6px;">
+              Client:
+              <select id="pnlClientSelect" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;">
+                <option value="">All clients</option>
+              </select>
+            </label>
+            <label style="font-size:0.85rem;color:var(--text-muted);display:flex;align-items:center;gap:6px;">
+              Show in:
+              <select id="pnlCurrencySelect" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;">
+                <option value="EUR">EUR &euro;</option>
+                <option value="USD">USD $</option>
+                <option value="AUD">AUD A$</option>
+                <option value="BRL">BRL R$</option>
+              </select>
+            </label>
+            <span id="pnlRateInfo" style="font-size:0.75rem;color:var(--text-muted);display:flex;align-items:center;"></span>
+          </div>
+          <div class="admin-stats">
+            <div class="admin-stat"><strong id="pnlMonth">$0</strong><span>This month</span></div>
+            <div class="admin-stat"><strong id="pnlYear">$0</strong><span>This year</span></div>
+            <div class="admin-stat"><strong id="pnlTotal">$0</strong><span>All time</span></div>
+          </div>
+          <div class="admin-table-wrap" style="margin-top:16px;">
+            <table class="admin-table">
+              <thead>
+                <tr><th>Month</th><th>Income</th><th>Transactions</th><th>Trend</th></tr>
+              </thead>
+              <tbody id="pnlTableBody">
+                <tr class="empty"><td colspan="4">No data yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="pnlClientBreakdown" style="margin-top:16px;display:none;">
+            <h4 style="font-size:0.9rem;color:var(--text-muted);margin-bottom:8px;">By client</h4>
+            <div id="pnlClientList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      <!-- Meetings tab -->
+      <div class="admin-panel-section" id="adminMeetingsPanel">
+        <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">
+          Schedule and manage coaching sessions. Linked to customers — confirmation emails are sent automatically.
+        </p>
+        <div class="admin-toolbar">
+          <button id="mtgAddBtn">+ New meeting</button>
+        </div>
+        <div id="mtgForm" style="display:none;background:var(--section-alt);padding:16px;border-radius:10px;margin-bottom:16px;">
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:10px;">New meeting</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;">
+            <label style="font-size:0.8rem;color:var(--text-muted);">
+              Customer:
+              <select id="mtgCustomer" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);cursor:pointer;min-width:180px;margin-top:4px;">
+                <option value="">Select customer</option>
+              </select>
+            </label>
+            <label style="font-size:0.8rem;color:var(--text-muted);">
+              Date:
+              <input type="date" id="mtgDate" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;margin-top:4px;">
+            </label>
+            <label style="font-size:0.8rem;color:var(--text-muted);">
+              Time:
+              <input type="time" id="mtgTime" value="10:00" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;margin-top:4px;">
+            </label>
+            <label style="font-size:0.8rem;color:var(--text-muted);">
+              Duration (min):
+              <input type="number" id="mtgDuration" value="45" min="15" step="15" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:80px;margin-top:4px;">
+            </label>
+            <label style="font-size:0.8rem;color:var(--text-muted);">
+              Notes:
+              <input type="text" id="mtgNotes" placeholder="Optional notes" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:200px;margin-top:4px;">
+            </label>
+            <label style="font-size:0.8rem;color:var(--text-muted);">
+              Payment:
+              <select id="mtgPayment" style="display:block;padding:6px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.8rem;background:var(--bg);cursor:pointer;margin-top:4px;">
+                <option value="Paid">Paid</option>
+                <option value="Pending">Payment Pending</option>
+                <option value="Unpaid">Unpaid</option>
+              </select>
+            </label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button id="mtgSaveBtn" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:100px;font-size:0.85rem;cursor:pointer;">Save &amp; send confirmation</button>
+              <button id="mtgCancelBtn" style="background:none;border:1px solid var(--border);padding:8px 14px;border-radius:100px;font-size:0.85rem;cursor:pointer;color:var(--text-muted);">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <div class="admin-stats">
+          <div class="admin-stat"><strong id="mtgUpcoming">0</strong><span>Upcoming</span></div>
+          <div class="admin-stat"><strong id="mtgToday">0</strong><span>Today</span></div>
+          <div class="admin-stat"><strong id="mtgTotal">0</strong><span>Total</span></div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Customer</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Payment</th>
+                <th>Notes</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="mtgTableBody">
+              <tr class="empty"><td colspan="8">No meetings scheduled.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+  <!-- ─── Customer file modal ─── -->
+  <div class="overlay" id="custOverlay">
+    <div class="overlay-content" id="custModal" style="max-width:640px;padding:28px 24px;">
+      <button class="overlay-close" id="custClose">&times;</button>
+      <h3 id="custModalTitle" style="font-family:var(--font-heading);font-size:1.2rem;margin-bottom:16px;">Customer file</h3>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;">
+          Name
+          <input type="text" id="custFieldName" class="cust-input">
+        </label>
+        <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;">
+          Email
+          <input type="email" id="custFieldEmail" class="cust-input">
+        </label>
+        <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;">
+          Phone
+          <input type="text" id="custFieldPhone" class="cust-input">
+        </label>
+        <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;">
+          Social
+          <input type="text" id="custFieldSocial" class="cust-input">
+        </label>
+        <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;">
+          Preferred time
+          <input type="text" id="custFieldTime" class="cust-input">
+        </label>
+        <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;">
+          Country / TZ
+          <input type="text" id="custFieldTz" class="cust-input">
+        </label>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;">
+          Original message
+          <textarea id="custFieldMessage" class="cust-input" rows="2" style="resize:vertical;"></textarea>
+        </label>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;">
+
+      <h4 style="font-size:0.9rem;color:var(--text-muted);margin-bottom:8px;">Coach notes</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;">
+          Price option
+          <select id="custFieldPrice" class="cust-input">
+            <option value="">—</option>
+            <option value="Starter">Starter</option>
+            <option value="Standard">Standard</option>
+            <option value="Premium">Premium</option>
+            <option value="Custom">Custom</option>
+          </select>
+        </label>
+        <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;">
+          Status
+          <select id="custFieldStatus" class="cust-input">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Lead">Lead</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </label>
+      </div>
+      <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;margin-bottom:10px;">
+        Observations
+        <textarea id="custFieldObs" class="cust-input" rows="2" style="resize:vertical;"></textarea>
+      </label>
+      <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;margin-bottom:10px;">
+        Diagnosis
+        <textarea id="custFieldDiag" class="cust-input" rows="2" style="resize:vertical;"></textarea>
+      </label>
+      <label style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:2px;margin-bottom:10px;">
+        Notes
+        <textarea id="custFieldNotes" class="cust-input" rows="3" style="resize:vertical;"></textarea>
+      </label>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;">
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h4 style="font-size:0.9rem;color:var(--text-muted);">Sessions</h4>
+        <div style="display:flex;gap:8px;">
+          <button onclick="scheduleSessionFromCustomer();" style="background:var(--accent);color:#fff;border:none;padding:4px 12px;border-radius:100px;font-size:0.8rem;cursor:pointer;">+ Schedule session</button>
+          <a href="#" onclick="document.querySelector('[data-admin-tab=\\'meetings\\']').click();closeCustomerModal();return false;" style="font-size:0.8rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;">View all</a>
+        </div>
+      </div>
+      <table class="admin-table" style="margin-bottom:12px;">
+        <thead>
+          <tr><th>Date</th><th>Time</th><th>Duration</th><th>Status</th><th>Payment</th></tr>
+        </thead>
+        <tbody id="custSessionsBody">
+          <tr class="empty"><td colspan="5">No sessions scheduled.</td></tr>
+        </tbody>
+      </table>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;">
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h4 style="font-size:0.9rem;color:var(--text-muted);">Payments</h4>
+        <button id="custAddPaymentBtn" style="background:none;border:1px solid var(--border);padding:4px 12px;border-radius:100px;font-size:0.8rem;cursor:pointer;color:var(--text-muted);">+ Add payment</button>
+      </div>
+      <table class="admin-table" style="margin-bottom:12px;">
+        <thead>
+          <tr><th>Date</th><th>Amount</th><th>Currency</th><th>Note</th><th></th></tr>
+        </thead>
+        <tbody id="custPaymentsBody">
+          <tr class="empty"><td colspan="5">No payments recorded.</td></tr>
+        </tbody>
+      </table>
+      <div id="custPaymentForm" style="display:none;background:var(--section-alt);padding:12px;border-radius:10px;margin-bottom:12px;">
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:8px;">Add payment</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <input type="date" id="custPayDate" style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;">
+          <input type="number" id="custPayAmount" placeholder="Amount" step="0.01" min="0" style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:110px;">
+          <select id="custPayCurrency" style="padding:6px 6px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);cursor:pointer;">
+            <option value="EUR">EUR &euro;</option>
+            <option value="USD">USD $</option>
+            <option value="AUD">AUD A$</option>
+            <option value="BRL">BRL R$</option>
+          </select>
+          <input type="text" id="custPayNote" placeholder="Note" style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:140px;">
+          <button id="custPaySaveBtn" style="background:var(--accent);color:#fff;border:none;padding:6px 14px;border-radius:100px;font-size:0.8rem;cursor:pointer;">Save</button>
+          <button id="custPayCancelBtn" style="background:none;border:1px solid var(--border);padding:6px 14px;border-radius:100px;font-size:0.8rem;cursor:pointer;color:var(--text-muted);">Cancel</button>
+        </div>
+      </div>
+      <p id="custTotalPaid" style="font-size:0.9rem;color:var(--text-muted);text-align:right;margin-bottom:16px;">Total paid: <strong id="custTotalPaidAmount" style="color:var(--text);">$0</strong></p>
+
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button id="custDeleteBtn" class="danger" style="padding:8px 16px;border-radius:100px;font-size:0.85rem;cursor:pointer;">Delete customer</button>
+        <button id="custSaveBtn" style="background:var(--accent);color:#fff;border:none;padding:8px 20px;border-radius:100px;font-size:0.85rem;cursor:pointer;">Save</button>
       </div>
     </div>
   </div>
@@ -1824,6 +2253,7 @@
     </div>
   </footer>
 
+  <div id="toast"></div>
   <script>
     const i18n = {
       en: {
@@ -2425,7 +2855,114 @@
     const EMAILJS_PUBLIC_KEY = 'VphA0v_cFib2j5CE1';
     const EMAILJS_SERVICE_ID = 'service_jqdkg8i';
     const EMAILJS_TEMPLATE_ID = 'template_n43zatr';
-    const EMAILJS_ADMIN_TEMPLATE_ID = 'template_n43zatr'; // Create a separate admin template (reference: email-template-admin.html)
+    const EMAILJS_ADMIN_TEMPLATE_ID = 'template_s4pahiu'; // See notification-template-admin.html for EmailJS setup
+    const EMAILJS_MEETING_TEMPLATE_ID = 'template_meeting'; // Create in EmailJS: {{to_email}} {{customer_name}} {{meeting_date}} {{meeting_time}} {{meeting_duration}} {{coach_name}} {{meeting_notes}}
+
+    // ─── Admin notification batching (max 2 emails/day with accumulated requests) ───
+    const NOTIFICATION_QUEUE_KEY = '_admin_notification_queue';
+    const NOTIFICATION_SENT_LOG_KEY = '_admin_notification_sent_log';
+    const MAX_DAILY_NOTIFICATIONS = 2;
+
+    function getNotificationQueue() {
+      try { return JSON.parse(localStorage.getItem(NOTIFICATION_QUEUE_KEY) || '[]'); }
+      catch(e) { return []; }
+    }
+
+    function getSentLog() {
+      try { return JSON.parse(localStorage.getItem(NOTIFICATION_SENT_LOG_KEY) || '[]'); }
+      catch(e) { return []; }
+    }
+
+    function getTodaySentCount() {
+      var today = new Date().toISOString().slice(0, 10);
+      return getSentLog().filter(function(s) { return s.startsWith(today); }).length;
+    }
+
+    function logSentEmail() {
+      var sentLog = getSentLog();
+      sentLog.push(new Date().toISOString());
+      // Keep only last 7 days
+      var weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      sentLog = sentLog.filter(function(s) { return new Date(s).getTime() > weekAgo; });
+      localStorage.setItem(NOTIFICATION_SENT_LOG_KEY, JSON.stringify(sentLog));
+    }
+
+    function addToNotificationQueue(entry) {
+      var queue = getNotificationQueue();
+      queue.push({
+        id: entry.id,
+        date: entry.date,
+        name: entry.name,
+        email: entry.email,
+        phone: entry.phone || '',
+        social: entry.social || '',
+        preferredTime: entry.preferredTime || '',
+        countryTz: entry.countryTz || '',
+        message: entry.message || ''
+      });
+      localStorage.setItem(NOTIFICATION_QUEUE_KEY, JSON.stringify(queue));
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderBatchEmailHtml(queue) {
+      var adminUrl = window.location.href.split('#')[0];
+      var count = queue.length;
+      var list = queue.map(function(e) {
+        var line = escHtml(e.name) + ' \u2014 ' + escHtml(e.email);
+        if (e.phone) line += ' \u2022 ' + escHtml(e.phone);
+        return '<div style="padding:8px 0;border-bottom:1px solid #eee;font-size:0.9rem;">' + line + '</div>';
+      }).join('');
+      return ''
+        + '<div style="background:#1a1817;color:#fff;border-radius:12px 12px 0 0;padding:24px;text-align:center;">'
+        + '<h1 style="font-size:1.2rem;font-weight:600;margin:0;">\uD83D\uDD14 New booking requests</h1>'
+        + '</div>'
+        + '<div style="background:#fff;border:1px solid #e5ddd1;border-top:none;border-radius:0 0 12px 12px;padding:24px;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;">'
+        + '<p style="font-size:1rem;color:#1a1817;margin:0 0 16px;">You have <strong>' + count + '</strong> new request' + (count > 1 ? 's' : '') + ' yet to respond to.</p>'
+        + list
+        + '<div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid #e5ddd1;">'
+        + '<a href="' + escHtml(adminUrl) + '" style="display:inline-block;padding:10px 28px;border-radius:100px;background:#b8944a;color:#fff;text-decoration:none;font-size:0.85rem;font-weight:500;">Open admin panel</a>'
+        + '<p style="font-size:0.75rem;color:#7a726a;margin-top:14px;">Matias Life Coach</p>'
+        + '</div>'
+        + '</div>';
+    }
+
+    async function flushNotificationQueue() {
+      if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
+      var queue = getNotificationQueue();
+      if (queue.length === 0) return;
+      var sentToday = getTodaySentCount();
+      if (sentToday >= MAX_DAILY_NOTIFICATIONS) {
+        console.log('Daily notification limit reached (' + MAX_DAILY_NOTIFICATIONS + '). Queue has ' + queue.length + ' items.');
+        return;
+      }
+      var html = renderBatchEmailHtml(queue);
+      var adminUrl = window.location.href.split('#')[0];
+      try {
+        var res = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_ADMIN_TEMPLATE_ID, {
+          to_email: ADMIN_EMAIL,
+          subject: 'New booking requests (' + queue.length + ' pending)',
+          html: html,
+          count: String(queue.length),
+          adminUrl: adminUrl
+        });
+        if (res && (res.status === 200 || res.status === 0 || String(res.status).startsWith('2'))) {
+          console.log('Batch admin notification sent:', res.status, queue.length + ' submissions');
+          localStorage.setItem(NOTIFICATION_QUEUE_KEY, '[]');
+          logSentEmail();
+        } else {
+          console.warn('Batch admin notification returned status', res && res.status, res && res.text);
+        }
+      } catch(err) {
+        console.warn('Batch admin notification failed:', err);
+      }
+    }
 
     if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
       emailjs.init(EMAILJS_PUBLIC_KEY);
@@ -2568,7 +3105,7 @@
         : visits.slice(0, 50).map(v => {
             const d = v.date ? new Date(v.date).toLocaleString() : '-';
             return `<tr><td>${esc(d)}</td><td>${esc(v.country || '-')}</td><td>${esc(v.city || '-')}</td><td>${esc(v.page || '-')}</td></tr>`;
-          }).join('');
+      }).join('');
     }
 
     // Track visit on page load (after a short delay to not block rendering)
@@ -2928,22 +3465,8 @@
     }
 
     function sendAdminNotification(entry) {
-      if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
-      var subject = 'New booking request from ' + entry.name + ' <' + entry.email + '>';
-      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_ADMIN_TEMPLATE_ID, {
-        name: entry.name,
-        to_email: ADMIN_EMAIL,
-        subject: subject,
-        message: entry.message || '—',
-        phone: entry.phone || '—',
-        social: entry.social || '—',
-        preferredTime: entry.preferredTime || '—',
-        countryTz: entry.countryTz || '—'
-      }).then(function(res) {
-        console.log('Admin notification sent:', res.status);
-      }).catch(function(err) {
-        console.warn('Admin notification failed:', err);
-      });
+      addToNotificationQueue(entry);
+      flushNotificationQueue();
     }
 
     const form = document.querySelector('form[name="booking"]');
@@ -2975,7 +3498,7 @@
         }
 
         const msg = getTranslation(currentLang, 'alert-success') || 'Request received. I\'ll reply within 24 hours.';
-        alert('\u2705 ' + msg);
+        showToast('\u2705 ' + msg);
         form.reset();
       });
     }
@@ -3004,6 +3527,7 @@
     async function renderDashboard() {
       // Try fetching from Supabase first
       let subs = await fetchSupabaseSubmissions();
+      window._cachedSubs = subs; // cache for convert button
 
       // Fall back to localStorage if Supabase returned nothing
       if (subs.length === 0) {
@@ -3021,7 +3545,7 @@
 
       tableBody.innerHTML = '';
       if (subs.length === 0) {
-        tableBody.innerHTML = '<tr class="empty"><td colspan="10">No submissions yet.</td></tr>';
+        tableBody.innerHTML = '<tr class="empty"><td colspan="11">No submissions yet.</td></tr>';
         return;
       }
 
@@ -3047,6 +3571,9 @@
           <td style="font-size:0.8rem;">${esc(s.countryTz)}</td>
           <td style="font-size:0.8rem;max-width:160px;overflow:hidden;text-overflow:ellipsis;">${esc(s.message)}</td>
           <td style="white-space:nowrap;">${statusHtml}</td>
+          <td style="white-space:nowrap;">
+            <button class="admin-convert-btn" data-id="${s.id}" data-name="${esc(s.name)}" title="Convert to customer" style="background:none;border:1px solid var(--accent);color:var(--accent);padding:2px 8px;border-radius:100px;font-size:0.75rem;cursor:pointer;">Convert</button>
+          </td>
           <td><button class="admin-delete-btn" data-id="${s.id}" title="Delete">&times;</button></td>
         `;
         tableBody.appendChild(tr);
@@ -3061,6 +3588,37 @@
             localStorage.setItem('coaching_submissions', JSON.stringify(localSubs));
             renderDashboard();
           }
+        });
+      });
+
+      document.querySelectorAll('.admin-convert-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          var id = this.dataset.id;
+          var localSubs = getSubmissions();
+          var sub = null;
+          // Also check Supabase
+          var allSubs = localSubs.concat(window._cachedSubs || []);
+          for (var i = 0; i < allSubs.length; i++) {
+            if (String(allSubs[i].id) === String(id)) { sub = allSubs[i]; break; }
+          }
+          // Fallback to localStorage only
+          if (!sub) {
+            for (var j = 0; j < localSubs.length; j++) {
+              if (String(localSubs[j].id) === String(id)) { sub = localSubs[j]; break; }
+            }
+          }
+          if (!sub) return alert('Submission not found.');
+          var existing = getCustomers().filter(function(c) { return c.sourceSubmissionId === String(id); });
+          if (existing.length > 0) {
+            if (!confirm('Customer "' + existing[0].name + '" already exists from this submission. Open their file?')) return;
+            switchAdminTab('customers');
+            openCustomerModal(existing[0].id);
+            showToast('Opened customer file \u2713');
+            return;
+          }
+          convertSubmission(sub);
+          switchAdminTab('customers');
+          showToast('Customer created from submission \u2713');
         });
       });
 
@@ -3188,6 +3746,8 @@
       document.getElementById('adminSubmissionsPanel').style.display = 'block';
       document.getElementById('adminContentPanel').style.display = 'none';
       document.getElementById('adminVisitsPanel').style.display = 'none';
+      document.getElementById('adminCustomersPanel').style.display = 'none';
+      document.getElementById('adminPnlPanel').style.display = 'none';
       document.getElementById('adminSettingsPanel').style.display = 'none';
     });
     document.getElementById('adminNotifDismiss').addEventListener('click', function () { notifOverlay.classList.remove('open'); });
@@ -3218,6 +3778,9 @@
     updateAdminBadge();
     setInterval(updateAdminBadge, 60000);
 
+    // Attempt to flush any pending notification queue on page load (respects 2/day limit)
+    setTimeout(flushNotificationQueue, 3000);
+
     // ─── Hamburger menu ───
     var menuOverlay = document.getElementById('menuOverlay');
     document.getElementById('hamburgerBtn').addEventListener('click', function () { menuOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; });
@@ -3247,6 +3810,865 @@
     });
     if (window.location.hash === '#pricing') { setTimeout(showPricing, 100); }
 
+    // ─── Customer database ───
+    const CUSTOMERS_KEY = '_customers';
+
+    function getCustomers() {
+      try { return JSON.parse(localStorage.getItem(CUSTOMERS_KEY) || '[]'); }
+      catch(e) { return []; }
+    }
+
+    function saveCustomers(customers) {
+      localStorage.setItem(CUSTOMERS_KEY, JSON.stringify(customers));
+      // Sync to Supabase as backup
+      if (supabaseClient) {
+        try {
+          supabaseClient.from('translations').upsert(
+            { lang: 'en', key: CUSTOMERS_KEY, value: JSON.stringify(customers) },
+            { onConflict: 'lang,key' }
+          );
+        } catch(e) {}
+      }
+    }
+
+    function generateId(prefix) {
+      return prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    }
+
+    function createCustomer(data) {
+      var customers = getCustomers();
+      var customer = {
+        id: generateId('cust_'),
+        createdAt: new Date().toISOString(),
+        name: data.name || '',
+        email: data.email || '',
+        phone: data.phone || '',
+        social: data.social || '',
+        preferredTime: data.preferredTime || '',
+        countryTz: data.countryTz || '',
+        message: data.message || '',
+        sourceSubmissionId: data.sourceSubmissionId || null,
+        observations: '',
+        diagnosis: '',
+        notes: '',
+        priceOption: '',
+        status: 'Active',
+        payments: []
+      };
+      customers.unshift(customer);
+      saveCustomers(customers);
+      return customer;
+    }
+
+    function updateCustomer(id, data) {
+      var customers = getCustomers();
+      for (var i = 0; i < customers.length; i++) {
+        if (customers[i].id === id) {
+          for (var k in data) {
+            if (k !== 'id' && k !== 'payments' && k !== 'createdAt') {
+              customers[i][k] = data[k];
+            }
+          }
+          saveCustomers(customers);
+          return customers[i];
+        }
+      }
+      return null;
+    }
+
+    function deleteCustomer(id) {
+      var customers = getCustomers().filter(function(c) { return c.id !== id; });
+      saveCustomers(customers);
+    }
+
+    function addPayment(customerId, payment) {
+      var customers = getCustomers();
+      for (var i = 0; i < customers.length; i++) {
+        if (customers[i].id === customerId) {
+          if (!customers[i].payments) customers[i].payments = [];
+          payment.id = generateId('pay_');
+          customers[i].payments.unshift(payment);
+          saveCustomers(customers);
+          return customers[i];
+        }
+      }
+      return null;
+    }
+
+    function deletePayment(customerId, paymentId) {
+      var customers = getCustomers();
+      for (var i = 0; i < customers.length; i++) {
+        if (customers[i].id === customerId && customers[i].payments) {
+          customers[i].payments = customers[i].payments.filter(function(p) { return p.id !== paymentId; });
+          saveCustomers(customers);
+          return customers[i];
+        }
+      }
+      return null;
+    }
+
+    function getCustomerTotalPaid(customer) {
+      if (!customer.payments || customer.payments.length === 0) return 0;
+      return customer.payments.reduce(function(sum, p) { return sum + (parseFloat(p.amount) || 0); }, 0);
+    }
+
+    function formatPaymentsSummary(customer) {
+      if (!customer.payments || customer.payments.length === 0) return '-';
+      var counts = {};
+      customer.payments.forEach(function(p) {
+        var c = p.currency || 'EUR';
+        counts[c] = (counts[c] || 0) + 1;
+      });
+      return Object.keys(counts).map(function(c) { return counts[c] + '\u00d7' + c; }).join(' ');
+    }
+
+    // ─── Customer UI ───
+    var currentCustomerId = null;
+    var editingPaymentId = null;
+
+    function renderCustomers() {
+      var customers = getCustomers();
+      document.getElementById('custTotal').textContent = customers.length;
+      var active = customers.filter(function(c) { return c.status === 'Active'; }).length;
+      document.getElementById('custActive').textContent = active;
+      var revenue = customers.reduce(function(sum, c) { return sum + getCustomerTotalPaid(c); }, 0);
+      document.getElementById('custRevenue').textContent = '$' + revenue.toFixed(0);
+
+      var tbody = document.getElementById('custTableBody');
+      if (customers.length === 0) {
+        tbody.innerHTML = '<tr class="empty"><td colspan="7">No customers yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = customers.map(function(c) {
+        var paidStr = formatPaymentsSummary(c);
+        var st = c.status || 'Active';
+        return '<tr style="cursor:pointer;">'
+          + '<td><strong>' + esc(c.name) + '</strong></td>'
+          + '<td><a href="mailto:' + esc(c.email) + '" style="color:var(--accent);text-decoration:none;">' + esc(c.email) + '</a></td>'
+          + '<td>' + esc(c.phone || '-') + '</td>'
+          + '<td>' + esc(c.priceOption || '-') + '</td>'
+          + '<td style="font-size:0.8rem;">' + paidStr + '</td>'
+          + '<td><span class="status-select s-' + st.toLowerCase() + '">' + st + '</span></td>'
+          + '<td><button class="admin-delete-btn" onclick="event.stopPropagation();if(confirm(\'Delete this customer and all payment data?\')){deleteCustomer(\'' + c.id + '\');renderCustomers();showToast(\'Customer deleted\');}" title="Delete">&times;</button></td>'
+          + '</tr>';
+      }).join('');
+
+      // Click to open customer
+      tbody.querySelectorAll('tr').forEach(function(tr, idx) {
+        if (customers[idx]) {
+          tr.addEventListener('click', function() { openCustomerModal(customers[idx].id); });
+        }
+      });
+    }
+
+    function openCustomerModal(id) {
+      var customers = getCustomers();
+      var customer = null;
+      for (var i = 0; i < customers.length; i++) {
+        if (customers[i].id === id) { customer = customers[i]; break; }
+      }
+      if (!customer) return;
+      currentCustomerId = id;
+      editingPaymentId = null;
+
+      document.getElementById('custModalTitle').textContent = 'Customer: ' + esc(customer.name);
+      document.getElementById('custFieldName').value = customer.name || '';
+      document.getElementById('custFieldEmail').value = customer.email || '';
+      document.getElementById('custFieldPhone').value = customer.phone || '';
+      document.getElementById('custFieldSocial').value = customer.social || '';
+      document.getElementById('custFieldTime').value = customer.preferredTime || '';
+      document.getElementById('custFieldTz').value = customer.countryTz || '';
+      document.getElementById('custFieldMessage').value = customer.message || '';
+      document.getElementById('custFieldPrice').value = customer.priceOption || '';
+      document.getElementById('custFieldStatus').value = customer.status || 'Active';
+      document.getElementById('custFieldObs').value = customer.observations || '';
+      document.getElementById('custFieldDiag').value = customer.diagnosis || '';
+      document.getElementById('custFieldNotes').value = customer.notes || '';
+
+      renderCustomerPayments(customer);
+      renderCustomerSessions(customer);
+      document.getElementById('custOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCustomerModal() {
+      document.getElementById('custOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+      currentCustomerId = null;
+      editingPaymentId = null;
+    }
+
+    function showToast(msg) {
+      var el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(el._hide);
+      el._hide = setTimeout(function() { el.classList.remove('show'); }, 2500);
+    }
+
+    function renderCustomerSessions(customer) {
+      var meetings = getCustomerMeetings(customer.id);
+      var tbody = document.getElementById('custSessionsBody');
+      if (meetings.length === 0) {
+        tbody.innerHTML = '<tr class="empty"><td colspan="5">No sessions scheduled.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = meetings.map(function(m) {
+        var statusClass = 's-' + m.status.toLowerCase();
+        var statusLabel = m.status.charAt(0).toUpperCase() + m.status.slice(1);
+        if (m.status === 'done' || m.status === 'completed') statusLabel = 'Done';
+        var payClass = 's-' + (m.paymentStatus || 'Paid').toLowerCase();
+        var payLabel = m.paymentStatus === 'Pending' ? 'Payment Pending' : (m.paymentStatus || 'Paid');
+        return '<tr>'
+          + '<td>' + m.date + '</td>'
+          + '<td>' + m.time + '</td>'
+          + '<td>' + m.duration + 'min</td>'
+          + '<td><span class="status-select ' + statusClass + '">' + statusLabel + '</span></td>'
+          + '<td><span class="status-select ' + payClass + '">' + payLabel + '</span></td>'
+          + '</tr>';
+      }).join('');
+    }
+
+    function renderCustomerPayments(customer) {
+      var payments = customer.payments || [];
+      var total = getCustomerTotalPaid(customer);
+      document.getElementById('custTotalPaidAmount').textContent = '$' + total.toFixed(2);
+      document.getElementById('custPaymentForm').style.display = 'none';
+
+      var tbody = document.getElementById('custPaymentsBody');
+      if (payments.length === 0) {
+        tbody.innerHTML = '<tr class="empty"><td colspan="4">No payments recorded.</td></tr>';
+        return;
+      }
+      var currencySymbols = { EUR: '\u20ac', USD: '$', AUD: 'A$', BRL: 'R$' };
+      tbody.innerHTML = payments.map(function(p) {
+        var d = p.date ? new Date(p.date).toLocaleDateString() : '-';
+        var cur = p.currency || 'EUR';
+        var sym = currencySymbols[cur] || cur;
+        return '<tr>'
+          + '<td style="white-space:nowrap;">' + esc(d) + '</td>'
+          + '<td><strong>' + sym + (parseFloat(p.amount) || 0).toFixed(2) + '</strong></td>'
+          + '<td>' + esc(cur) + '</td>'
+          + '<td>' + esc(p.note || '') + '</td>'
+          + '<td><button class="admin-delete-btn" onclick="event.stopPropagation();if(confirm(\'Delete this payment?\')){deletePayment(\'' + customer.id + '\',\'' + p.id + '\');var c2=getCustomers().filter(function(x){return x.id===\'' + customer.id + '\';})[0];if(c2)renderCustomerPayments(c2);}" title="Delete">&times;</button></td>'
+          + '</tr>';
+      }).join('');
+    }
+
+    function saveCurrentCustomer() {
+      if (!currentCustomerId) return;
+      var data = {
+        name: document.getElementById('custFieldName').value.trim(),
+        email: document.getElementById('custFieldEmail').value.trim(),
+        phone: document.getElementById('custFieldPhone').value.trim(),
+        social: document.getElementById('custFieldSocial').value.trim(),
+        preferredTime: document.getElementById('custFieldTime').value.trim(),
+        countryTz: document.getElementById('custFieldTz').value.trim(),
+        message: document.getElementById('custFieldMessage').value.trim(),
+        priceOption: document.getElementById('custFieldPrice').value,
+        status: document.getElementById('custFieldStatus').value,
+        observations: document.getElementById('custFieldObs').value.trim(),
+        diagnosis: document.getElementById('custFieldDiag').value.trim(),
+        notes: document.getElementById('custFieldNotes').value.trim()
+      };
+      updateCustomer(currentCustomerId, data);
+      renderCustomers();
+      // Update title in case name changed
+      document.getElementById('custModalTitle').textContent = 'Customer: ' + esc(data.name);
+    }
+
+    // ─── Convert submission to customer ───
+    function convertSubmission(submission) {
+      var customer = createCustomer({
+        name: submission.name,
+        email: submission.email,
+        phone: submission.phone,
+        social: submission.social,
+        preferredTime: submission.preferredTime,
+        countryTz: submission.countryTz,
+        message: submission.message,
+        sourceSubmissionId: submission.id
+      });
+      renderCustomers();
+      openCustomerModal(customer.id);
+    }
+
+    // ─── Currency & exchange rates ───
+    var exchangeRatesCache = null;
+    var exchangeRatesBase = 'EUR';
+    var exchangeRatesTimestamp = 0;
+    var EXCHANGE_CACHE_TTL = 3600000; // 1 hour
+
+    async function fetchExchangeRates() {
+      var now = Date.now();
+      if (exchangeRatesCache && (now - exchangeRatesTimestamp) < EXCHANGE_CACHE_TTL) {
+        return exchangeRatesCache;
+      }
+      try {
+        var res = await fetch('https://api.frankfurter.app/latest?from=EUR');
+        if (res.ok) {
+          var data = await res.json();
+          exchangeRatesCache = data.rates;
+          exchangeRatesBase = data.base;
+          exchangeRatesTimestamp = now;
+          return exchangeRatesCache;
+        }
+      } catch(e) {
+        // fallback to hardcoded approximate rates
+      }
+      // Fallback rates (approximate as of mid 2026)
+      exchangeRatesCache = { EUR: 1, USD: 1.08, AUD: 1.63, BRL: 5.85 };
+      exchangeRatesTimestamp = now;
+      return exchangeRatesCache;
+    }
+
+    function getCurrencySymbol(currency) {
+      var symbols = { EUR: '\u20ac', USD: '$', AUD: 'A$', BRL: 'R$' };
+      return symbols[currency] || currency;
+    }
+
+    function convertAmount(amount, fromCurrency, toCurrency, rates) {
+      if (fromCurrency === toCurrency) return amount;
+      var inEur = amount / (rates[fromCurrency] || 1);
+      return inEur * (rates[toCurrency] || 1);
+    }
+
+    // ─── P&L Dashboard ───
+    function getPnlYearOptions() {
+      var customers = getCustomers();
+      var years = {};
+      var currentYear = new Date().getFullYear();
+      years[currentYear] = true;
+      for (var i = 0; i < customers.length; i++) {
+        var c = customers[i];
+        if (c.payments) {
+          for (var j = 0; j < c.payments.length; j++) {
+            if (c.payments[j].date) {
+              var y = new Date(c.payments[j].date).getFullYear();
+              if (!isNaN(y)) years[y] = true;
+            }
+          }
+        }
+      }
+      return Object.keys(years).map(Number).sort(function(a, b) { return b - a; });
+    }
+
+    function updatePnlFilters() {
+      var years = getPnlYearOptions();
+      var yearSelect = document.getElementById('pnlYearSelect');
+      var currentYear = new Date().getFullYear();
+      var selectedYear = yearSelect.value || String(currentYear);
+      yearSelect.innerHTML = years.map(function(y) {
+        return '<option value="' + y + '"' + (y === currentYear ? ' selected' : '') + '>' + y + '</option>';
+      }).join('');
+      if (years.indexOf(parseInt(selectedYear)) === -1) {
+        yearSelect.value = String(currentYear);
+      } else {
+        yearSelect.value = selectedYear;
+      }
+
+      var clientSelect = document.getElementById('pnlClientSelect');
+      var customers = getCustomers();
+      var selectedClient = clientSelect.value || '';
+      clientSelect.innerHTML = '<option value="">All clients</option>'
+        + customers.map(function(c) {
+          var sel = c.id === selectedClient ? ' selected' : '';
+          return '<option value="' + c.id + '"' + sel + '>' + esc(c.name || c.email) + '</option>';
+        }).join('');
+    }
+
+    async function renderPnl() {
+      updatePnlFilters();
+
+      var displayCurrency = document.getElementById('pnlCurrencySelect').value;
+      var rates = await fetchExchangeRates();
+      var sym = getCurrencySymbol(displayCurrency);
+
+      // Show rate info
+      var rateInfo = document.getElementById('pnlRateInfo');
+      if (displayCurrency !== 'EUR') {
+        rateInfo.textContent = '1 EUR = ' + sym + (rates[displayCurrency] || '?').toFixed(4);
+      } else {
+        rateInfo.textContent = '';
+      }
+
+      var year = parseInt(document.getElementById('pnlYearSelect').value);
+      var clientFilter = document.getElementById('pnlClientSelect').value;
+      var customers = getCustomers();
+      var currentYear = new Date().getFullYear();
+      var currentMonth = new Date().getMonth();
+
+      // Aggregate payments by month
+      var monthlyData = {};
+      var monthlyRaw = {}; // raw unconverted for trend
+      var allTimeTotal = 0;
+      var thisYearTotal = 0;
+      var thisMonthTotal = 0;
+      var clientData = {};
+      var allTimeRaw = {};
+
+      for (var i = 0; i < customers.length; i++) {
+        var c = customers[i];
+        if (!c.payments) continue;
+        var cName = c.name || c.email || 'Unknown';
+        for (var j = 0; j < c.payments.length; j++) {
+          var p = c.payments[j];
+          if (!p.date || !p.amount) continue;
+          var d = new Date(p.date);
+          var pYear = d.getFullYear();
+          var pMonth = d.getMonth();
+          var rawAmount = parseFloat(p.amount) || 0;
+          var pCur = p.currency || 'EUR';
+          var converted = convertAmount(rawAmount, pCur, displayCurrency, rates);
+
+          // Client filter
+          if (clientFilter && c.id !== clientFilter) continue;
+
+          allTimeTotal += converted;
+
+          if (pYear === year) {
+            thisYearTotal += converted;
+            var key = pYear + '-' + String(pMonth + 1).padStart(2, '0');
+            if (!monthlyData[key]) monthlyData[key] = { income: 0, count: 0 };
+            monthlyData[key].income += converted;
+            monthlyData[key].count++;
+
+            // Raw total for trend (in EUR)
+            if (!monthlyRaw[key]) monthlyRaw[key] = 0;
+            monthlyRaw[key] += rawAmount;
+            if (!allTimeRaw[pYear]) allTimeRaw[pYear] = 0;
+            allTimeRaw[pYear] += rawAmount;
+          }
+
+          if (pYear === currentYear && pMonth === currentMonth) {
+            thisMonthTotal += converted;
+          }
+
+          // Client breakdown for selected year
+          if (pYear === year) {
+            if (!clientData[cName]) clientData[cName] = 0;
+            clientData[cName] += converted;
+          }
+        }
+      }
+
+      document.getElementById('pnlMonth').textContent = sym + thisMonthTotal.toFixed(0);
+      document.getElementById('pnlYear').textContent = sym + thisYearTotal.toFixed(0);
+      document.getElementById('pnlTotal').textContent = sym + allTimeTotal.toFixed(0);
+
+      // Monthly table with trend
+      var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var tbody = document.getElementById('pnlTableBody');
+      var monthKeys = Object.keys(monthlyData).sort();
+      if (monthKeys.length === 0) {
+        tbody.innerHTML = '<tr class="empty"><td colspan="4">No data for this period.</td></tr>';
+      } else {
+        var sortedMonths = monthKeys.map(function(key) {
+          var parts = key.split('-');
+          return { key: key, year: parseInt(parts[0]), month: parseInt(parts[1]) };
+        }).sort(function(a, b) { return a.year - b.year || a.month - b.month; });
+
+        tbody.innerHTML = sortedMonths.map(function(m, idx) {
+          var data = monthlyData[m.key];
+          var label = monthNames[m.month - 1] + ' ' + m.year;
+          var trendHtml = '';
+          if (idx > 0) {
+            var prevKey = sortedMonths[idx - 1].key;
+            var prevIncome = monthlyData[prevKey] ? monthlyData[prevKey].income : 0;
+            if (prevIncome > 0) {
+              var change = ((data.income - prevIncome) / prevIncome) * 100;
+              var arrow = change >= 0 ? '\u2191' : '\u2193';
+              var color = change >= 0 ? '#2d6a4f' : '#c0392b';
+              trendHtml = '<td style="color:' + color + ';font-size:0.8rem;">' + arrow + ' ' + Math.abs(change).toFixed(1) + '%</td>';
+            } else {
+              trendHtml = '<td style="font-size:0.8rem;color:var(--text-muted);">\u2014</td>';
+            }
+          } else {
+            trendHtml = '<td style="font-size:0.8rem;color:var(--text-muted);">\u2014</td>';
+          }
+          return '<tr><td>' + label + '</td><td><strong>' + sym + data.income.toFixed(2) + '</strong></td><td>' + data.count + '</td>' + trendHtml + '</tr>';
+        }).join('');
+      }
+
+      // Client breakdown
+      var bd = document.getElementById('pnlClientBreakdown');
+      var bl = document.getElementById('pnlClientList');
+      var clientKeys = Object.keys(clientData);
+      if (clientKeys.length > 1 && !clientFilter) {
+        bd.style.display = '';
+        bl.innerHTML = clientKeys.sort(function(a, b) { return clientData[b] - clientData[a]; })
+          .map(function(name) {
+            return '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:0.85rem;border-bottom:1px solid var(--border);">'
+              + '<span>' + esc(name) + '</span>'
+              + '<span><strong>' + sym + clientData[name].toFixed(2) + '</strong></span></div>';
+          }).join('');
+      } else {
+        bd.style.display = 'none';
+      }
+    }
+
+    // ─── Customer & P&L event wiring ───
+    document.getElementById('custClose').addEventListener('click', closeCustomerModal);
+    document.getElementById('custOverlay').addEventListener('click', function(e) { if (e.target === this) closeCustomerModal(); });
+    document.getElementById('custSaveBtn').addEventListener('click', function() { saveCurrentCustomer(); renderCustomers(); showToast('Customer saved \u2713'); closeCustomerModal(); });
+    document.getElementById('custDeleteBtn').addEventListener('click', function() {
+      if (!currentCustomerId) return;
+      if (confirm('Delete this customer and all payment data?')) {
+        deleteCustomer(currentCustomerId);
+        renderCustomers();
+        closeCustomerModal();
+      }
+    });
+    function switchAdminTab(name) {
+      var tab = document.querySelector('[data-admin-tab="' + name + '"]');
+      if (tab) tab.click();
+    }
+
+    document.getElementById('custAddBtn').addEventListener('click', function() {
+      var customer = createCustomer({ name: 'New Customer' });
+      renderCustomers();
+      openCustomerModal(customer.id);
+      showToast('Customer created \u2713');
+    });
+
+    // Payment form
+    document.getElementById('custAddPaymentBtn').addEventListener('click', function() {
+      document.getElementById('custPaymentForm').style.display = 'block';
+      document.getElementById('custPayDate').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('custPayAmount').value = '';
+      document.getElementById('custPayNote').value = '';
+      document.getElementById('custPayDate').focus();
+    });
+    document.getElementById('custPayCancelBtn').addEventListener('click', function() {
+      document.getElementById('custPaymentForm').style.display = 'none';
+    });
+    document.getElementById('custPaySaveBtn').addEventListener('click', function() {
+      if (!currentCustomerId) return;
+      var date = document.getElementById('custPayDate').value;
+      var amount = parseFloat(document.getElementById('custPayAmount').value);
+      var currency = document.getElementById('custPayCurrency').value;
+      var note = document.getElementById('custPayNote').value.trim();
+      if (!date || isNaN(amount) || amount <= 0) { alert('Enter a valid date and amount.'); return; }
+      addPayment(currentCustomerId, { date: date, amount: amount, currency: currency, note: note });
+      var customer = getCustomers().filter(function(c) { return c.id === currentCustomerId; })[0];
+      if (customer) renderCustomerPayments(customer);
+      renderCustomers();
+      document.getElementById('custPaymentForm').style.display = 'none';
+      showToast('Payment added \u2713');
+    });
+
+    // P&L filters
+    document.getElementById('pnlYearSelect').addEventListener('change', renderPnl);
+    document.getElementById('pnlClientSelect').addEventListener('change', renderPnl);
+    document.getElementById('pnlCurrencySelect').addEventListener('change', renderPnl);
+
+    // ─── Meetings ───
+    const MEETINGS_KEY = '_meetings';
+
+    function getMeetings() {
+      try { return JSON.parse(localStorage.getItem(MEETINGS_KEY) || '[]'); }
+      catch(e) { return []; }
+    }
+
+    function saveMeetings(meetings) {
+      localStorage.setItem(MEETINGS_KEY, JSON.stringify(meetings));
+      try {
+        if (supabaseClient) {
+          supabaseClient.from('translations').upsert(
+            { lang: 'en', key: MEETINGS_KEY, value: JSON.stringify(meetings) },
+            { onConflict: 'lang,key' }
+          );
+        }
+      } catch(e) {}
+    }
+
+    function createMeeting(data) {
+      var meetings = getMeetings();
+      var meeting = {
+        id: generateId('mtg_'),
+        createdAt: new Date().toISOString(),
+        customerId: data.customerId || '',
+        customerName: data.customerName || '',
+        customerEmail: data.customerEmail || '',
+        date: data.date || '',
+        time: data.time || '',
+        duration: data.duration || 45,
+        notes: data.notes || '',
+        status: 'scheduled',
+        paymentStatus: data.paymentStatus || 'Paid'
+      };
+      meetings.unshift(meeting);
+      saveMeetings(meetings);
+      return meeting;
+    }
+
+    function updateMeetingStatus(id, status) {
+      var meetings = getMeetings();
+      for (var i = 0; i < meetings.length; i++) {
+        if (meetings[i].id === id) {
+          meetings[i].status = status;
+          saveMeetings(meetings);
+          return meetings[i];
+        }
+      }
+      return null;
+    }
+
+    function deleteMeeting(id) {
+      var meetings = getMeetings().filter(function(m) { return m.id !== id; });
+      saveMeetings(meetings);
+    }
+
+    function getCustomerMeetings(customerId) {
+      return getMeetings().filter(function(m) { return m.customerId === customerId; })
+        .sort(function(a, b) { return a.date.localeCompare(b.date) || a.time.localeCompare(b.time); });
+    }
+
+    function sendMeetingConfirmation(meeting) {
+      if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY' || !meeting.customerEmail) return;
+      var subject = 'Coaching session confirmed \u2014 ' + meeting.date + ' at ' + meeting.time;
+
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_MEETING_TEMPLATE_ID, {
+        to_email: meeting.customerEmail,
+        customer_name: meeting.customerName,
+        meeting_date: meeting.date,
+        meeting_time: meeting.time,
+        meeting_duration: String(meeting.duration),
+        coach_name: 'Matias',
+        meeting_notes: meeting.notes || 'None',
+        subject: subject
+      }).then(function(res) {
+        console.log('Meeting confirmation sent:', res.status, res.text);
+      }).catch(function(err) {
+        console.error('Meeting email failed:', err);
+      });
+    }
+
+    function renderMeetings() {
+      var meetings = getMeetings();
+      var customerSelect = document.getElementById('mtgCustomer');
+      if (!customerSelect) return;
+
+      // Populate customer select
+      var customers = getCustomers();
+      var selectedVal = customerSelect.value;
+      customerSelect.innerHTML = '<option value="">Select customer</option>'
+        + customers.map(function(c) {
+          return '<option value="' + c.id + '">' + esc(c.name || c.email) + '</option>';
+        }).join('');
+      customerSelect.value = selectedVal;
+
+      // Stats
+      var now = new Date();
+      var todayStr = now.toISOString().slice(0, 10);
+      var upcoming = meetings.filter(function(m) { return m.status === 'scheduled' && m.date >= todayStr; }).length;
+      var todayMtgs = meetings.filter(function(m) { return m.date === todayStr; }).length;
+      document.getElementById('mtgUpcoming').textContent = upcoming;
+      document.getElementById('mtgToday').textContent = todayMtgs;
+      document.getElementById('mtgTotal').textContent = meetings.length;
+
+      // Table
+      var tbody = document.getElementById('mtgTableBody');
+      if (meetings.length === 0) {
+        tbody.innerHTML = '<tr class="empty"><td colspan="8">No meetings scheduled.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = meetings.sort(function(a, b) {
+        return a.date.localeCompare(b.date) || a.time.localeCompare(b.time);
+      }).map(function(m) {
+        var statusClass = 's-' + m.status.toLowerCase();
+        var statusLabel = m.status.charAt(0).toUpperCase() + m.status.slice(1);
+        if (m.status === 'completed') statusLabel = 'Done';
+        var payClass = 's-' + (m.paymentStatus || 'Paid').toLowerCase();
+        var payLabel = m.paymentStatus === 'Pending' ? 'Payment Pending' : (m.paymentStatus || 'Paid');
+        var gcalUrl = getGcalEventUrl(m);
+        var actions = '<a href="' + gcalUrl + '" target="_blank" title="Add to Google Calendar" style="background:none;border:1px solid var(--accent);color:var(--accent);padding:2px 8px;border-radius:100px;font-size:0.75rem;cursor:pointer;text-decoration:none;margin-right:4px;">+ GCal</a>';
+        if (m.status === 'scheduled') {
+          actions += '<button class="admin-edit-btn" onclick="updateMeetingStatus(\'' + m.id + '\',\'done\');renderMeetings();showToast(\'Meeting marked done\');" style="background:none;border:1px solid #2d6a4f;color:#2d6a4f;padding:2px 8px;border-radius:100px;font-size:0.75rem;cursor:pointer;margin-right:4px;">Done</button>'
+            + '<button class="admin-delete-btn" onclick="if(confirm(\'Cancel this meeting?\')){updateMeetingStatus(\'' + m.id + '\',\'cancelled\');renderMeetings();showToast(\'Meeting cancelled\');}" style="background:none;border:1px solid #c0392b;color:#c0392b;padding:2px 8px;border-radius:100px;font-size:0.75rem;cursor:pointer;margin-right:4px;">Cancel</button>';
+        }
+        actions += '<button class="admin-delete-btn" onclick="if(confirm(\'Delete this meeting?\')){deleteMeeting(\'' + m.id + '\');renderMeetings();showToast(\'Meeting deleted\');}" title="Delete">&times;</button>';
+        return '<tr>'
+          + '<td>' + m.date + '</td>'
+          + '<td>' + m.time + '</td>'
+          + '<td><a href="#" onclick="openCustomerModal(\'' + m.customerId + '\');return false;" style="color:var(--accent);text-decoration:none;">' + esc(m.customerName || 'Unknown') + '</a></td>'
+          + '<td>' + m.duration + 'min</td>'
+          + '<td><span class="status-select ' + statusClass + '">' + statusLabel + '</span></td>'
+          + '<td><span class="status-select ' + payClass + '">' + payLabel + '</span></td>'
+          + '<td style="font-size:0.8rem;color:var(--text-muted);max-width:200px;overflow:hidden;text-overflow:ellipsis;">' + esc(m.notes || '-') + '</td>'
+          + '<td style="white-space:nowrap;">' + actions + '</td>'
+          + '</tr>';
+      }).join('');
+    }
+
+    document.getElementById('mtgAddBtn').addEventListener('click', function() {
+      document.getElementById('mtgForm').style.display = '';
+      document.getElementById('mtgDate').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('mtgTime').value = '10:00';
+      document.getElementById('mtgDuration').value = 45;
+      document.getElementById('mtgNotes').value = '';
+      renderMeetings(); // refresh customer dropdown
+      document.getElementById('mtgDate').focus();
+    });
+    document.getElementById('mtgCancelBtn').addEventListener('click', function() {
+      document.getElementById('mtgForm').style.display = 'none';
+    });
+    document.getElementById('mtgSaveBtn').addEventListener('click', function() {
+      var customerId = document.getElementById('mtgCustomer').value;
+      var date = document.getElementById('mtgDate').value;
+      var time = document.getElementById('mtgTime').value;
+      var duration = parseInt(document.getElementById('mtgDuration').value) || 45;
+      var notes = document.getElementById('mtgNotes').value.trim();
+
+      if (!customerId) { showToast('Select a customer'); return; }
+      if (!date) { showToast('Select a date'); return; }
+      if (!time) { showToast('Select a time'); return; }
+
+      var customers = getCustomers();
+      var customer = null;
+      for (var i = 0; i < customers.length; i++) {
+        if (customers[i].id === customerId) { customer = customers[i]; break; }
+      }
+      if (!customer) { showToast('Customer not found'); return; }
+
+      var meeting = createMeeting({
+        customerId: customerId,
+        customerName: customer.name || customer.email,
+        customerEmail: customer.email,
+        date: date,
+        time: time,
+        duration: duration,
+        notes: notes,
+        paymentStatus: document.getElementById('mtgPayment').value
+      });
+
+      sendMeetingConfirmation(meeting);
+      document.getElementById('mtgForm').style.display = 'none';
+      renderMeetings();
+      showToast('Meeting created \u2713 Confirmation sent to ' + customer.email);
+    });
+
+    // ─── Calendar ───
+    function getCalendarId() {
+      return localStorage.getItem('_calendar_id') || '';
+    }
+
+    function renderCalendar() {
+      var calId = getCalendarId();
+      if (calId) {
+        document.getElementById('calendarIdInput').value = calId;
+        connectCalendar(calId);
+      } else {
+        document.getElementById('calendarEmbedWrap').style.display = 'none';
+        document.getElementById('calendarStatus').textContent = 'Enter your Calendar ID and click Connect.';
+      }
+    }
+
+    function connectCalendar(calId) {
+      if (!calId || !calId.includes('@')) {
+        document.getElementById('calendarStatus').textContent = 'Invalid calendar ID. Enter your Gmail address or calendar ID.';
+        return;
+      }
+      localStorage.setItem('_calendar_id', calId);
+      var embedUrl = 'https://calendar.google.com/calendar/embed?src=' + encodeURIComponent(calId)
+        + '&ctz=Australia%2FSydney&mode=MONTH&showTitle=1&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0';
+      document.getElementById('calendarIframe').src = embedUrl;
+      document.getElementById('calendarEmbedWrap').style.display = '';
+      document.getElementById('calendarStatus').textContent = 'Connected as ' + calId;
+      document.getElementById('calendarHelp').style.display = 'none';
+    }
+
+    var _pendingMtgCustomer = null;
+
+    function scheduleSessionFromCustomer() {
+      if (!currentCustomerId) return;
+      _pendingMtgCustomer = currentCustomerId;
+      closeCustomerModal();
+      document.querySelector('[data-admin-tab="calendar"]').click();
+    }
+
+    function getGcalEventUrl(meeting) {
+      var startStr = meeting.date.replace(/-/g, '') + 'T' + meeting.time.replace(':', '') + '00';
+      var endMin = parseInt(meeting.time.split(':')[0]) * 60 + parseInt(meeting.time.split(':')[1]) + (meeting.duration || 45);
+      var endH = Math.floor(endMin / 60);
+      var endM = endMin % 60;
+      var endStr = meeting.date.replace(/-/g, '') + 'T' + String(endH).padStart(2, '0') + String(endM).padStart(2, '0') + '00';
+      var title = encodeURIComponent('Coaching: ' + (meeting.customerName || 'Session'));
+      var details = encodeURIComponent(meeting.notes || '');
+      return 'https://calendar.google.com/calendar/u/0/r/eventedit?text=' + title + '&dates=' + startStr + '/' + endStr + '&details=' + details;
+    }
+
+    function renderCalendar() {
+      var calId = getCalendarId();
+      var calMtgCustomer = document.getElementById('calMtgCustomer');
+
+      // Populate customer dropdown
+      var customers = getCustomers();
+      calMtgCustomer.innerHTML = '<option value="">Select customer</option>'
+        + customers.map(function(c) {
+          return '<option value="' + c.id + '">' + esc(c.name || c.email) + '</option>';
+        }).join('');
+
+      // Pre-select customer from customer modal flow
+      if (_pendingMtgCustomer) {
+        calMtgCustomer.value = _pendingMtgCustomer;
+        document.getElementById('calMtgDate').value = new Date().toISOString().slice(0, 10);
+        _pendingMtgCustomer = null;
+      }
+
+      if (calId) {
+        document.getElementById('calendarIdInput').value = calId;
+        connectCalendar(calId);
+      } else {
+        document.getElementById('calendarEmbedWrap').style.display = 'none';
+        document.getElementById('calendarStatus').textContent = 'Enter your Calendar ID and click Connect.';
+      }
+    }
+
+    document.getElementById('calMtgSaveBtn').addEventListener('click', function() {
+      var customerId = document.getElementById('calMtgCustomer').value;
+      var date = document.getElementById('calMtgDate').value;
+      var time = document.getElementById('calMtgTime').value;
+      var duration = parseInt(document.getElementById('calMtgDuration').value) || 45;
+      var notes = document.getElementById('calMtgNotes').value.trim();
+
+      if (!customerId) { showToast('Select a customer'); return; }
+      if (!date) { showToast('Select a date'); return; }
+      if (!time) { showToast('Select a time'); return; }
+
+      var customers = getCustomers();
+      var customer = null;
+      for (var i = 0; i < customers.length; i++) {
+        if (customers[i].id === customerId) { customer = customers[i]; break; }
+      }
+      if (!customer) { showToast('Customer not found'); return; }
+
+      var meeting = createMeeting({
+        customerId: customerId,
+        customerName: customer.name || customer.email,
+        customerEmail: customer.email,
+        date: date,
+        time: time,
+        duration: duration,
+        notes: notes,
+        paymentStatus: document.getElementById('calMtgPayment').value
+      });
+
+      sendMeetingConfirmation(meeting);
+
+      var gcalUrl = getGcalEventUrl(meeting);
+      showToast('Session created \u2713 Add it to your Google Calendar');
+      window.open(gcalUrl, '_blank');
+    });
+
+    document.getElementById('calendarConnectBtn').addEventListener('click', function() {
+      var calId = document.getElementById('calendarIdInput').value.trim();
+      connectCalendar(calId);
+    });
+    document.getElementById('calendarIdInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('calendarConnectBtn').click();
+    });
+
     // ─── Admin tab switching ───
     document.querySelectorAll('.admin-tab').forEach(tab => {
       tab.addEventListener('click', function () {
@@ -3261,6 +4683,18 @@
           }
           if (this.dataset.adminTab === 'visits') {
             renderVisitStats();
+          }
+          if (this.dataset.adminTab === 'customers') {
+            renderCustomers();
+          }
+          if (this.dataset.adminTab === 'meetings') {
+            renderMeetings();
+          }
+          if (this.dataset.adminTab === 'pnl') {
+            renderPnl().catch(function(){});
+          }
+          if (this.dataset.adminTab === 'calendar') {
+            renderCalendar();
           }
         }
       });
@@ -3346,14 +4780,15 @@
 
     document.getElementById('adminSavePassword').addEventListener('click', function () {
       const newPw = document.getElementById('adminChangePassword').value.trim();
-      if (newPw.length < 4) return alert('Password must be at least 4 characters.');
+      if (!newPw) { showToast('Enter a new password'); return; }
+      if (newPw.length < 4) { showToast('Password must be at least 4 characters'); return; }
       adminPassword = newPw;
       localStorage.setItem(ADMIN_PW_KEY, newPw);
-      alert('Password updated.');
+      document.getElementById('adminChangePassword').value = '';
+      showToast('Password updated \u2713');
     });
 
-    // Load saved password into field
-    document.getElementById('adminChangePassword').value = adminPassword;
+    // Don't pre-fill the password field
   </script>
 </body>
 </html>
