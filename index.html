@@ -1105,12 +1105,16 @@
       display: inline-block;
     }
     .payment-btn:hover { background: #4a42d4; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(99,91,255,0.3); }
-    .payment-btn-outline {
-      background: transparent;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-    }
+    .payment-btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
     .payment-btn-outline:hover { background: var(--accent); color: #fff; }
+    .payment-btn-stripe {
+      --button-color: #635bff;
+      --button-text-color: #fff;
+      --button-radius: 100px;
+      --button-font-size: 0.82rem;
+      --button-font-weight: 600;
+      --button-padding: 10px 24px;
+    }
     .payment-card-footer { text-align: center; padding-top: 8px; }
     .payment-secure { font-size: 0.72rem; color: var(--text-muted); }
 
@@ -1120,6 +1124,7 @@
       .payment-card { padding: 24px 18px 18px; }
       .payment-option { flex-direction: column; align-items: stretch; text-align: center; gap: 10px; }
       .payment-btn { width: 100%; text-align: center; }
+      .payment-btn-stripe { width: 100%; }
     }
 
     .admin-panel {
@@ -1701,14 +1706,14 @@
                 <span class="payment-option-label" data-i18n="pay-first-label">First session (1.5h)</span>
                 <span class="payment-option-price" data-i18n="pay-first-price">$200 AUD</span>
               </div>
-              <button class="payment-btn" data-buy="2_first">Pay now</button>
+              <stripe-buy-button class="payment-btn-stripe" buy-button-id="buy_btn_1Ti6G8GUEUgzAdDbkZDbd2Gb" publishable-key="pk_live_51Ri3X4GUEUgzAdDb7KrcMuYcBUvU6xAk0o5lQyKZJWyOebZGCMKGF8yfz6tOBA5aiz9qhxGbnjVKj0k57zbOYb9Y00j7eWaOMd"></stripe-buy-button>
             </div>
             <div class="payment-option">
               <div class="payment-option-info">
                 <span class="payment-option-label" data-i18n="pay-follow-label">Follow-up session (1h)</span>
                 <span class="payment-option-price" data-i18n="pay-follow-price">$150 AUD</span>
               </div>
-              <button class="payment-btn" data-buy="2_follow">Pay now</button>
+              <stripe-buy-button class="payment-btn-stripe" buy-button-id="buy_btn_1Ti6HmGUEUgzAdDbO18vOSu4" publishable-key="pk_live_51Ri3X4GUEUgzAdDb7KrcMuYcBUvU6xAk0o5lQyKZJWyOebZGCMKGF8yfz6tOBA5aiz9qhxGbnjVKj0k57zbOYb9Y00j7eWaOMd"></stripe-buy-button>
             </div>
           </div>
           <div class="payment-card-footer">
@@ -1729,7 +1734,7 @@
                 <span class="payment-option-label" data-i18n="pay-immersion-label">Monthly subscription</span>
                 <span class="payment-option-price" data-i18n="pay-immersion-price">$1,500 AUD / month</span>
               </div>
-              <button class="payment-btn" data-buy="3">Subscribe now</button>
+              <stripe-buy-button class="payment-btn-stripe" buy-button-id="buy_btn_1Ti6IyGUEUgzAdDbTJYtIZ33" publishable-key="pk_live_51Ri3X4GUEUgzAdDb7KrcMuYcBUvU6xAk0o5lQyKZJWyOebZGCMKGF8yfz6tOBA5aiz9qhxGbnjVKj0k57zbOYb9Y00j7eWaOMd"></stripe-buy-button>
             </div>
           </div>
           <div class="payment-card-footer">
@@ -3211,7 +3216,7 @@
     }
 
     document.addEventListener('click', function(e) {
-      var payBtn = e.target.closest('.stripe-pay-btn, .payment-btn');
+      var payBtn = e.target.closest('.stripe-pay-btn');
       if (payBtn) {
         e.preventDefault();
         var key = 'stripe_buy_id_' + payBtn.dataset.buy;
