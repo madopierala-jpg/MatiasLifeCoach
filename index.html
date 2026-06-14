@@ -4410,6 +4410,24 @@
     document.querySelectorAll('#pricing-page .pricing-cta').forEach(function (a) {
       a.addEventListener('click', function (e) { e.preventDefault(); showMain(); window.location.hash = 'booking'; });
     });
+    // ─── Global hash link handler: ensure main sections are visible when navigating to them ───
+    document.addEventListener('click', function (e) {
+      var anchor = e.target.closest('a[href^="#"]');
+      if (!anchor) return;
+      var href = anchor.getAttribute('href');
+      if (href === '#pricing' || href === '#payment') return; // already handled by dedicated handlers
+      if (document.body.classList.contains('show-pricing') || document.body.classList.contains('show-payment')) {
+        e.preventDefault();
+        showMain();
+        var id = href.substring(1);
+        if (id) {
+          window.location.hash = href;
+          var el = document.getElementById(id);
+          if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+        }
+      }
+    });
+
     if (window.location.hash === '#pricing') { setTimeout(showPricing, 100); }
     if (window.location.hash === '#payment') { setTimeout(showPayment, 100); }
 
