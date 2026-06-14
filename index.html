@@ -1711,14 +1711,14 @@
                 <span class="payment-option-label" data-i18n="pay-first-label">First session (1.5h)</span>
                 <span class="payment-option-price" data-i18n="pay-first-price">$200 AUD</span>
               </div>
-              <button class="stripe-pay-btn" data-buy="2_first">Pay now</button>
+              <a href="https://book.stripe.com/28EfZhctA2Na3zVdmVcQU0a" target="_blank" rel="noopener" class="stripe-pay-btn">Pay now</a>
             </div>
             <div class="payment-option">
               <div class="payment-option-info">
                 <span class="payment-option-label" data-i18n="pay-follow-label">Follow-up session (1h)</span>
                 <span class="payment-option-price" data-i18n="pay-follow-price">$150 AUD</span>
               </div>
-              <button class="stripe-pay-btn" data-buy="2_follow">Pay now</button>
+              <a href="https://book.stripe.com/6oUeVdctA2Na5I30A9cQU0b" target="_blank" rel="noopener" class="stripe-pay-btn">Pay now</a>
             </div>
           </div>
           <div class="payment-card-footer">
@@ -1739,7 +1739,7 @@
                 <span class="payment-option-label" data-i18n="pay-immersion-label">Monthly subscription</span>
                 <span class="payment-option-price" data-i18n="pay-immersion-price">$1,500 AUD / month</span>
               </div>
-              <button class="stripe-pay-btn" data-buy="3">Pay now</button>
+              <a href="https://buy.stripe.com/14A9AT2T073q7QbeqZcQU0c" target="_blank" rel="noopener" class="stripe-pay-btn">Pay now</a>
             </div>
           </div>
           <div class="payment-card-footer">
@@ -3222,7 +3222,7 @@
 
     document.addEventListener('click', function(e) {
       var payBtn = e.target.closest('.stripe-pay-btn');
-      if (payBtn) {
+      if (payBtn && payBtn.tagName === 'BUTTON') {
         e.preventDefault();
         var key = 'stripe_buy_id_' + payBtn.dataset.buy;
         var buyId = getStripeConfig(key);
