@@ -2067,6 +2067,11 @@
               <option value="done">Done</option>
               <option value="cancelled">Cancelled</option>
             </select>
+            <select id="mtgSortBy" style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);cursor:pointer;">
+              <option value="date-desc">Date &#8595;</option>
+              <option value="date-asc">Date &#8593;</option>
+              <option value="customer">Customer</option>
+            </select>
             <input type="text" id="mtgFilterSearch" placeholder="Search customer..." style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);flex:1;min-width:140px;">
           </div>
           <div class="admin-table-wrap">
@@ -3572,14 +3577,17 @@
     }
 
     async function renderDashboard() {
-      // Try fetching from Supabase first
-      let subs = await fetchSupabaseSubmissions();
+      // Merge Supabase + localStorage submissions so nothing gets lost
+      var remoteSubs = await fetchSupabaseSubmissions();
+      var localSubs = getSubmissions();
+      var seenIds = {};
+      var subs = remoteSubs.filter(function(s) { seenIds[s.id] = true; return true; });
+      localSubs.forEach(function(s) {
+        if (!seenIds[s.id]) { subs.push(s); seenIds[s.id] = true; }
+      });
+      // Sort by date descending
+      subs.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
       window._cachedSubs = subs; // cache for convert button
-
-      // Fall back to localStorage if Supabase returned nothing
-      if (subs.length === 0) {
-        subs = getSubmissions();
-      }
 
       const now = new Date();
       const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -3801,15 +3809,17 @@
     var notifOverlay = document.getElementById('adminNotifOverlay');
     document.getElementById('adminNotifView').addEventListener('click', function () {
       notifOverlay.classList.remove('open');
-      // Switch to submissions tab
-      document.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('active'); });
-      document.querySelector('[data-admin-tab="submissions"]').classList.add('active');
-      document.getElementById('adminSubmissionsPanel').style.display = 'block';
-      document.getElementById('adminContentPanel').style.display = 'none';
-      document.getElementById('adminVisitsPanel').style.display = 'none';
-      document.getElementById('adminCustomersPanel').style.display = 'none';
-      document.getElementById('adminPnlPanel').style.display = 'none';
-      document.getElementById('adminSettingsPanel').style.display = 'none';
+      renderDashboard().then(function() {
+        // Switch to submissions tab
+        document.querySelectorAll('.admin-tab').forEach(function (t) { t.classList.remove('active'); });
+        document.querySelector('[data-admin-tab="submissions"]').classList.add('active');
+        document.getElementById('adminSubmissionsPanel').style.display = 'block';
+        document.getElementById('adminContentPanel').style.display = 'none';
+        document.getElementById('adminVisitsPanel').style.display = 'none';
+        document.getElementById('adminCustomersPanel').style.display = 'none';
+        document.getElementById('adminPnlPanel').style.display = 'none';
+        document.getElementById('adminSettingsPanel').style.display = 'none';
+      });
     });
     document.getElementById('adminNotifDismiss').addEventListener('click', function () { notifOverlay.classList.remove('open'); });
     document.getElementById('adminNotifClose').addEventListener('click', function () { notifOverlay.classList.remove('open'); });
@@ -4549,9 +4559,17 @@
         tbody.innerHTML = '<tr class="empty"><td colspan="8">No meetings matched.</td></tr>';
         return;
       }
-      tbody.innerHTML = filtered.sort(function(a, b) {
+      var sortBy = (document.getElementById('mtgSortBy') || {}).value || 'date-desc';
+      filtered.sort(function(a, b) {
+        if (sortBy === 'customer') {
+          var na = (a.customerName || '').toLowerCase();
+          var nb = (b.customerName || '').toLowerCase();
+          return na.localeCompare(nb) || b.date.localeCompare(a.date);
+        }
+        if (sortBy === 'date-asc') return a.date.localeCompare(b.date) || a.time.localeCompare(b.time);
         return b.date.localeCompare(a.date) || b.time.localeCompare(a.time);
-      }).map(function(m) {
+      });
+      tbody.innerHTML = filtered.map(function(m) {
         var statusClass = 's-' + m.status.toLowerCase();
         var statusLabel = m.status.charAt(0).toUpperCase() + m.status.slice(1);
         if (m.status === 'completed') statusLabel = 'Done';
@@ -4621,12 +4639,15 @@
       sendMeetingConfirmation(meeting);
       document.getElementById('mtgForm').style.display = 'none';
       renderMeetings();
+      // Switch to Calendar tab so user can see the event in the calendar view
+      document.querySelector('[data-admin-tab="calendar"]').click();
       showToast('Meeting created \u2713 Confirmation sent to ' + customer.email);
     });
 
-    // Filter change listeners
+    // Filter + sort change listeners
     document.getElementById('mtgFilterStatus').addEventListener('change', renderMeetings);
     document.getElementById('mtgFilterSearch').addEventListener('input', renderMeetings);
+    document.getElementById('mtgSortBy').addEventListener('change', renderMeetings);
 
     // ─── Calendar ───
     function getCalendarId() {
