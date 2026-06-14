@@ -2087,6 +2087,7 @@
             <table class="admin-table">
               <thead>
                 <tr>
+                  <th style="width:32px;"><input type="checkbox" id="mtgSelectAll" title="Select all cancellable"></th>
                   <th>Date</th>
                   <th>Time</th>
                   <th>Customer</th>
@@ -2098,9 +2099,13 @@
                 </tr>
               </thead>
               <tbody id="mtgTableBody">
-                <tr class="empty"><td colspan="8">No meetings scheduled.</td></tr>
+                <tr class="empty"><td colspan="9">No meetings scheduled.</td></tr>
               </tbody>
             </table>
+          </div>
+          <div id="mtgBulkBar" style="display:none;margin-top:8px;gap:8px;align-items:center;">
+            <span id="mtgBulkCount" style="font-size:0.8rem;color:var(--text-muted);"></span>
+            <button id="mtgBulkDeleteBtn" style="background:#c0392b;color:#fff;border:none;padding:6px 14px;border-radius:100px;font-size:0.8rem;cursor:pointer;">Delete selected</button>
           </div>
         </div>
       </div>
@@ -4562,10 +4567,14 @@
         return true;
       });
 
+      // Reset bulk bar
+      mtgBulkBar.style.display = 'none';
+      if (mtgSelectAll) mtgSelectAll.checked = false;
+
       // Table
       var tbody = document.getElementById('mtgTableBody');
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr class="empty"><td colspan="8">No meetings matched.</td></tr>';
+        tbody.innerHTML = '<tr class="empty"><td colspan="9">No meetings matched.</td></tr>';
         return;
       }
       var sortBy = (document.getElementById('mtgSortBy') || {}).value || 'date-desc';
@@ -4591,7 +4600,11 @@
             + '<button class="admin-delete-btn" onclick="cancelMeetingWithConfirm(\'' + m.id + '\')" style="background:none;border:1px solid #c0392b;color:#c0392b;padding:2px 8px;border-radius:100px;font-size:0.75rem;cursor:pointer;margin-right:4px;">Cancel</button>';
         }
         actions += '<button class="admin-delete-btn" onclick="if(confirm(\'Delete this meeting?\')){deleteMeeting(\'' + m.id + '\');renderMeetings();showToast(\'Meeting deleted\');}" title="Delete">&times;</button>';
+        var isPast = m.date < new Date().toISOString().slice(0, 10);
+        var canSelect = m.status === 'cancelled' || isPast;
+        var cb = canSelect ? '<input type="checkbox" class="mtg-select" value="' + m.id + '">' : '';
         return '<tr>'
+          + '<td style="text-align:center;">' + cb + '</td>'
           + '<td>' + m.date + '</td>'
           + '<td>' + m.time + '</td>'
           + '<td><a href="#" onclick="openCustomerModal(\'' + m.customerId + '\');return false;" style="color:var(--accent);text-decoration:none;">' + esc(m.customerName || 'Unknown') + '</a></td>'
@@ -4648,9 +4661,11 @@
       sendMeetingConfirmation(meeting);
       document.getElementById('mtgForm').style.display = 'none';
       renderMeetings();
-      // Switch to Calendar tab so user can see the event in the calendar view
-      document.querySelector('[data-admin-tab="calendar"]').click();
-      showToast('Meeting created \u2713 Confirmation sent to ' + customer.email);
+
+      var gcalUrl = getGcalEventUrl(meeting);
+      window.open(gcalUrl, '_blank');
+
+      showToast('Meeting created \u2713 Add it to Google Calendar');
     });
 
     // Filter + sort change listeners
@@ -4699,30 +4714,41 @@
           var cancelled = 0;
           var matched = 0;
           var checked = 0;
+          var imported = 0;
 
+          function getTimeInMinutes(t) {
+            var p = t.split(':');
+            return parseInt(p[0]) * 60 + parseInt(p[1]);
+          }
+
+          function getEventTime(ge) {
+            var start = ge.start;
+            if (!start) return null;
+            var dtStr = start.dateTime || start.date || '';
+            if (!dtStr) return null;
+            return {
+              date: dtStr.substring(0, 10),
+              min: start.dateTime ? getTimeInMinutes(dtStr.match(/T(\d{2}):(\d{2})/).slice(1).join(':')) : 0,
+              hasTime: !!start.dateTime
+            };
+          }
+
+          function matchesGCal(meeting, ge) {
+            var et = getEventTime(ge);
+            if (!et) return false;
+            if (et.date !== meeting.date) return false;
+            if (et.hasTime) {
+              var mm = getTimeInMinutes(meeting.time);
+              return Math.abs(mm - et.min) <= 90;
+            }
+            return true;
+          }
+
+          // Phase 1: cancel scheduled meetings missing from GCal
           meetings.forEach(function(m) {
             if (m.status !== 'scheduled') return;
             checked++;
-            var mtgDate = m.date;
-            var mtgMin = parseInt(m.time.split(':')[0]) * 60 + parseInt(m.time.split(':')[1]);
-
-            var found = gcalEvents.some(function(ge) {
-              var start = ge.start;
-              if (!start) return false;
-              var dtStr = start.dateTime || start.date || '';
-              var evDate = dtStr.substring(0, 10);
-              if (evDate !== mtgDate) return false;
-              if (start.dateTime) {
-                var match = start.dateTime.match(/T(\d{2}):(\d{2})/);
-                if (match) {
-                  var evMin = parseInt(match[1]) * 60 + parseInt(match[2]);
-                  if (Math.abs(mtgMin - evMin) <= 90) return true;
-                  return false;
-                }
-              }
-              return true;
-            });
-
+            var found = gcalEvents.some(function(ge) { return matchesGCal(m, ge); });
             if (found) {
               matched++;
             } else {
@@ -4731,12 +4757,75 @@
             }
           });
 
+          // Phase 2: import new GCal events as meetings
+          var occupied = {};
+          meetings.forEach(function(m) {
+            var key = m.date + '|' + getTimeInMinutes(m.time);
+            occupied[key] = true;
+          });
+
+          gcalEvents.forEach(function(ge) {
+            if (!ge.summary) return;
+            var et = getEventTime(ge);
+            if (!et || !et.hasTime) return;
+
+            // Check if a meeting already exists at this slot
+            var slotKey = et.date + '|' + et.min;
+            var exists = false;
+            for (var delta = -90; delta <= 90; delta += 5) {
+              if (occupied[et.date + '|' + (et.min + delta)]) { exists = true; break; }
+            }
+            if (exists) return;
+
+            // Extract customer name from summary ("Coaching: Name" or "Coaching Name")
+            var name = ge.summary.replace(/^Coaching:\s*/i, '').replace(/^Coaching\s+/i, '').trim();
+            if (!name) name = ge.summary.trim();
+
+            // Try to find matching customer in CRM
+            var customers = getCustomers();
+            var customer = null;
+            for (var i = 0; i < customers.length; i++) {
+              if ((customers[i].name || '').toLowerCase() === name.toLowerCase()) {
+                customer = customers[i]; break;
+              }
+            }
+            if (!customer) {
+              for (var i = 0; i < customers.length; i++) {
+                if ((customers[i].name || '').toLowerCase().indexOf(name.toLowerCase()) !== -1) {
+                  customer = customers[i]; break;
+                }
+              }
+            }
+
+            var endStr = ge.end ? (ge.end.dateTime || ge.end.date || '') : '';
+            var duration = 45;
+            if (endStr && ge.start && ge.start.dateTime) {
+              var s = new Date(ge.start.dateTime);
+              var e = new Date(endStr);
+              duration = Math.round((e - s) / 60000) || 45;
+            }
+
+            var notes = (ge.description || '').replace(/<[^>]*>/g, '').trim() || 'Imported from Google Calendar';
+
+            createMeeting({
+              customerId: customer ? customer.id : '',
+              customerName: customer ? (customer.name || customer.email) : name,
+              customerEmail: customer ? customer.email : '',
+              date: et.date,
+              time: String(Math.floor(et.min / 60)).padStart(2, '0') + ':' + String(et.min % 60).padStart(2, '0'),
+              duration: duration,
+              notes: notes,
+              paymentStatus: 'Paid'
+            });
+            imported++;
+          });
+
           renderMeetings();
-          if (checked === 0) {
-            showToast('No scheduled meetings to sync.');
-          } else {
-            showToast('Sync: ' + cancelled + ' meetings cancelled, ' + matched + ' active');
-          }
+          var parts = [];
+          if (cancelled > 0) parts.push(cancelled + ' cancelled');
+          if (matched > 0) parts.push(matched + ' active');
+          if (imported > 0) parts.push(imported + ' imported');
+          showToast('Sync done: ' + (parts.join(', ') || 'no changes'));
         })
         .catch(function(err) {
           showToast('Sync failed: ' + err.message);
@@ -4908,6 +4997,44 @@
       showToast('API Key saved');
     });
     document.getElementById('mtgSyncBtn').addEventListener('click', syncMeetingsWithGCal);
+
+    // Bulk delete for meetings
+    var mtgBulkBar = document.getElementById('mtgBulkBar');
+    var mtgBulkCount = document.getElementById('mtgBulkCount');
+    var mtgBulkDeleteBtn = document.getElementById('mtgBulkDeleteBtn');
+    var mtgSelectAll = document.getElementById('mtgSelectAll');
+
+    function updateMtgBulkBar() {
+      var checked = document.querySelectorAll('.mtg-select:checked');
+      if (checked.length > 0) {
+        mtgBulkBar.style.display = 'flex';
+        mtgBulkCount.textContent = checked.length + ' selected';
+      } else {
+        mtgBulkBar.style.display = 'none';
+      }
+    }
+
+    document.addEventListener('change', function(e) {
+      if (e.target && e.target.classList.contains('mtg-select')) {
+        updateMtgBulkBar();
+      }
+    });
+
+    mtgSelectAll.addEventListener('change', function() {
+      var checked = this.checked;
+      document.querySelectorAll('.mtg-select').forEach(function(cb) { cb.checked = checked; });
+      updateMtgBulkBar();
+    });
+
+    mtgBulkDeleteBtn.addEventListener('click', function() {
+      var checked = document.querySelectorAll('.mtg-select:checked');
+      if (checked.length === 0) return;
+      if (!confirm('Delete ' + checked.length + ' selected meeting(s)?')) return;
+      checked.forEach(function(cb) { deleteMeeting(cb.value); });
+      mtgSelectAll.checked = false;
+      renderMeetings();
+      showToast('Deleted ' + checked.length + ' meeting(s)');
+    });
 
     // ─── Admin tab switching ───
     document.querySelectorAll('.admin-tab').forEach(tab => {
