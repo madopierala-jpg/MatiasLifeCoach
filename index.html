@@ -2060,6 +2060,15 @@
             <div class="admin-stat"><strong id="mtgToday">0</strong><span>Today</span></div>
             <div class="admin-stat"><strong id="mtgTotal">0</strong><span>Total</span></div>
           </div>
+          <div class="admin-toolbar" style="margin:8px 0;gap:8px;">
+            <select id="mtgFilterStatus" style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);cursor:pointer;">
+              <option value="">All statuses</option>
+              <option value="scheduled">Scheduled</option>
+              <option value="done">Done</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <input type="text" id="mtgFilterSearch" placeholder="Search customer..." style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);flex:1;min-width:140px;">
+          </div>
           <div class="admin-table-wrap">
             <table class="admin-table">
               <thead>
@@ -2985,7 +2994,7 @@
     async function syncFromSupabase() {
       if (!supabaseClient) return;
       try {
-        var keys = [CUSTOMERS_KEY, MEETINGS_KEY];
+        var keys = ['_customers', '_meetings'];
         for (var ki = 0; ki < keys.length; ki++) {
           var key = keys[ki];
           var res = await supabaseClient.from('translations')
@@ -4074,7 +4083,7 @@
         var actions = '';
         if (m.status === 'scheduled') {
           actions += '<button class="admin-edit-btn" onclick="event.stopPropagation();updateMeetingStatus(\'' + m.id + '\',\'done\');var c3=getCustomers().filter(function(x){return x.id===\'' + customer.id + '\';})[0];if(c3)renderCustomerSessions(c3);showToast(\'Meeting marked done\');" style="background:none;border:1px solid #2d6a4f;color:#2d6a4f;padding:2px 8px;border-radius:100px;font-size:0.7rem;cursor:pointer;margin-right:4px;">Done</button>'
-            + '<button class="admin-delete-btn" onclick="event.stopPropagation();if(confirm(\'Cancel this session?\')){cancelMeetingAndGCal(\'' + m.id + '\');}" style="background:none;border:1px solid #c0392b;color:#c0392b;padding:2px 8px;border-radius:100px;font-size:0.7rem;cursor:pointer;margin-right:4px;">Cancel</button>';
+            + '<button class="admin-delete-btn" onclick="event.stopPropagation();cancelMeetingWithConfirm(\'' + m.id + '\')" style="background:none;border:1px solid #c0392b;color:#c0392b;padding:2px 8px;border-radius:100px;font-size:0.7rem;cursor:pointer;margin-right:4px;">Cancel</button>';
         }
         return '<tr>'
           + '<td>' + m.date + '</td>'
@@ -4525,14 +4534,23 @@
       document.getElementById('mtgToday').textContent = todayMtgs;
       document.getElementById('mtgTotal').textContent = meetings.length;
 
+      // Filters
+      var statusFilter = (document.getElementById('mtgFilterStatus') || {}).value || '';
+      var searchFilter = ((document.getElementById('mtgFilterSearch') || {}).value || '').toLowerCase();
+      var filtered = meetings.filter(function(m) {
+        if (statusFilter && m.status !== statusFilter) return false;
+        if (searchFilter && (m.customerName || '').toLowerCase().indexOf(searchFilter) === -1) return false;
+        return true;
+      });
+
       // Table
       var tbody = document.getElementById('mtgTableBody');
-      if (meetings.length === 0) {
-        tbody.innerHTML = '<tr class="empty"><td colspan="8">No meetings scheduled.</td></tr>';
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr class="empty"><td colspan="8">No meetings matched.</td></tr>';
         return;
       }
-      tbody.innerHTML = meetings.sort(function(a, b) {
-        return a.date.localeCompare(b.date) || a.time.localeCompare(b.time);
+      tbody.innerHTML = filtered.sort(function(a, b) {
+        return b.date.localeCompare(a.date) || b.time.localeCompare(a.time);
       }).map(function(m) {
         var statusClass = 's-' + m.status.toLowerCase();
         var statusLabel = m.status.charAt(0).toUpperCase() + m.status.slice(1);
@@ -4543,7 +4561,7 @@
         var actions = '<a href="' + gcalUrl + '" target="_blank" title="Add to Google Calendar" style="background:none;border:1px solid var(--accent);color:var(--accent);padding:2px 8px;border-radius:100px;font-size:0.75rem;cursor:pointer;text-decoration:none;margin-right:4px;">+ GCal</a>';
         if (m.status === 'scheduled') {
           actions += '<button class="admin-edit-btn" onclick="updateMeetingStatus(\'' + m.id + '\',\'done\');renderMeetings();showToast(\'Meeting marked done\');" style="background:none;border:1px solid #2d6a4f;color:#2d6a4f;padding:2px 8px;border-radius:100px;font-size:0.75rem;cursor:pointer;margin-right:4px;">Done</button>'
-            + '<button class="admin-delete-btn" onclick="if(confirm(\'Cancel this meeting?\')){cancelMeetingAndGCal(\'' + m.id + '\');}" style="background:none;border:1px solid #c0392b;color:#c0392b;padding:2px 8px;border-radius:100px;font-size:0.75rem;cursor:pointer;margin-right:4px;">Cancel</button>';
+            + '<button class="admin-delete-btn" onclick="cancelMeetingWithConfirm(\'' + m.id + '\')" style="background:none;border:1px solid #c0392b;color:#c0392b;padding:2px 8px;border-radius:100px;font-size:0.75rem;cursor:pointer;margin-right:4px;">Cancel</button>';
         }
         actions += '<button class="admin-delete-btn" onclick="if(confirm(\'Delete this meeting?\')){deleteMeeting(\'' + m.id + '\');renderMeetings();showToast(\'Meeting deleted\');}" title="Delete">&times;</button>';
         return '<tr>'
@@ -4606,6 +4624,10 @@
       showToast('Meeting created \u2713 Confirmation sent to ' + customer.email);
     });
 
+    // Filter change listeners
+    document.getElementById('mtgFilterStatus').addEventListener('change', renderMeetings);
+    document.getElementById('mtgFilterSearch').addEventListener('input', renderMeetings);
+
     // ─── Calendar ───
     function getCalendarId() {
       return localStorage.getItem('_calendar_id') || '';
@@ -4648,6 +4670,34 @@
     function getGcalSearchUrl(meeting) {
       var q = encodeURIComponent('Coaching: ' + (meeting.customerName || 'Session') + ' ' + meeting.date);
       return 'https://calendar.google.com/calendar/u/0/r/search?q=' + q;
+    }
+
+    function cancelMeetingWithConfirm(id) {
+      var meetings = getMeetings();
+      var meeting = null;
+      for (var i = 0; i < meetings.length; i++) {
+        if (meetings[i].id === id) { meeting = meetings[i]; break; }
+      }
+      if (!meeting) return;
+      // Open window before confirm so popup blocker doesn't interfere
+      var gcalWin = window.open('', '_blank');
+      if (confirm('Cancel this meeting?')) {
+        updateMeetingStatus(id, 'cancelled');
+        if (gcalWin && !gcalWin.closed) {
+          gcalWin.location.href = getGcalSearchUrl(meeting);
+        } else {
+          window.open(getGcalSearchUrl(meeting), '_blank');
+        }
+        renderMeetings();
+        var custOverlay = document.getElementById('custOverlay');
+        if (custOverlay && custOverlay.classList.contains('open')) {
+          var cust = getCustomers().filter(function(c) { return c.id === meeting.customerId; })[0];
+          if (cust) renderCustomerSessions(cust);
+        }
+        showToast('Meeting cancelled \u2713 Delete from Google Calendar');
+      } else if (gcalWin && !gcalWin.closed) {
+        gcalWin.close();
+      }
     }
 
     function cancelMeetingAndGCal(id) {
