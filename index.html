@@ -513,9 +513,10 @@
       color: #fff;
     }
 
-    .stripe-buy-wrap { display: none; margin-top: 12px; }
-    .stripe-buy-wrap.show { display: flex; flex-direction: column; gap: 8px; align-items: center; }
-    .stripe-buy-wrap .buy-label { font-size: 0.75rem; color: var(--text-muted); text-align: center; }
+    .pay-btn-wrap { display: none; margin-top: 8px; flex-direction: column; gap: 6px; align-items: center; }
+    .pay-btn-wrap.show { display: flex; }
+    .stripe-pay-btn { background: #635bff !important; color: #fff !important; border: none !important; }
+    .stripe-pay-btn:hover { background: #4a42d4 !important; transform: translateY(-2px); }
 
     @media (max-width: 1024px) {
       .pricing-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1541,7 +1542,10 @@
           <p class="pricing-desc" data-i18n="plan-2-desc">An individual program of approximately 8 weeks. First session (1.5h) then weekly 1h sessions.</p>
           <div class="price" data-i18n-html="plan-2-price">First session: $200 AUD<br>Weekly: $150 AUD</div>
           <a href="#booking" class="pricing-cta outline" data-i18n="plan-2-cta">Start your journey</a>
-          <div class="stripe-buy-wrap" id="sbw2"></div>
+          <div class="pay-btn-wrap" id="pbw2">
+            <button class="pricing-cta stripe-pay-btn" data-buy="2_first">Pay — First session</button>
+            <button class="pricing-cta stripe-pay-btn" data-buy="2_follow">Pay — Follow-up</button>
+          </div>
         </div>
         <div class="pricing-card featured fade-in visible">
           <div class="badge" data-i18n="pricing-badge">Most popular</div>
@@ -1549,7 +1553,9 @@
           <p class="pricing-desc" data-i18n="plan-3-desc">For those ready for deeper transformation. 6 sessions per month with daily support and evaluation.</p>
           <div class="price" data-i18n-html="plan-3-price">$1,500 AUD / month</div>
           <a href="#booking" class="pricing-cta" data-i18n="plan-3-cta">Go all in</a>
-          <div class="stripe-buy-wrap" id="sbw3"></div>
+          <div class="pay-btn-wrap" id="pbw3">
+            <button class="pricing-cta stripe-pay-btn" data-buy="3">Pay now</button>
+          </div>
         </div>
         <div class="pricing-card fade-in visible">
           <h3 data-i18n="plan-4-title">Personalised Program</h3>
@@ -2944,59 +2950,69 @@
       return val || '';
     }
 
-    function renderStripeBuyButton(wrapEl, buyId, label) {
-      if (!wrapEl) return;
-      var pk = getStripeConfig('stripe_pk');
-      if (pk && buyId) {
-        var container = document.createElement('div');
-        container.style.cssText = 'text-align:center;';
-        if (label) {
-          var lbl = document.createElement('div');
-          lbl.className = 'buy-label';
-          lbl.textContent = label;
-          container.appendChild(lbl);
-        }
-        var btn = document.createElement('stripe-buy-button');
-        btn.setAttribute('buy-button-id', buyId);
-        btn.setAttribute('publishable-key', pk);
-        container.appendChild(btn);
-        wrapEl.innerHTML = '';
-        wrapEl.appendChild(container);
-        wrapEl.classList.add('show');
-      } else {
-        wrapEl.classList.remove('show');
-      }
+    function getBuyId(key) {
+      var id = getStripeConfig(key);
+      return id || null;
     }
 
     function updateStripeButtons() {
-      renderStripeBuyButton(
-        document.getElementById('sbw2'),
-        getStripeConfig('stripe_buy_id_2_first'),
-        'First session'
-      );
-      // For Plan 2 follow-up, append to same wrap
-      var sbw2 = document.getElementById('sbw2');
-      var followId = getStripeConfig('stripe_buy_id_2_follow');
       var pk = getStripeConfig('stripe_pk');
-      if (sbw2 && pk && followId && sbw2.classList.contains('show')) {
-        var container2 = document.createElement('div');
-        container2.style.cssText = 'text-align:center;';
-        var lbl2 = document.createElement('div');
-        lbl2.className = 'buy-label';
-        lbl2.textContent = 'Follow-up session';
-        container2.appendChild(lbl2);
-        var btn2 = document.createElement('stripe-buy-button');
-        btn2.setAttribute('buy-button-id', followId);
-        btn2.setAttribute('publishable-key', pk);
-        container2.appendChild(btn2);
-        sbw2.appendChild(container2);
+      var hasPk = pk && pk.trim() !== '';
+      var wrap2 = document.getElementById('pbw2');
+      var wrap3 = document.getElementById('pbw3');
+      if (wrap2) {
+        if (hasPk && (getBuyId('stripe_buy_id_2_first') || getBuyId('stripe_buy_id_2_follow'))) {
+          wrap2.classList.add('show');
+        } else {
+          wrap2.classList.remove('show');
+        }
       }
-      renderStripeBuyButton(
-        document.getElementById('sbw3'),
-        getStripeConfig('stripe_buy_id_3'),
-        ''
-      );
+      if (wrap3) {
+        if (hasPk && getBuyId('stripe_buy_id_3')) {
+          wrap3.classList.add('show');
+        } else {
+          wrap3.classList.remove('show');
+        }
+      }
     }
+
+    function triggerStripePayment(buyId) {
+      var pk = getStripeConfig('stripe_pk');
+      if (!pk || !buyId) return;
+      // Open blank window first to claim popup (Stripe will navigate it)
+      var popup = window.open('', '_blank');
+      // Create a hidden stripe-buy-button and trigger its click
+      var el = document.createElement('stripe-buy-button');
+      el.setAttribute('buy-button-id', buyId);
+      el.setAttribute('publishable-key', pk);
+      el.style.display = 'none';
+      document.body.appendChild(el);
+      // Retry clicking the shadow DOM button until it's upgraded
+      var attempts = 0;
+      function tryClick() {
+        if (el.shadowRoot) {
+          var innerBtn = el.shadowRoot.querySelector('button, [role="button"]');
+          if (innerBtn) {
+            innerBtn.click();
+            setTimeout(function() { try { el.remove(); } catch(e) {} }, 30000);
+            return;
+          }
+        }
+        attempts++;
+        if (attempts < 30) setTimeout(tryClick, 200);
+      }
+      setTimeout(tryClick, 300);
+    }
+
+    document.addEventListener('click', function(e) {
+      var payBtn = e.target.closest('.stripe-pay-btn');
+      if (payBtn) {
+        e.preventDefault();
+        var key = 'stripe_buy_id_' + payBtn.dataset.buy;
+        var buyId = getBuyId(key);
+        triggerStripePayment(buyId);
+      }
+    });
 
     function getPlanName(planNum) {
       return getTranslation(currentLang, 'plan-' + planNum + '-title') || 'Plan ' + planNum;
@@ -3015,11 +3031,11 @@
 
       var plans = [
         { n: 1, key: 'plan-1' },
-        { n: 2, key: 'plan-2', buyFirst: getStripeConfig('stripe_buy_id_2_first'), buyFollow: getStripeConfig('stripe_buy_id_2_follow'),
-          amtFirst: getStripeConfig('stripe_amount_2_first'), amtFollow: getStripeConfig('stripe_amount_2_follow'),
+        { n: 2, key: 'plan-2', id1: getStripeConfig('stripe_buy_id_2_first'), id2: getStripeConfig('stripe_buy_id_2_follow'),
+          amt1: getStripeConfig('stripe_amount_2_first'), amt2: getStripeConfig('stripe_amount_2_follow'),
           cur: getStripeConfig('stripe_currency_2') || 'AUD' },
-        { n: 3, key: 'plan-3', buyFirst: getStripeConfig('stripe_buy_id_3'),
-          amtFirst: getStripeConfig('stripe_amount_3'), cur: getStripeConfig('stripe_currency_3') || 'AUD' },
+        { n: 3, key: 'plan-3', id1: getStripeConfig('stripe_buy_id_3'),
+          amt1: getStripeConfig('stripe_amount_3'), cur: getStripeConfig('stripe_currency_3') || 'AUD' },
         { n: 4, key: 'plan-4' },
       ];
 
@@ -3033,31 +3049,28 @@
         if (isPlan2 || isPlan3) {
           if (!pkSet) {
             actionsHtml += '<span style="font-size:0.78rem;color:var(--text-muted);">Set publishable key in Content tab</span>';
-          } else if (!p.buyFirst) {
+          } else if (!p.id1) {
             actionsHtml += '<span style="font-size:0.78rem;color:var(--text-muted);">No buy button ID set</span>';
           } else {
-            // Render preview buy button
-            if (p.buyFirst) {
-              actionsHtml += '<div style="text-align:center;margin-bottom:4px;">' +
-                (isPlan2 ? '<div style="font-size:0.7rem;color:var(--text-muted);">First session</div>' : '') +
-                '<stripe-buy-button buy-button-id="' + esc(p.buyFirst) + '" publishable-key="' + esc(pk) + '"></stripe-buy-button></div>';
-            }
-            if (isPlan2 && p.buyFollow) {
-              actionsHtml += '<div style="text-align:center;">' +
-                '<div style="font-size:0.7rem;color:var(--text-muted);">Follow-up session</div>' +
-                '<stripe-buy-button buy-button-id="' + esc(p.buyFollow) + '" publishable-key="' + esc(pk) + '"></stripe-buy-button></div>';
+            // Pay now buttons (same style as pricing cards)
+            if (isPlan2) {
+              actionsHtml += '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+                '<button class="stripe-pay-btn" data-buy="2_first" style="background:#635bff;color:#fff;border:none;padding:8px 18px;border-radius:100px;font-size:0.82rem;font-weight:600;cursor:pointer;">Pay first session</button>' +
+                '<button class="stripe-pay-btn" data-buy="2_follow" style="background:#635bff;color:#fff;border:none;padding:8px 18px;border-radius:100px;font-size:0.82rem;font-weight:600;cursor:pointer;">Pay follow-up</button>' +
+              '</div>';
+            } else if (isPlan3) {
+              actionsHtml += '<button class="stripe-pay-btn" data-buy="3" style="background:#635bff;color:#fff;border:none;padding:8px 18px;border-radius:100px;font-size:0.82rem;font-weight:600;cursor:pointer;">Pay now</button>';
             }
           }
           // Log payment buttons
-          var logHtml = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">';
+          actionsHtml += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">';
           if (isPlan2) {
-            logHtml += '<button class="stripe-log-btn" data-plan="2" data-sub="first" style="background:none;border:1px solid var(--border);padding:4px 12px;border-radius:100px;font-size:0.78rem;cursor:pointer;color:var(--text-muted);">Log first session</button>';
-            logHtml += '<button class="stripe-log-btn" data-plan="2" data-sub="follow" style="background:none;border:1px solid var(--border);padding:4px 12px;border-radius:100px;font-size:0.78rem;cursor:pointer;color:var(--text-muted);">Log follow-up</button>';
+            actionsHtml += '<button class="stripe-log-btn" data-plan="2" data-sub="first" style="background:none;border:1px solid var(--border);padding:4px 12px;border-radius:100px;font-size:0.78rem;cursor:pointer;color:var(--text-muted);">Log first session</button>';
+            actionsHtml += '<button class="stripe-log-btn" data-plan="2" data-sub="follow" style="background:none;border:1px solid var(--border);padding:4px 12px;border-radius:100px;font-size:0.78rem;cursor:pointer;color:var(--text-muted);">Log follow-up</button>';
           } else if (isPlan3) {
-            logHtml += '<button class="stripe-log-btn" data-plan="3" data-sub="main" style="background:none;border:1px solid var(--border);padding:4px 12px;border-radius:100px;font-size:0.78rem;cursor:pointer;color:var(--text-muted);">Log payment</button>';
+            actionsHtml += '<button class="stripe-log-btn" data-plan="3" data-sub="main" style="background:none;border:1px solid var(--border);padding:4px 12px;border-radius:100px;font-size:0.78rem;cursor:pointer;color:var(--text-muted);">Log payment</button>';
           }
-          logHtml += '</div>';
-          actionsHtml += logHtml;
+          actionsHtml += '</div>';
         } else {
           actionsHtml = '<span style="font-size:0.78rem;color:var(--text-muted);">N/A</span>';
         }
