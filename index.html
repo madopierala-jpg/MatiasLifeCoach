@@ -1914,6 +1914,13 @@
             <button id="calendarConnectBtn" style="background:var(--accent);color:#fff;border:none;padding:6px 16px;border-radius:100px;font-size:0.8rem;cursor:pointer;">Connect</button>
             <span id="calendarStatus" style="font-size:0.8rem;color:var(--text-muted);"></span>
           </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
+            <label style="font-size:0.85rem;color:var(--text-muted);">
+              Google API Key:
+              <input type="text" id="googleApiKeyInput" value="" placeholder="For sync (get from GCP Console)" style="padding:6px 12px;font-family:var(--font-body);font-size:0.85rem;border:1px solid var(--border);border-radius:8px;background:var(--section-alt);color:var(--text);width:280px;margin-left:6px;outline:none;">
+            </label>
+            <button id="googleApiKeySaveBtn" style="background:none;border:1px solid var(--border);padding:6px 14px;border-radius:100px;font-size:0.8rem;cursor:pointer;color:var(--text-muted);">Save</button>
+          </div>
           <div id="calendarEmbedWrap" style="width:100%;height:500px;border-radius:12px;overflow:hidden;border:1px solid var(--border);display:none;">
             <iframe id="calendarIframe" style="width:100%;height:100%;border:none;" scrolling="yes"></iframe>
           </div>
@@ -1924,7 +1931,8 @@
             3. Under <strong>Settings for my calendars</strong>, click your calendar name<br>
             4. Scroll to <strong>Integrate calendar</strong> &rarr; copy the <strong>Calendar ID</strong><br>
             5. For your primary Gmail calendar, just enter your email address (e.g. <code>your.name@gmail.com</code>)<br>
-            6. Make sure <strong>Make available to public</strong> is checked in the calendar's Access Permissions for the embed to work without login
+            6. Make sure <strong>Make available to public</strong> is checked in the calendar's Access Permissions for the embed to work without login<br>
+            7. For <strong>Sync from GCal</strong>: Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--accent);">Google Cloud Console</a> &rarr; Create API key &rarr; Enable <strong>Google Calendar API</strong> &rarr; paste the key above
           </div>
         </div>
 
@@ -2073,6 +2081,7 @@
               <option value="customer">Customer</option>
             </select>
             <input type="text" id="mtgFilterSearch" placeholder="Search customer..." style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);flex:1;min-width:140px;">
+            <button id="mtgSyncBtn" style="padding:6px 12px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:0.8rem;cursor:pointer;white-space:nowrap;" title="Check GCal and cancel meetings that no longer exist">Sync &#x21bb;</button>
           </div>
           <div class="admin-table-wrap">
             <table class="admin-table">
@@ -4654,15 +4663,84 @@
       return localStorage.getItem('_calendar_id') || '';
     }
 
-    function renderCalendar() {
+    function getGoogleApiKey() {
+      return localStorage.getItem('_google_api_key') || '';
+    }
+
+    function syncMeetingsWithGCal() {
       var calId = getCalendarId();
-      if (calId) {
-        document.getElementById('calendarIdInput').value = calId;
-        connectCalendar(calId);
-      } else {
-        document.getElementById('calendarEmbedWrap').style.display = 'none';
-        document.getElementById('calendarStatus').textContent = 'Enter your Calendar ID and click Connect.';
-      }
+      var apiKey = getGoogleApiKey();
+      if (!calId) { showToast('Configure Calendar ID in the Calendar tab first.'); return; }
+      if (!apiKey) { showToast('Set your Google API Key in the Calendar tab.'); return; }
+
+      var now = new Date();
+      var timeMin = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
+      var timeMax = new Date(now.getFullYear(), now.getMonth() + 3, 1).toISOString();
+      var url = 'https://www.googleapis.com/calendar/v3/calendars/' + encodeURIComponent(calId)
+        + '/events?key=' + encodeURIComponent(apiKey)
+        + '&timeMin=' + encodeURIComponent(timeMin)
+        + '&timeMax=' + encodeURIComponent(timeMax)
+        + '&singleEvents=true&orderBy=startTime';
+
+      showToast('Syncing with Google Calendar...');
+
+      fetch(url)
+        .then(function(res) {
+          if (!res.ok) return res.json().then(function(err) {
+            var msg = err.error && err.error.message ? err.error.message : 'HTTP ' + res.status;
+            if (res.status === 404) msg += '. Make sure your calendar is public (Settings > Make available to public) and the Calendar API is enabled in Google Cloud Console.';
+            throw new Error(msg);
+          });
+          return res.json();
+        })
+        .then(function(data) {
+          var gcalEvents = data.items || [];
+          var meetings = getMeetings();
+          var cancelled = 0;
+          var matched = 0;
+          var checked = 0;
+
+          meetings.forEach(function(m) {
+            if (m.status !== 'scheduled') return;
+            checked++;
+            var mtgDate = m.date;
+            var mtgMin = parseInt(m.time.split(':')[0]) * 60 + parseInt(m.time.split(':')[1]);
+
+            var found = gcalEvents.some(function(ge) {
+              var start = ge.start;
+              if (!start) return false;
+              var dtStr = start.dateTime || start.date || '';
+              var evDate = dtStr.substring(0, 10);
+              if (evDate !== mtgDate) return false;
+              if (start.dateTime) {
+                var match = start.dateTime.match(/T(\d{2}):(\d{2})/);
+                if (match) {
+                  var evMin = parseInt(match[1]) * 60 + parseInt(match[2]);
+                  if (Math.abs(mtgMin - evMin) <= 90) return true;
+                  return false;
+                }
+              }
+              return true;
+            });
+
+            if (found) {
+              matched++;
+            } else {
+              updateMeetingStatus(m.id, 'cancelled');
+              cancelled++;
+            }
+          });
+
+          renderMeetings();
+          if (checked === 0) {
+            showToast('No scheduled meetings to sync.');
+          } else {
+            showToast('Sync: ' + cancelled + ' meetings cancelled, ' + matched + ' active');
+          }
+        })
+        .catch(function(err) {
+          showToast('Sync failed: ' + err.message);
+        });
     }
 
     function connectCalendar(calId) {
@@ -4768,6 +4846,9 @@
         _pendingMtgCustomer = null;
       }
 
+      var savedKey = getGoogleApiKey();
+      if (savedKey) document.getElementById('googleApiKeyInput').value = savedKey;
+
       if (calId) {
         document.getElementById('calendarIdInput').value = calId;
         connectCalendar(calId);
@@ -4820,6 +4901,13 @@
     document.getElementById('calendarIdInput').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') document.getElementById('calendarConnectBtn').click();
     });
+    document.getElementById('googleApiKeySaveBtn').addEventListener('click', function() {
+      var key = document.getElementById('googleApiKeyInput').value.trim();
+      if (!key) { showToast('Enter a Google API Key'); return; }
+      localStorage.setItem('_google_api_key', key);
+      showToast('API Key saved');
+    });
+    document.getElementById('mtgSyncBtn').addEventListener('click', syncMeetingsWithGCal);
 
     // ─── Admin tab switching ───
     document.querySelectorAll('.admin-tab').forEach(tab => {
