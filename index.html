@@ -2007,83 +2007,81 @@
             <h4 style="font-size:0.9rem;color:var(--text-muted);margin-bottom:8px;">By client</h4>
             <div id="pnlClientList"></div>
           </div>
+        <!-- Meetings tab -->
+        <div class="admin-panel-section" id="adminMeetingsPanel">
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">
+            Schedule and manage coaching sessions. Linked to customers — confirmation emails are sent automatically.
+          </p>
+          <div class="admin-toolbar">
+            <button id="mtgAddBtn">+ New meeting</button>
+          </div>
+          <div id="mtgForm" style="display:none;background:var(--section-alt);padding:16px;border-radius:10px;margin-bottom:16px;">
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:10px;">New meeting</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;">
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Customer:
+                <select id="mtgCustomer" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);cursor:pointer;min-width:180px;margin-top:4px;">
+                  <option value="">Select customer</option>
+                </select>
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Date:
+                <input type="date" id="mtgDate" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;margin-top:4px;">
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Time:
+                <input type="time" id="mtgTime" value="10:00" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;margin-top:4px;">
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Duration (min):
+                <input type="number" id="mtgDuration" value="45" min="15" step="15" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:80px;margin-top:4px;">
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Notes:
+                <input type="text" id="mtgNotes" placeholder="Optional notes" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:200px;margin-top:4px;">
+              </label>
+              <label style="font-size:0.8rem;color:var(--text-muted);">
+                Payment:
+                <select id="mtgPayment" style="display:block;padding:6px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.8rem;background:var(--bg);cursor:pointer;margin-top:4px;">
+                  <option value="Paid">Paid</option>
+                  <option value="Pending">Payment Pending</option>
+                  <option value="Unpaid">Unpaid</option>
+                </select>
+              </label>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <button id="mtgSaveBtn" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:100px;font-size:0.85rem;cursor:pointer;">Save &amp; send confirmation</button>
+                <button id="mtgCancelBtn" style="background:none;border:1px solid var(--border);padding:8px 14px;border-radius:100px;font-size:0.85rem;cursor:pointer;color:var(--text-muted);">Cancel</button>
+              </div>
+            </div>
+          </div>
+          <div class="admin-stats">
+            <div class="admin-stat"><strong id="mtgUpcoming">0</strong><span>Upcoming</span></div>
+            <div class="admin-stat"><strong id="mtgToday">0</strong><span>Today</span></div>
+            <div class="admin-stat"><strong id="mtgTotal">0</strong><span>Total</span></div>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Customer</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                  <th>Payment</th>
+                  <th>Notes</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="mtgTableBody">
+                <tr class="empty"><td colspan="8">No meetings scheduled.</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-      <!-- Meetings tab -->
-      <div class="admin-panel-section" id="adminMeetingsPanel">
-        <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:8px;">
-          Schedule and manage coaching sessions. Linked to customers — confirmation emails are sent automatically.
-        </p>
-        <div class="admin-toolbar">
-          <button id="mtgAddBtn">+ New meeting</button>
-        </div>
-        <div id="mtgForm" style="display:none;background:var(--section-alt);padding:16px;border-radius:10px;margin-bottom:16px;">
-          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:10px;">New meeting</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;">
-            <label style="font-size:0.8rem;color:var(--text-muted);">
-              Customer:
-              <select id="mtgCustomer" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;background:var(--bg);cursor:pointer;min-width:180px;margin-top:4px;">
-                <option value="">Select customer</option>
-              </select>
-            </label>
-            <label style="font-size:0.8rem;color:var(--text-muted);">
-              Date:
-              <input type="date" id="mtgDate" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;margin-top:4px;">
-            </label>
-            <label style="font-size:0.8rem;color:var(--text-muted);">
-              Time:
-              <input type="time" id="mtgTime" value="10:00" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;margin-top:4px;">
-            </label>
-            <label style="font-size:0.8rem;color:var(--text-muted);">
-              Duration (min):
-              <input type="number" id="mtgDuration" value="45" min="15" step="15" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:80px;margin-top:4px;">
-            </label>
-            <label style="font-size:0.8rem;color:var(--text-muted);">
-              Notes:
-              <input type="text" id="mtgNotes" placeholder="Optional notes" style="display:block;padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:0.85rem;width:200px;margin-top:4px;">
-            </label>
-            <label style="font-size:0.8rem;color:var(--text-muted);">
-              Payment:
-              <select id="mtgPayment" style="display:block;padding:6px 8px;border-radius:6px;border:1px solid var(--border);font-size:0.8rem;background:var(--bg);cursor:pointer;margin-top:4px;">
-                <option value="Paid">Paid</option>
-                <option value="Pending">Payment Pending</option>
-                <option value="Unpaid">Unpaid</option>
-              </select>
-            </label>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <button id="mtgSaveBtn" style="background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:100px;font-size:0.85rem;cursor:pointer;">Save &amp; send confirmation</button>
-              <button id="mtgCancelBtn" style="background:none;border:1px solid var(--border);padding:8px 14px;border-radius:100px;font-size:0.85rem;cursor:pointer;color:var(--text-muted);">Cancel</button>
-            </div>
-          </div>
-        </div>
-        <div class="admin-stats">
-          <div class="admin-stat"><strong id="mtgUpcoming">0</strong><span>Upcoming</span></div>
-          <div class="admin-stat"><strong id="mtgToday">0</strong><span>Today</span></div>
-          <div class="admin-stat"><strong id="mtgTotal">0</strong><span>Total</span></div>
-        </div>
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Customer</th>
-                <th>Duration</th>
-                <th>Status</th>
-                <th>Payment</th>
-                <th>Notes</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="mtgTableBody">
-              <tr class="empty"><td colspan="8">No meetings scheduled.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
 
   <!-- ─── Customer file modal ─── -->
   <div class="overlay" id="custOverlay">
