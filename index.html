@@ -60,696 +60,348 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #faf8f5;
-      --text: #1a1817;
-      --text-muted: #7a726a;
-      --accent: #b8944a;
-      --accent-hover: #a38340;
-      --section-alt: #f3efe8;
-      --border: #e5ddd1;
-      --font-heading: 'Cormorant Garamond', serif;
-      --font-body: 'Inter', -apple-system, sans-serif;
-    }
-
-    html { scroll-behavior: smooth; height: 100%; }
-
-    body {
-      font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      font-weight: 300;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    main { flex: 1; }
-
-    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 24px;
-      max-width: 1120px;
-      margin: 0 auto;
-    }
-
-    .nav-left { display: flex; align-items: center; gap: 24px; }
-
-    .logo {
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .logo span {
-      display: block;
-      font-family: var(--font-body);
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-top: -2px;
-    }
-
-    .lang-switch {
-      display: flex;
-      gap: 4px;
-      background: var(--section-alt);
-      padding: 3px;
-      border-radius: 100px;
-    }
-
-    .lang-btn {
-      background: none;
-      border: none;
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      padding: 4px 12px;
-      border-radius: 100px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .lang-btn.active {
-      background: var(--bg);
-      color: var(--text);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
-
-    .lang-btn:hover:not(.active) { color: var(--text); }
-
-    .nav-right { display: flex; align-items: center; gap: 16px; }
-
-    .nav-cta {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--accent);
-      text-decoration: none;
-      border: 1px solid var(--accent);
-      padding: 8px 18px;
-      border-radius: 100px;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-    }
-
-    .nav-cta:hover { background: var(--accent); color: #fff; }
-
-    .nav-link {
-      font-size: 0.8rem;
-      font-weight: 400;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    .nav-link:hover { color: var(--text); }
-
-    .hero {
-      min-height: 85vh;
-      display: flex;
-      align-items: center;
-      padding: 60px 0 100px;
-    }
-
-    .hero-content { max-width: 780px; }
-
-    .hero-tag {
-      font-size: 0.8rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-family: var(--font-heading);
-      font-size: clamp(2.8rem, 7vw, 4.8rem);
-      font-weight: 600;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 em { font-style: italic; color: var(--accent); }
-
-    .hero-subtitle {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      max-width: 560px;
-      margin-bottom: 36px;
-      line-height: 1.75;
-    }
-
-    .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 44px;
-    }
-
-    .hero-tags span {
-      font-size: 0.85rem;
-      color: var(--text);
-      background: var(--section-alt);
-      padding: 6px 18px;
-      border-radius: 100px;
-      font-weight: 400;
-    }
-
-    .btn-primary {
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 500;
-      padding: 16px 38px;
-      border-radius: 100px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(184, 148, 74, 0.25);
-    }
-
-    .btn-secondary {
-      display: inline-block;
-      background: transparent;
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 400;
-      padding: 16px 38px;
-      border-radius: 100px;
-      text-decoration: none;
-      border: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-
-    .btn-secondary:hover { border-color: var(--text); }
-
-    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
-
-    .hero-note {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 14px;
-    }
-
-    section { padding: 100px 0; }
-
-    section.alt { background: var(--section-alt); }
-
-    .section-label {
-      font-size: 0.8rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .section-title {
-      font-family: var(--font-heading);
-      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
-      font-weight: 600;
-      line-height: 1.1;
-      margin-bottom: 18px;
-    }
-
-    .section-desc {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      max-width: 600px;
-      line-height: 1.75;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .about-text { font-size: 1rem; color: var(--text-muted); line-height: 1.8; }
-    .about-text p + p { margin-top: 16px; }
-
-    .about-photo {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background-image: url('matias-photo.png');
-      background-size: cover;
-      background-position: 50% 50%;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    }
-
-    .offerings-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 48px;
-    }
-
-    .offering-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px 32px;
-      transition: all 0.35s ease;
-    }
-
-    .offering-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05);
-      border-color: var(--accent);
-    }
-
-    .offering-number {
-      font-family: var(--font-heading);
-      font-size: 2.4rem;
-      font-weight: 600;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-
-    .offering-card h3 {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    .offering-card p {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-
-    .values-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 48px;
-    }
-
-    .value-item {
-      text-align: center;
-      padding: 32px 20px;
-      border-radius: 16px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-    }
-
-    .value-item h3 {
-      font-family: var(--font-heading);
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .value-item p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    /* --- Pricing --- */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-top: 48px;
-      align-items: stretch;
-    }
-
-    .pricing-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 36px 28px;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.35s ease;
-      position: relative;
-    }
-
-    .pricing-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05);
-      border-color: var(--accent);
-    }
-
-    .pricing-card.featured {
-      border-color: var(--accent);
-      border-width: 2px;
-      box-shadow: 0 8px 32px rgba(184, 148, 74, 0.12);
-      transform: scale(1.03);
-    }
-
-    .pricing-card.featured:hover {
-      transform: scale(1.03) translateY(-6px);
-      box-shadow: 0 20px 48px rgba(184, 148, 74, 0.2);
-    }
-
-    .pricing-card .badge {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 4px 16px;
-      border-radius: 100px;
-      white-space: nowrap;
-    }
-
-    .pricing-card h3 {
-      font-family: var(--font-heading);
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    .pricing-card .pricing-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      flex: 1;
-      margin-bottom: 20px;
-    }
-
-    .pricing-card .price {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--accent);
-      line-height: 1.3;
-      margin-bottom: 20px;
-    }
-
-    .pricing-card .price small {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      font-weight: 400;
-      color: var(--text-muted);
-      display: block;
-    }
-
-    .pricing-card .pricing-cta {
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-weight: 500;
-      padding: 12px 24px;
-      border-radius: 100px;
-      text-decoration: none;
-      text-align: center;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-    }
-
-    .pricing-card .pricing-cta:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(184, 148, 74, 0.25);
-    }
-
-    .pricing-card .pricing-cta.outline {
-      background: transparent;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-    }
-
-    .pricing-card .pricing-cta.outline:hover {
-      background: var(--accent);
-      color: #fff;
-    }
-
-
-
-    @media (max-width: 1024px) {
-      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
-      .pricing-card.featured { transform: none; }
-      .pricing-card.featured:hover { transform: translateY(-6px); }
-    }
-
-    @media (max-width: 640px) {
-      .pricing-grid { grid-template-columns: 1fr; }
-    }
-
-    /* --- Testimonials --- */
-    .testimonials-scroll {
-      display: flex;
-      gap: 20px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding: 12px 4px 20px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
-    }
-
-    .testimonials-scroll::-webkit-scrollbar { height: 6px; }
-    .testimonials-scroll::-webkit-scrollbar-track { background: transparent; }
-    .testimonials-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-    .testimonial-card {
-      flex: 0 0 340px;
-      scroll-snap-align: start;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      transition: all 0.3s ease;
-    }
-
-    .testimonial-card:hover {
-      border-color: var(--accent);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
-    }
-
-    .testimonial-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .testimonial-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-      background: var(--section-alt);
-    }
-
-    .testimonial-name {
-      font-family: var(--font-heading);
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .testimonial-card blockquote {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.7;
-      font-style: italic;
-      quotes: none;
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:6rem;font-size:16px;-webkit-text-size-adjust:100%}
+    body{font-family:'Inter',sans-serif;color:#2a2a2a;background:#faf9f7;overflow-x:hidden;line-height:1.7;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;min-height:100%;display:flex;flex-direction:column}
+    body.menu-open{overflow:hidden}
+    a{text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent}
+    ul{list-style:none}
+    img{max-width:100%;display:block}
+    button{border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+    main{flex:1}
+
+    :root{
+      --bg:#faf9f7;--bg-light:#faf9f7;--bg-dark:#1a1a1a;--bg-warm:#f5efe8;
+      --accent:#b8785c;--accent-hover:#a36847;
+      --sage:#8a9a7b;
+      --text:#2a2a2a;--text-muted:#888;--text-light:#f5f0eb;--text-light-muted:#bbb;
+      --border:rgba(0,0,0,0.06);--border-dark:rgba(255,255,255,0.08);
+      --section-alt:#f3efe8;
+      --serif:'Cormorant Garamond',Georgia,serif;
+      --sans:'Inter',system-ui,sans-serif;
+      --font-heading:var(--serif);--font-body:var(--sans);
+      --ease:cubic-bezier(.23,1,.32,1);
+      --container:1200px;
+      --nav-h:4rem;
+      --safe-top:env(safe-area-inset-top,0px);
+      --safe-bottom:env(safe-area-inset-bottom,0px);
+      --safe-left:env(safe-area-inset-left,0px);
+      --safe-right:env(safe-area-inset-right,0px);
+    }
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg-light)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+    .container{max-width:var(--container);margin:0 auto;padding:0 clamp(1.25rem,4vw,2rem)}
+    .r{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+    .r.v{opacity:1;transform:translateY(0)}
+    .rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}
+    .fade-in{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+    .fade-in.visible{opacity:1;transform:translateY(0)}
+
+    /* ==================== NAVIGATION ==================== */
+    .nav{position:fixed;top:0;left:0;width:100%;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:1rem clamp(1.25rem,4vw,2rem);transition:all .4s var(--ease);padding-top:calc(var(--safe-top) + 1rem)}
+    .nav.scrolled{background:rgba(250,249,247,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .nav-inner{display:none}
+    .nav-logo{font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--text);letter-spacing:-.02em;z-index:1001}
+
+    .lang-switch{display:flex;gap:4px;background:var(--section-alt);padding:3px;border-radius:100px}
+    .lang-btn{background:none;border:none;font-family:var(--sans);font-size:.75rem;font-weight:500;color:var(--text-muted);padding:4px 12px;border-radius:100px;cursor:pointer;transition:all .2s ease}
+    .lang-btn.active{background:var(--bg);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    .lang-btn:hover:not(.active){color:var(--text)}
+    .hamburger{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:10px;min-width:44px;min-height:44px;align-items:center;justify-content:center}
+    .hamburger span{display:block;width:22px;height:1.5px;background:var(--text);border-radius:2px;transition:all .3s}
+    .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}
+    .hamburger.active span:nth-child(2){opacity:0}
+    .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+
+    /* Nav HTML aliases */
+    .logo{font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--text);letter-spacing:-.02em;z-index:1001}
+    .logo span{display:block;font-family:var(--sans);font-size:.7rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-top:-2px}
+    .nav-left{display:flex;align-items:center;gap:24px}
+    .nav-right{display:flex;align-items:center;gap:16px;margin-left:auto}
+    .nav-cta{font-size:.8rem;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:8px 18px;border-radius:100px;transition:all .3s ease;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
+    .nav-cta:hover{background:var(--accent);color:#fff}
+    .nav-admin-link{font-size:1rem;cursor:pointer;opacity:.5;transition:opacity .3s;display:flex;align-items:center;min-height:44px;padding:0 6px}
+    .nav-admin-link:hover{opacity:1}
+    .nav-admin-link .admin-badge{position:absolute;top:-2px;right:-6px;font-size:.55rem;padding:1px 5px}
+    .nav-admin-link{position:relative}
+
+    /* ==================== HERO ==================== */
+    .hero{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:calc(var(--nav-h) + 3rem) clamp(1.25rem,4vw,2rem) 4rem;background:var(--bg-light);position:relative}
+    .hero-content{max-width:800px;position:relative;z-index:2}
+    .hero-label{font-size:clamp(.65rem,.6rem + .25vw,.75rem);font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem}
+    .hero h1{font-family:var(--serif);font-size:clamp(2.4rem,6vw,5.5rem);font-weight:300;line-height:1.1;color:var(--text);max-width:900px;margin:0 auto 1.5rem;letter-spacing:-.03em}
+    .hero h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+    .hero-sub{font-size:clamp(.95rem,1.2vw,1.2rem);color:var(--text-muted);max-width:580px;margin:0 auto 2.5rem;line-height:1.9;font-weight:300}
+    .hero-buttons{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:1rem 2.4rem;border-radius:100px;font-size:clamp(.8rem,.85rem,.85rem);font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:all .4s var(--ease);min-height:48px}
+    .btn-fill{background:var(--accent);color:#fff}
+    .btn-fill:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 8px 30px rgba(184,120,92,.3)}
+    .btn-outline{background:transparent;color:var(--text);border:1.5px solid rgba(0,0,0,.15)}
+    .btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+    .hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.75rem}
+    .hero-scroll span{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
+    .scroll-line{width:1px;height:36px;background:linear-gradient(180deg,var(--accent),transparent);animation:pulse 2.5s ease-in-out infinite}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.15)}}
+
+    /* Legacy hero/button class names */
+    .hero-tag{font-size:clamp(.65rem,.6rem+.25vw,.75rem);font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem}
+    .hero-subtitle{font-size:clamp(.95rem,1.1vw,1.1rem);color:var(--text-muted);max-width:580px;margin-bottom:2rem;line-height:1.9;font-weight:300}
+    .hero-tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:44px}
+    .hero-tags span{font-size:.85rem;color:var(--text);background:var(--section-alt);padding:6px 18px;border-radius:100px;font-weight:400}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+    .hero-note{font-size:.85rem;color:var(--text-muted);margin-top:14px}
+    .btn-primary{display:inline-flex;align-items:center;justify-content:center;padding:1rem 2.4rem;border-radius:100px;font-size:clamp(.8rem,.85rem,.85rem);font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:all .4s var(--ease);min-height:48px;text-decoration:none;border:none;cursor:pointer;background:var(--accent);color:#fff;font-family:var(--sans)}
+    .btn-primary:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 8px 30px rgba(184,120,92,.3)}
+    .btn-secondary{background:transparent;color:var(--text);border:1.5px solid rgba(0,0,0,.15);font-family:var(--sans);padding:1rem 2.4rem;border-radius:100px;font-size:clamp(.8rem,.85rem,.85rem);font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:all .4s var(--ease);min-height:48px;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+    .btn-secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+
+    /* ==================== SECTIONS ==================== */
+    section{padding:clamp(4rem,10vw,8rem) 0}
+    section.alt{background:var(--section-alt)}
+    .section-alt{background:var(--section-alt)}
+    .section-header{text-align:center;margin-bottom:clamp(3rem,5vw,5rem)}
+    .section-label{font-size:clamp(.65rem,.7rem,.75rem);font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:block}
+    .section-title{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3.2rem);font-weight:300;line-height:1.25;color:var(--text);letter-spacing:-.02em}
+    .section-title em{font-style:italic;color:var(--accent);font-weight:400}
+    .section-desc{font-size:clamp(.95rem,1vw,1.05rem);color:var(--text-muted);max-width:600px;line-height:1.8;font-weight:300}
+
+    /* ==================== TRUST BAR ==================== */
+    .trust{padding:3rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-light)}
+    .trust-inner{display:flex;justify-content:center;flex-wrap:wrap;gap:1rem 3rem}
+    .trust-item{font-size:clamp(.7rem,.75rem,.8rem);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+    .trust-dot{color:var(--accent);margin:0 .25rem}
+
+    /* ==================== PROBLEM (DARK) ==================== */
+    .problem{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;background:var(--bg-dark);padding:clamp(4rem,10vw,8rem) clamp(1.25rem,4vw,2rem);text-align:center;position:relative;overflow:hidden}
+    .problem::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(600px,90vw);height:min(600px,90vw);border-radius:50%;background:radial-gradient(circle,rgba(184,120,92,.06),transparent 70%);pointer-events:none}
+    .problem-content{max-width:800px;position:relative;z-index:1}
+    .problem h2{font-family:var(--serif);font-size:clamp(1.8rem,4.5vw,3.5rem);font-weight:300;line-height:1.3;color:var(--text-light);margin-bottom:1.5rem;letter-spacing:-.02em}
+    .problem .accent-line{color:var(--accent);font-style:italic;font-family:var(--serif);font-size:clamp(1.3rem,3vw,2.5rem);font-weight:400;display:block;margin-bottom:2.5rem}
+    .problem p{font-size:clamp(.95rem,1.1vw,1.1rem);color:var(--text-light-muted);line-height:2;max-width:600px;margin:0 auto;font-weight:300}
+
+    /* ==================== ABOUT ==================== */
+    .about{padding:clamp(4rem,10vw,8rem) 0}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,6vw,6rem);align-items:center}
+    .about-photo{aspect-ratio:3/4;border-radius:20px;background:linear-gradient(135deg,#e8ddd4,#d4c4b5);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:1px solid var(--border);background-image:url('matias-photo.png');background-size:cover;background-position:50% 50%}
+    .about-photo-initials{font-family:var(--serif);font-size:clamp(3.5rem,6vw,5rem);font-weight:300;color:rgba(184,120,92,.4);letter-spacing:.05em}
+    .about-label{font-size:clamp(.65rem,.7rem,.75rem);font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem}
+    .about-text h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:300;line-height:1.25;color:var(--text);margin-bottom:2rem;letter-spacing:-.02em}
+    .about-text h2 em{font-style:italic;color:var(--accent);font-weight:400}
+    .about-text p{color:#666;font-size:clamp(.92rem,1vw,1.05rem);line-height:1.9;margin-bottom:1.5rem;font-weight:300}
+    .about-text p+p{margin-top:16px}
+    .about-flags{display:flex;gap:.75rem;font-size:1.4rem;margin-top:2rem}
+    .about-quote{margin-top:2.5rem;padding:1.5rem 0;border-top:1px solid var(--border);font-family:var(--serif);font-size:clamp(1.2rem,1.5vw,1.5rem);font-style:italic;color:var(--text);font-weight:400;line-height:1.5}
+
+    /* ==================== APPROACH / OFFERINGS ==================== */
+    .approach{padding:clamp(4rem,10vw,8rem) 0}
+    .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,2rem)}
+    .pillar{padding:clamp(2rem,3vw,3rem) clamp(1.5rem,2.5vw,2.5rem);border:1px solid var(--border);border-radius:16px;transition:all .5s var(--ease);position:relative}
+    .pillar:hover{border-color:rgba(184,120,92,.2);transform:translateY(-4px);box-shadow:0 10px 40px rgba(0,0,0,.04)}
+    .pillar-num{font-family:var(--serif);font-size:clamp(2.2rem,3vw,3rem);font-weight:300;color:rgba(184,120,92,.2);margin-bottom:1.5rem;line-height:1}
+    .pillar h3{font-family:var(--serif);font-size:clamp(1.2rem,1.4vw,1.5rem);font-weight:500;color:var(--text);margin-bottom:1rem;letter-spacing:-.01em}
+    .pillar p{color:#888;font-size:clamp(.88rem,.95vw,.95rem);line-height:1.8;font-weight:300}
+    .offerings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,2rem)}
+    .offering-card{padding:clamp(2rem,3vw,3rem) clamp(1.5rem,2.5vw,2.5rem);border:1px solid var(--border);border-radius:16px;transition:all .5s var(--ease);position:relative}
+    .offering-card:hover{border-color:rgba(184,120,92,.2);transform:translateY(-4px);box-shadow:0 10px 40px rgba(0,0,0,.04)}
+    .offering-number{font-family:var(--serif);font-size:clamp(2.2rem,3vw,3rem);font-weight:300;color:rgba(184,120,92,.2);margin-bottom:1.5rem;line-height:1}
+    .offering-card h3{font-family:var(--serif);font-size:clamp(1.2rem,1.4vw,1.5rem);font-weight:500;color:var(--text);margin-bottom:1rem;letter-spacing:-.01em}
+    .offering-card p{color:#888;font-size:clamp(.88rem,.95vw,.95rem);line-height:1.8;font-weight:300}
+
+    /* ==================== VALUES ==================== */
+    .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+    .value-item{text-align:center;padding:32px 20px;border-radius:16px;background:var(--bg);border:1px solid var(--border)}
+    .value-item h3{font-family:var(--serif);font-size:1.3rem;font-weight:500;margin-bottom:8px}
+    .value-item p{font-size:.9rem;color:var(--text-muted);line-height:1.6}
+
+    /* ==================== PRICING (main page) ==================== */
+    .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px;align-items:stretch}
+    .pricing-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:36px 28px;display:flex;flex-direction:column;transition:all .35s ease;position:relative}
+    .pricing-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.05);border-color:var(--accent)}
+    .pricing-card.featured{border-color:var(--accent);border-width:2px;box-shadow:0 8px 32px rgba(184,120,92,.12);transform:scale(1.03)}
+    .pricing-card.featured:hover{transform:scale(1.03) translateY(-6px);box-shadow:0 20px 48px rgba(184,120,92,.2)}
+    .pricing-card .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:4px 16px;border-radius:100px;white-space:nowrap}
+    .pricing-card h3{font-family:var(--serif);font-size:1.3rem;font-weight:600;margin-bottom:10px}
+    .pricing-card .pricing-desc{font-size:.85rem;color:var(--text-muted);line-height:1.6;flex:1;margin-bottom:20px}
+    .pricing-card .price{font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--accent);line-height:1.3;margin-bottom:20px}
+    .pricing-card .price small{font-family:var(--sans);font-size:.75rem;font-weight:400;color:var(--text-muted);display:block}
+    .pricing-card .pricing-cta{display:inline-block;background:var(--accent);color:#fff;font-family:var(--sans);font-size:.85rem;font-weight:500;padding:12px 24px;border-radius:100px;text-decoration:none;text-align:center;transition:all .3s ease;border:none;cursor:pointer}
+    .pricing-card .pricing-cta:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 8px 20px rgba(184,120,92,.25)}
+    .pricing-card .pricing-cta.outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+    .pricing-card .pricing-cta.outline:hover{background:var(--accent);color:#fff}
+    @media(max-width:1024px){.pricing-grid{grid-template-columns:repeat(2,1fr)}.pricing-card.featured,.pricing-card.featured:hover{transform:none}}
+    @media(max-width:640px){.pricing-grid{grid-template-columns:1fr}}
+
+    /* ==================== SERVICES (DARK) ==================== */
+    .services{padding:clamp(4rem,10vw,8rem) 0;background:var(--bg-dark)}
+    .services .section-label{color:var(--accent)}
+    .services .section-title{color:var(--text-light)}
+    #services-section{padding:clamp(4rem,10vw,8rem) 0;background:var(--bg-dark)}
+    #services-section .section-label{color:var(--accent)}
+    #services-section .section-title{color:var(--text-light)}
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,2rem)}
+    .service-card{padding:clamp(2rem,3vw,3rem) clamp(1.5rem,2.5vw,2.5rem);border:1px solid var(--border-dark);border-radius:16px;transition:all .5s var(--ease);position:relative;overflow:hidden}
+    .service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transition:transform .4s var(--ease)}
+    .service-card:hover{border-color:rgba(184,120,92,.3);transform:translateY(-4px)}
+    .service-card:hover::before{transform:scaleX(1)}
+    .service-tag{font-size:clamp(.6rem,.65rem,.7rem);font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;display:block}
+    .service-card h3{font-family:var(--serif);font-size:clamp(1.3rem,1.5vw,1.6rem);font-weight:500;color:var(--text-light);margin-bottom:1rem;letter-spacing:-.01em}
+    .service-card p{color:var(--text-light-muted);font-size:clamp(.88rem,.95vw,.95rem);line-height:1.8;font-weight:300;margin-bottom:2rem}
+    .service-link{font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);transition:all .3s}
+    .service-link:hover{letter-spacing:.12em}
+    .service-link span{transition:transform .3s;display:inline-block;margin-left:.5rem}
+    .service-link:hover span{transform:translateX(4px)}
+
+    /* ==================== PROCESS ==================== */
+    .process{padding:clamp(4rem,10vw,8rem) 0}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1.5rem,2vw,2rem);position:relative}
+    .steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--border)}
+    .step{text-align:center;position:relative}
+    .step-num{width:clamp(48px,56px,56px);height:clamp(48px,56px,56px);border-radius:50%;background:var(--bg-light);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.3rem;font-weight:500;color:var(--accent);margin:0 auto 2rem;position:relative;z-index:1;transition:all .4s var(--ease)}
+    .step:hover .step-num{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .step h4{font-family:var(--serif);font-size:clamp(1.1rem,1.2vw,1.25rem);font-weight:500;color:var(--text);margin-bottom:.75rem}
+    .step p{font-size:clamp(.85rem,.9vw,.9rem);color:#888;line-height:1.7;font-weight:300;max-width:220px;margin:0 auto}
+
+    /* ==================== TESTIMONIALS ==================== */
+    .testimonials{padding:clamp(4rem,10vw,8rem) 0;background:var(--bg-light);overflow:hidden}
+    .test-track{display:flex;gap:clamp(1rem,2vw,2rem);overflow-x:auto;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none;padding:1rem 0 2rem;-webkit-overflow-scrolling:touch}
+    .test-track::-webkit-scrollbar{display:none}
+    .test-card{min-width:clamp(280px,40vw,400px);max-width:420px;flex-shrink:0;scroll-snap-align:center;padding:clamp(2rem,3vw,3rem);border:1px solid var(--border);border-radius:16px;transition:all .5s var(--ease);background:#fff}
+    .test-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.05)}
+    .test-stars{color:var(--accent);font-size:.85rem;letter-spacing:3px;margin-bottom:1.5rem}
+    .test-quote{font-size:clamp(.92rem,1vw,1.05rem);color:#555;line-height:1.9;font-weight:300;margin-bottom:2rem;font-style:italic}
+    .test-divider{width:40px;height:1px;background:var(--accent);margin-bottom:1.5rem}
+    .test-name{font-weight:600;font-size:.9rem;color:var(--text)}
+    .test-role{font-size:.8rem;color:var(--text-muted);margin-top:.25rem}
+    .test-nav{display:flex;justify-content:center;gap:1rem;margin-top:2.5rem}
+    .test-nav button{width:44px;height:44px;border-radius:50%;background:transparent;border:1px solid var(--border);color:var(--text-muted);font-size:1rem;transition:all .3s var(--ease);display:flex;align-items:center;justify-content:center}
+    .test-nav button:hover{border-color:var(--accent);color:var(--accent)}
+    .testimonials-scroll{display:flex;gap:clamp(1rem,2vw,2rem);overflow-x:auto;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none;padding:1rem 0 2rem;-webkit-overflow-scrolling:touch}
+    .testimonials-scroll::-webkit-scrollbar{display:none}
+    .testimonial-card{min-width:clamp(280px,40vw,400px);max-width:420px;flex-shrink:0;scroll-snap-align:center;padding:clamp(2rem,3vw,3rem);border:1px solid var(--border);border-radius:16px;transition:all .5s var(--ease);background:#fff}
+    .testimonial-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.05)}
+    .testimonial-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .testimonial-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--section-alt)}
+    .testimonial-name{font-family:var(--serif);font-size:1rem;font-weight:600}
+    .testimonial-card blockquote{font-size:clamp(.88rem,.95vw,.95rem);color:#555;line-height:1.8;font-weight:300;font-style:italic;quotes:none}
+    .testimonial-card blockquote::before{content:'\201C'}
+    .testimonial-card blockquote::after{content:'\201D'}
+
+    /* ==================== CINEMATIC QUOTE (DARK) ==================== */
+    .quote-section{min-height:clamp(50vh,70vh,80vh);display:flex;align-items:center;justify-content:center;background:var(--bg-dark);padding:clamp(4rem,8vw,6rem) clamp(1.25rem,4vw,2rem);text-align:center;position:relative}
+    .quote-section::before{content:'\201C';font-family:var(--serif);font-size:clamp(8rem,15vw,15rem);color:rgba(184,120,92,.06);position:absolute;top:10%;left:50%;transform:translateX(-50%);line-height:1;pointer-events:none}
+    .quote-content{max-width:800px;position:relative;z-index:1}
+    .quote-content blockquote{font-family:var(--serif);font-size:clamp(1.3rem,3.5vw,2.8rem);font-weight:300;line-height:1.5;color:var(--text-light);font-style:italic;margin-bottom:2rem;letter-spacing:-.01em}
+    .quote-content cite{font-family:var(--sans);font-style:normal;font-size:clamp(.75rem,.85vw,.85rem);font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:2rem}
+    .quote-spanish{font-family:var(--serif);font-size:clamp(.95rem,1.1vw,1.15rem);font-style:italic;color:rgba(255,255,255,.3);line-height:1.7}
+
+    /* ==================== CTA / BOOKING ==================== */
+    .cta{padding:clamp(4rem,10vw,8rem) 0;background:var(--bg-warm);text-align:center}
+    .cta h2{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3.5rem);font-weight:300;line-height:1.25;color:var(--text);margin-bottom:1.5rem;letter-spacing:-.02em}
+    .cta p{font-size:clamp(.95rem,1.1vw,1.1rem);color:#888;max-width:550px;margin:0 auto 3rem;line-height:1.9;font-weight:300}
+    .cta .btn-fill{font-size:clamp(.82rem,.9vw,.9rem);padding:1.2rem 3rem}
+    .cta-email{margin-top:2rem;font-size:clamp(.8rem,.85vw,.85rem);color:var(--text-muted)}
+    .cta-email a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+    .booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+    .booking-info h3{font-family:var(--serif);font-size:1.5rem;font-weight:500;margin-bottom:12px}
+    .booking-info p{color:var(--text-muted);font-size:.95rem;line-height:1.7;margin-bottom:12px}
+    .availability-box{background:var(--bg-light);border:1px solid var(--border);border-radius:12px;padding:24px;margin-top:24px}
+    .availability-box h4{font-size:.9rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px}
+    .availability-box p{font-size:.95rem;margin-bottom:4px}
+    .booking-form{background:var(--bg-light);border:1px solid var(--border);border-radius:16px;padding:40px}
+    .form-group{margin-bottom:20px}
+    .form-group label{display:block;font-size:.85rem;font-weight:500;color:var(--text);margin-bottom:6px}
+    .form-group label .required{color:#c0392b;font-weight:400}
+    .form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 16px;font-family:var(--sans);font-size:.85rem;font-weight:300;color:var(--text);background:var(--section-alt);border:1px solid var(--border);border-radius:10px;transition:all .2s ease;outline:none}
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(184,120,92,.1)}
+    .form-group textarea{resize:vertical;min-height:80px}
+    .form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M1.41.59 6 5.17 10.59.59 12 2l-6 6-6-6z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:12px;cursor:pointer}
+    .form-group select option{font-size:.8rem}
+    .form-footer{font-size:.8rem;color:var(--text-muted);margin-top:12px}
+    .pill-group{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+    .pill-group span{font-size:.85rem;color:var(--text-muted);background:var(--bg);padding:6px 18px;border-radius:100px;font-weight:400}
+    .data-note{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--text-muted);background:var(--section-alt);border-radius:10px;padding:12px 16px;margin-top:20px}
+
+    /* ==================== FOOTER ==================== */
+    .footer{padding:clamp(2rem,3vw,3rem) 0;background:var(--bg-dark);padding-bottom:calc(var(--safe-bottom) + clamp(2rem,3vw,3rem))}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem}
+    .footer-logo{font-family:var(--serif);font-size:1.3rem;font-weight:600;color:var(--text-light)}
+    .footer-center{font-size:clamp(.72rem,.78vw,.8rem);color:rgba(255,255,255,.3)}
+    .footer-social{display:flex;align-items:center;gap:1.5rem}
+    .footer-social a{font-size:clamp(.72rem,.78vw,.8rem);color:rgba(255,255,255,.4);letter-spacing:.05em;transition:color .3s;min-height:44px;display:flex;align-items:center}
+    .footer-social a:hover{color:var(--accent)}
+    .footer-div{border-top:1px solid var(--border-dark)}
+    footer{padding:clamp(2rem,3vw,3rem) 0;background:var(--bg-dark);padding-bottom:calc(var(--safe-bottom) + clamp(2rem,3vw,3rem))}
+
+    /* ==================== RESPONSIVE ==================== */
+    @media(max-width:1024px){
+      .about-grid{grid-template-columns:1fr;gap:3rem}
+      .about-photo{max-width:500px;margin:0 auto}
+      .pillars,.offerings-grid,.services-grid{grid-template-columns:1fr 1fr}
+      .steps{grid-template-columns:1fr 1fr;gap:2.5rem}
+      .steps::before{display:none}
+    }
+    @media(max-width:768px){
+      .hamburger{display:flex}
+      .hero{padding-top:calc(var(--nav-h) + var(--safe-top) + 2rem);min-height:calc(100dvh)}
+      .hero h1{font-size:clamp(2.2rem,8vw,3.4rem)}
+      .pillars,.offerings-grid,.services-grid{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr;max-width:320px;margin:0 auto}
+      .step p{max-width:100%}
+      .test-card,.testimonial-card{min-width:clamp(270px,80vw,340px)}
+      .trust-inner{flex-direction:column;align-items:center;gap:.6rem}
+      .trust-dot{display:none}
+      .about-photo{max-width:80%;margin:0 auto}
+      .footer-inner{flex-direction:column;text-align:center;gap:1rem}
+      .hero-scroll{bottom:1.5rem}
+      .booking-grid{grid-template-columns:1fr;gap:36px}
+      .booking-form{padding:28px}
+      section{padding:64px 0}
+      .hero-buttons,.hero-actions{flex-direction:column;align-items:stretch}
+      .hero-buttons a,.hero-actions a{text-align:center}
+      .hero-sub,.hero-subtitle{font-size:.95rem}
+      footer,.footer{text-align:center}
+      .footer-inner{flex-direction:column;text-align:center;gap:1rem}
+      .admin-panel{padding:24px 16px}
+      .admin-stats{gap:10px}
+      .admin-stat{min-width:80px;padding:12px 14px}
+      .admin-stat strong{font-size:1.3rem}
+      .admin-stat span{font-size:.65rem}
+      .admin-table{font-size:.75rem}
+      .admin-table th,.admin-table td{padding:8px 6px}
+      .menu-link{font-size:1.2rem}
+      .menu-bottom .btn-primary{font-size:.85rem;padding:10px 20px}
+      #pricing-page{padding:10rem 0}
+      #pricing-page .section-title{font-size:1.5rem}
+    }
+    @media(max-width:480px){
+      .hero-buttons,.hero-actions{flex-direction:column;width:100%;max-width:300px;margin:0 auto}
+      .btn,.btn-primary,.btn-secondary{justify-content:center;width:100%}
+      .test-card,.testimonial-card{min-width:clamp(250px,85vw,300px);padding:1.75rem}
+      .pillar,.offering-card,.service-card{padding:1.75rem 1.5rem}
+      .hero-scroll{display:none}
+      .container{padding:0 16px}
+      .hero h1{font-size:1.7rem}
+      .hero-sub,.hero-subtitle{font-size:.85rem}
+      .hero-label,.hero-tag{font-size:.7rem}
+      .section-title{font-size:1.4rem}
+      .section-desc{font-size:.85rem}
+      .about-photo{max-width:180px}
+      .footer-social a,.footer-center{font-size:.78rem}
+      .pricing-back{font-size:.78rem}
+      .admin-panel{padding:16px 12px;border-radius:12px}
+      .admin-overlay{padding:12px}
+      .admin-dashboard h2{font-size:1.2rem}
+      .admin-tab{font-size:.75rem;padding:6px 10px}
+      .content-lang-tab{font-size:.7rem;padding:3px 10px}
+      .content-fields{max-height:40vh}
+      .availability-box{padding:16px}
+    }
+    @media(max-height:500px) and (orientation:landscape){
+      .hero,.problem,.quote-section{min-height:auto}
+      .hero{padding-top:calc(var(--nav-h) + 2rem);padding-bottom:2rem}
+      .problem{padding:4rem 2rem}
+      .quote-section{padding:4rem 2rem}
     }
-
-    .testimonial-card blockquote::before { content: '\201C'; }
-    .testimonial-card blockquote::after { content: '\201D'; }
-
-    @media (max-width: 768px) {
-      .testimonial-card { flex: 0 0 280px; }
-    }
-
-    .booking-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: start;
-      margin-top: 48px;
-    }
-
-    .booking-info h3 {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-
-    .booking-info p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.7;
-      margin-bottom: 12px;
-    }
-
-    .availability-box {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      margin-top: 24px;
-    }
-
-    .availability-box h4 {
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .availability-box p { font-size: 0.95rem; margin-bottom: 4px; }
-
-    .booking-form {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px;
-    }
-
-    .form-group { margin-bottom: 20px; }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .form-group label .required { color: #c0392b; font-weight: 400; }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      width: 100%;
-      padding: 12px 16px;
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-weight: 300;
-      color: var(--text);
-      background: var(--section-alt);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      transition: all 0.2s ease;
-      outline: none;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(184, 148, 74, 0.1);
-    }
-
-    .form-group textarea { resize: vertical; min-height: 80px; }
-
-    .form-group select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M1.41.59 6 5.17 10.59.59 12 2l-6 6-6-6z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      background-size: 12px;
-      cursor: pointer;
-    }
-
-    .form-group select option { font-size: 0.8rem; }
-
-    .form-footer { font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; }
-
-    .pill-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .pill-group span {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      background: var(--bg);
-      padding: 6px 18px;
-      border-radius: 100px;
-      font-weight: 400;
-    }
-
-    .data-note {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      background: var(--section-alt);
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin-top: 20px;
-    }
-
-    footer {
-      padding: 48px 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    .footer-social {
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      margin-bottom: 16px;
-    }
-
-    .footer-social a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s ease;
-    }
-
-    .footer-social a:hover { color: var(--accent); }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
 
     /* --- Admin Panel --- */
     .admin-overlay {
@@ -818,25 +470,6 @@
       .overlay-content { border-radius: 16px; }
     }
 
-    /* ─── Hamburger menu ─── */
-    .hamburger {
-      background: none;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      padding: 4px;
-    }
-    .hamburger span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
-
     .menu-overlay {
       position: fixed;
       inset: 0;
@@ -895,12 +528,17 @@
     }
 
     /* ─── Page routing ─── */
-    #pricing-page { display: none; padding: 80px 0; min-height: 80vh; }
+    #pricing-page { display: none; padding: 10rem 0; min-height: 80vh; }
     .show-pricing .hero,
+    .show-pricing .trust,
+    .show-pricing .problem,
     .show-pricing #about,
     .show-pricing #offerings,
     .show-pricing #values,
+    .show-pricing #services-section,
+    .show-pricing #process,
     .show-pricing #testimonials,
+    .show-pricing .quote-section,
     .show-pricing #booking { display: none; }
     .show-pricing #pricing-page { display: block; }
 
@@ -1002,117 +640,130 @@
     }
 
     /* ─── Payment page ─── */
-    #payment-page { display: none; padding: 80px 0; min-height: 80vh; }
+    #payment-page { display: none; padding: 10rem 0; min-height: 80vh; }
     .show-payment .hero,
+    .show-payment .trust,
+    .show-payment .problem,
     .show-payment #about,
     .show-payment #offerings,
     .show-payment #values,
+    .show-payment #services-section,
+    .show-payment #process,
     .show-payment #pricing-page,
     .show-payment #testimonials,
+    .show-payment .quote-section,
     .show-payment #booking { display: none; }
     .show-payment #payment-page { display: block; }
 
     .payment-grid {
-      max-width: 800px;
+      max-width: 600px;
       margin: 0 auto;
-      padding: 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 28px;
     }
     .payment-card {
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 32px 32px 24px;
-      transition: all 0.3s ease;
+      padding: 40px 36px 32px;
+      transition: all 0.5s var(--ease);
     }
     .payment-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.07);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.05);
     }
     .payment-card-featured {
-      border: 2px solid var(--accent);
+      border-color: var(--accent);
+      border-width: 1.5px;
       position: relative;
       background: linear-gradient(135deg, #faf8f5 0%, #f5f0e8 100%);
+      box-shadow: 0 8px 40px rgba(184,120,92,0.08);
     }
     .payment-badge {
       position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: -13px;
+      left: 36px;
       background: var(--accent);
       color: #fff;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      padding: 4px 20px;
+      padding: 5px 20px;
       border-radius: 100px;
+      font-family: var(--sans);
     }
-    .payment-card-header { margin-bottom: 20px; }
+    .payment-card-header { margin-bottom: 28px; }
     .payment-card-header h3 {
-      font-family: var(--font-heading);
-      font-size: 1.35rem;
-      font-weight: 600;
-      margin-bottom: 6px;
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 300;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+      color: var(--text);
     }
     .payment-card-header .pricing-desc {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.7;
+      font-weight: 300;
     }
-    .payment-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .payment-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
     .payment-option {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 14px 18px;
-      background: var(--section-alt);
+      padding: 16px 20px;
+      background: var(--bg-light);
       border-radius: 14px;
       border: 1px solid var(--border);
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
     .payment-option:hover {
-      border-color: var(--accent);
-      background: #ede8df;
+      border-color: rgba(184,120,92,0.3);
+      background: #f6f1ea;
     }
-    .payment-option-info { display: flex; flex-direction: column; gap: 2px; }
+    .payment-option-info { display: flex; flex-direction: column; gap: 3px; }
     .payment-option-label {
-      font-weight: 500;
-      font-size: 0.92rem;
+      font-weight: 450;
+      font-size: 0.9rem;
       color: var(--text);
+      font-family: var(--sans);
     }
     .payment-option-price {
-      font-family: var(--font-heading);
-      font-size: 0.9rem;
-      font-weight: 700;
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-weight: 600;
       color: var(--accent);
     }
     .stripe-pay-btn {
-      background: #635bff;
+      background: var(--accent);
       color: #fff;
       border: none;
-      padding: 10px 24px;
+      padding: 10px 28px;
       border-radius: 100px;
-      font-size: 0.82rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.25s ease;
+      transition: all 0.3s ease;
+      font-family: var(--sans);
+      text-transform: uppercase;
     }
-    .stripe-pay-btn:hover { background: #4a42d4; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(99,91,255,0.3); }
-    .payment-card-footer { text-align: center; padding-top: 8px; }
-    .payment-secure { font-size: 0.72rem; color: var(--text-muted); }
+    .stripe-pay-btn:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(184,120,92,0.25); }
+    .payment-card-footer { text-align: left; padding-top: 4px; }
+    .payment-secure { font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.02em; }
 
     @media (max-width: 768px) {
-      #payment-page { padding: 40px 0; }
+      #payment-page { padding: 10rem 0; }
       #payment-page .section-title { font-size: 1.5rem; }
-      .payment-card { padding: 24px 18px 18px; }
-      .payment-option { flex-direction: column; align-items: stretch; text-align: center; gap: 10px; }
+      .payment-card { padding: 32px 24px 24px; }
+      .payment-option { flex-direction: column; align-items: stretch; text-align: center; gap: 12px; }
       .payment-btn { width: 100%; text-align: center; }
       .stripe-pay-btn { width: 100%; }
+      .payment-badge { left: 50%; transform: translateX(-50%); }
     }
 
     .admin-panel {
@@ -1400,20 +1051,6 @@
     .status-select.s-pending { background: #fff3cd; color: #856404; border-color: #ffeeba; }
     .status-select.s-unpaid { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
 
-    .admin-footer-link {
-      color: #888;
-      cursor: pointer;
-      font-size: 0.75rem;
-      padding: 3px 10px;
-      border: 1px solid #ddd;
-      border-radius: 100px;
-      transition: all 0.2s ease;
-      display: inline-block;
-      letter-spacing: 0.3px;
-    }
-
-    .admin-footer-link:hover { border-color: #aaa; color: #555; }
-
     .admin-badge {
       display: inline-block;
       background: #e74c3c;
@@ -1459,7 +1096,7 @@
       .admin-table th, .admin-table td { padding: 8px 6px; }
       .menu-link { font-size: 1.2rem; }
       .menu-bottom .btn-primary { font-size: 0.85rem; padding: 10px 20px; }
-      #pricing-page { padding: 40px 0; }
+      #pricing-page { padding: 10rem 0; }
       #pricing-page .section-title { font-size: 1.5rem; }
     }
 
@@ -1494,8 +1131,7 @@
 </head>
 <body>
 
-  <header>
-  <nav>
+  <nav class="nav">
     <div class="nav-left">
       <a href="#" class="logo">
         Matias Dopierala Zawada
@@ -1510,12 +1146,12 @@
         <button class="lang-btn" data-lang="pt">PT</button>
       </div>
       <a href="#booking" class="nav-cta" data-i18n="nav-cta">Book a free call</a>
+      <span class="nav-admin-link" id="adminOpenLink" title="Admin panel">&#x1f512;<span id="adminBadge" class="admin-badge" style="display:none;">0</span></span>
       <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </nav>
-  </header>
 
   <!-- Hamburger menu overlay -->
   <div class="menu-overlay" id="menuOverlay">
@@ -1525,12 +1161,13 @@
       </div>
       <nav class="menu-nav">
         <a href="#about" class="menu-link" data-i18n="nav-about">About</a>
-        <a href="#offerings" class="menu-link" data-i18n="nav-offerings">Offerings</a>
-        <a href="#values" class="menu-link" data-i18n="nav-values">How I work</a>
+        <a href="#offerings" class="menu-link" data-i18n="nav-offerings">Approach</a>
+        <a href="#services-section" class="menu-link" data-i18n="nav-services">Services</a>
+        <a href="#process" class="menu-link" data-i18n="nav-process">Process</a>
         <a href="#pricing" class="menu-link" data-i18n="nav-pricing">Pricing</a>
         <a href="#payment" class="menu-link" data-i18n="nav-payment">Payment</a>
-        <a href="#testimonials" class="menu-link" data-i18n="nav-testimonials">Testimonials</a>
-        <a href="#booking" class="menu-link" data-i18n="nav-booking">Booking</a>
+        <a href="#testimonials" class="menu-link" data-i18n="nav-testimonials">Stories</a>
+        <a href="#booking" class="menu-link" data-i18n="nav-booking">Contact</a>
       </nav>
       <div class="menu-bottom">
         <div class="lang-switch">
@@ -1546,24 +1183,48 @@
 
   <main>
   <section class="hero">
-    <div class="container">
-      <div class="hero-content fade-in">
-        <p class="hero-tag" data-i18n="hero-tag">Life Coaching & Professional Growth</p>
-        <h1 data-i18n-html="hero-heading">Your next chapter<br>starts <em>here</em>.</h1>
-        <p class="hero-subtitle" data-i18n="hero-sub">Fear, self-doubt, career crossroads — you don't have to navigate them alone. Whether you're queer, trans, questioning, or simply figuring things out, this is a space where you can show up as you are and build from there.</p>
-        <div class="hero-tags">
-          <span data-i18n="tag-1">Fear & self-doubt</span>
-          <span data-i18n="tag-2">Confidence & identity</span>
-          <span data-i18n="tag-3">Career growth</span>
-          <span data-i18n="tag-4">Trauma-informed</span>
-          <span data-i18n="tag-5">LGBTQ+ affirming</span>
-        </div>
-        <div class="hero-actions">
-          <a href="#booking" class="btn-primary" data-i18n="hero-cta">Book your free 45′ discovery call</a>
-          <a href="#about" class="btn-secondary" data-i18n="hero-secondary">About me</a>
-        </div>
-        <p class="hero-note" data-i18n="hero-note">No pitch. Just a conversation to see if we're a good fit.</p>
+    <div class="hero-content">
+      <p class="hero-label" data-i18n="hero-tag">Life Coaching &amp; Professional Growth</p>
+      <h1 data-i18n-html="hero-heading">Your next chapter<br>starts <em>here</em>.</h1>
+      <p class="hero-sub" data-i18n="hero-sub">Fear, self-doubt, career crossroads — you don't have to navigate them alone. Whether you're queer, trans, questioning, or simply figuring things out, this is a space where you can show up as you are and build from there.</p>
+      <div class="hero-tags">
+        <span data-i18n="tag-1">Fear &amp; self-doubt</span>
+        <span data-i18n="tag-2">Confidence &amp; identity</span>
+        <span data-i18n="tag-3">Career growth</span>
+        <span data-i18n="tag-4">Trauma-informed</span>
+        <span data-i18n="tag-5">LGBTQ+ affirming</span>
       </div>
+      <div class="hero-buttons">
+        <a href="#booking" class="btn btn-fill" data-i18n="hero-cta">Book your free 45' discovery call</a>
+        <a href="#about" class="btn btn-outline" data-i18n="hero-secondary">About me</a>
+      </div>
+      <p class="hero-note" data-i18n="hero-note">No pitch. Just a conversation to see if I'm the right coach for you.</p>
+    </div>
+    <div class="hero-scroll">
+      <span data-i18n="scroll">Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Trust bar -->
+  <div class="trust">
+    <div class="trust-inner">
+      <span class="trust-item">15+ Years Experience</span>
+      <span class="trust-item"><span class="trust-dot">&middot;</span></span>
+      <span class="trust-item">3 Continents</span>
+      <span class="trust-item"><span class="trust-dot">&middot;</span></span>
+      <span class="trust-item">Bilingual EN / ES / PL / PT</span>
+      <span class="trust-item"><span class="trust-dot">&middot;</span></span>
+      <span class="trust-item">Certified Coach</span>
+    </div>
+  </div>
+
+  <!-- Problem (dark cinematic) -->
+  <section class="problem">
+    <div class="problem-content">
+      <h2 class="r">You&rsquo;ve built the career.<br>Hit the milestones.<br>Checked every box.</h2>
+      <span class="accent-line r rd1">So why does something still feel&hellip; off?</span>
+      <p class="r rd2">You&rsquo;re not broken. You&rsquo;re not lazy. You&rsquo;re a deep thinker who&rsquo;s been running on autopilot &mdash; and you&rsquo;re finally ready to stop and listen.</p>
     </div>
   </section>
 
@@ -1574,7 +1235,7 @@
           <p class="section-label" data-i18n="about-label">About me</p>
           <h2 class="section-title" data-i18n="about-title">I'm Matias.</h2>
           <p data-i18n="about-p1">I know what it feels like to carry fear and self-doubt while trying to figure out who you are and where you're going — because I've lived it too. As an LGBTQ+ person, my journey has taken me through incredible highs and emotionally challenging lows. I've had to overcome my fears, learn to stop living as someone I wasn't, embrace my life as it is, and truly love myself. Every reinvention — from Poland to Spain to Sydney, from journalism to banking to coaching — taught me that growth doesn't happen despite our struggles, it happens through them.</p>
-          <p data-i18n="about-p2">That work of becoming who you are — I learned it doesn't happen in isolation. Whether leading transformation at Santander Group and BBVA or sitting with someone ready to rewrite their story, I've always been drawn to the same question: how do we navigate the unknown? Being named a Santander Group Young Leader in 2024 reminded me that strategic clarity and deep empathy aren't opposites — they come from the same place. Career, confidence, purpose — they're all connected because you are.</p>
+          <p data-i18n="about-p2">That work of becoming who you are — I learned it doesn't happen in isolation. Whether leading transformation at Santander Group and BBVA or sitting with someone ready to rewrite their story, I've always been drawn to the same question: how do I navigate the unknown? Being named a Santander Group Young Leader in 2024 reminded me that strategic clarity and deep empathy aren't opposites — they come from the same place. Career, confidence, purpose — they're all connected because you are.</p>
           <p data-i18n="about-p3">Today, I help others walk the same path I had to walk for myself: overcoming fear, learning to belong to yourself, and building a life that actually feels like yours. If you're queer, trans, questioning, or simply someone who wants to grow — you belong here. Let's discover your next chapter, together.</p>
         </div>
         <div class="about-photo fade-in" role="img" aria-label="Matias Dopierala Zawada" data-i18n-aria="about-photo-alt"></div>
@@ -1587,13 +1248,13 @@
       <div class="fade-in" style="text-align:center;margin-bottom:8px;">
         <p class="section-label" data-i18n="offer-label">What I help with</p>
         <h2 class="section-title" data-i18n="offer-title">Three areas. One conversation.</h2>
-        <p class="section-desc" style="margin:0 auto;" data-i18n="offer-desc">We start wherever you are. These are the spaces I work in most — and they overlap more than you'd think.</p>
+        <p class="section-desc" style="margin:0 auto;" data-i18n="offer-desc">I start wherever you are. These are the spaces I work in most — and they overlap more than you'd think.</p>
       </div>
       <div class="offerings-grid">
         <div class="offering-card fade-in">
           <div class="offering-number">01</div>
           <h3 data-i18n="card-1-title">Fear & Self-Doubt</h3>
-          <p data-i18n="card-1-text">The inner critic, imposter syndrome, the voice that says "not yet" every time you try to grow. We'll gently untangle where it comes from — and build a new one.</p>
+          <p data-i18n="card-1-text">The inner critic, imposter syndrome, the voice that says "not yet" every time you try to grow. I'll help you gently untangle where it comes from — and build a new one.</p>
         </div>
         <div class="offering-card fade-in">
           <div class="offering-number">02</div>
@@ -1623,11 +1284,73 @@
         </div>
         <div class="value-item fade-in">
           <h3 data-i18n="val-2-title">LGBTQ+ affirming</h3>
-          <p data-i18n="val-2-text">Your identity is not a problem to be solved. It's the foundation we build from — proudly and unapologetically.</p>
+          <p data-i18n="val-2-text">Your identity is not a problem to be solved. It's the foundation I help you build from — proudly and unapologetically.</p>
         </div>
         <div class="value-item fade-in">
           <h3 data-i18n="val-3-title">Whole-person focus</h3>
           <p data-i18n="val-3-text">Your career, your confidence, your inner world — they're all connected. We don't compartmentalise. We integrate.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services (Dark) -->
+  <section id="services-section">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:clamp(3rem,5vw,5rem);">
+        <p class="section-label r" data-i18n="services-label">Services</p>
+        <h2 class="section-title r rd1" data-i18n="services-title">Choose your path</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card r rd1">
+          <span class="service-tag" data-i18n="services-tag-1">1:1 Coaching</span>
+          <h3 data-i18n="services-card-1-title">Deep Self-Discovery</h3>
+          <p data-i18n="services-card-1-text">Uncover the patterns, beliefs, and emotions that have been running your life on autopilot. Together, I&rsquo;ll help you map your inner terrain and build a foundation of radical self-awareness.</p>
+          <a href="#booking" class="service-link" data-i18n="services-link">Begin <span>&rarr;</span></a>
+        </div>
+        <div class="service-card r rd2">
+          <span class="service-tag" data-i18n="services-tag-2">Signature 8-Week Program</span>
+          <h3 data-i18n="services-card-2-title">Emotional Clarity</h3>
+          <p data-i18n="services-card-2-text">Learn to navigate difficult emotions without suppressing or being overwhelmed. Develop the emotional vocabulary and tools to respond to life with calm confidence.</p>
+          <a href="#booking" class="service-link" data-i18n="services-link-2">Explore <span>&rarr;</span></a>
+        </div>
+        <div class="service-card r rd3">
+          <span class="service-tag" data-i18n="services-tag-3">Bespoke Package</span>
+          <h3 data-i18n="services-card-3-title">Life Transition Coaching</h3>
+          <p data-i18n="services-card-3-text">Career shifts, relationship changes, identity evolution. I specialize in helping people who are between chapters write the next one with intentionality and purpose.</p>
+          <a href="#booking" class="service-link" data-i18n="services-link-3">Discover <span>&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="section-header" style="text-align:center;margin-bottom:clamp(3rem,5vw,5rem);">
+        <p class="section-label r" data-i18n="process-label">The Process</p>
+        <h2 class="section-title r rd1" data-i18n="process-title">Your transformation in <em>four steps</em></h2>
+      </div>
+      <div class="steps">
+        <div class="step r rd1">
+          <div class="step-num">1</div>
+          <h4 data-i18n="step-1-title">Discovery Call</h4>
+          <p data-i18n="step-1-text">A free 45-minute conversation to see if I&rsquo;m the right coach for you.</p>
+        </div>
+        <div class="step r rd2">
+          <div class="step-num">2</div>
+          <h4 data-i18n="step-2-title">Deep Dive</h4>
+          <p data-i18n="step-2-text">We map your inner landscape &mdash; values, patterns, blind spots, aspirations.</p>
+        </div>
+        <div class="step r rd3">
+          <div class="step-num">3</div>
+          <h4 data-i18n="step-3-title">Transform</h4>
+          <p data-i18n="step-3-text">Through weekly sessions, I help you rebuild with intention, clarity, and courage.</p>
+        </div>
+        <div class="step r rd4">
+          <div class="step-num">4</div>
+          <h4 data-i18n="step-4-title">Integrate</h4>
+          <p data-i18n="step-4-text">You walk away with tools, awareness, and a new relationship with yourself.</p>
         </div>
       </div>
     </div>
@@ -1645,7 +1368,7 @@
       <div class="pricing-grid">
         <div class="pricing-card fade-in visible">
           <h3 data-i18n="plan-1-title">Free Discovery Call</h3>
-          <p class="pricing-desc" data-i18n="plan-1-desc">A 45-minute conversation to explore if we're a good fit. No commitment &mdash; just clarity.</p>
+          <p class="pricing-desc" data-i18n="plan-1-desc">A 45-minute conversation to explore if I'm the right coach for you. No commitment &mdash; just clarity.</p>
           <div class="price" data-i18n="plan-1-price">Free</div>
           <a href="#booking" class="pricing-cta outline" data-i18n="plan-1-cta">Book now</a>
         </div>
@@ -1736,31 +1459,67 @@
 
   <section id="testimonials">
     <div class="container">
-      <div class="fade-in" style="text-align:center;margin-bottom:8px;">
-        <p class="section-label" data-i18n="test-label">What clients say</p>
-        <h2 class="section-title" data-i18n="test-title">Real voices. Real change.</h2>
-        <p class="section-desc" style="margin:0 auto;" data-i18n="test-desc">The work we do together shows up in people&rsquo;s lives. Here&rsquo;s what some of them have shared.</p>
+      <div class="section-header" style="text-align:center;margin-bottom:clamp(3rem,5vw,5rem);">
+        <p class="section-label r" data-i18n="test-label">What clients say</p>
+        <h2 class="section-title r rd1" data-i18n="test-title">Words that <em>stay with me</em></h2>
       </div>
-      <div class="testimonials-scroll fade-in" id="testimonialsContainer">
+      <div class="testimonials-scroll" id="testTrack">
+        <div class="testimonial-card">
+          <div class="test-stars">&starf;&starf;&starf;&starf;&starf;</div>
+          <p class="test-quote">&ldquo;Matias has a rare ability to hold space without judgment. In our sessions, I discovered patterns I&rsquo;d been blind to for years. His calm, deep approach changed everything for me.&rdquo;</p>
+          <div class="test-divider"></div>
+          <div class="testimonial-name">Sarah M.</div>
+          <div class="test-role">Marketing Director, Sydney</div>
+        </div>
+        <div class="testimonial-card">
+          <div class="test-stars">&starf;&starf;&starf;&starf;&starf;</div>
+          <p class="test-quote">&ldquo;I came to Matias feeling completely stuck in my career. His questions cut through the noise and helped me see what I actually wanted &mdash; not what I thought I should want.&rdquo;</p>
+          <div class="test-divider"></div>
+          <div class="testimonial-name">James T.</div>
+          <div class="test-role">Software Engineer, Melbourne</div>
+        </div>
+        <div class="testimonial-card">
+          <div class="test-stars">&starf;&starf;&starf;&starf;&starf;</div>
+          <p class="test-quote">&ldquo;Trabajar con Matias fue una experiencia transformadora. Su enfoque tranquilo y profundo me ayud&oacute; a reconectar conmigo misma de una manera que no cre&iacute; posible.&rdquo;</p>
+          <div class="test-divider"></div>
+          <div class="testimonial-name">Luc&iacute;a R.</div>
+          <div class="test-role">Emprendedora, Madrid</div>
+        </div>
+        <div class="testimonial-card">
+          <div class="test-stars">&starf;&starf;&starf;&starf;&starf;</div>
+          <p class="test-quote">&ldquo;What sets Matias apart is his genuine empathy. He doesn&rsquo;t push &mdash; he guides. After three months, I have more clarity about who I am than I&rsquo;ve had in my entire life.&rdquo;</p>
+          <div class="test-divider"></div>
+          <div class="testimonial-name">Alex K.</div>
+          <div class="test-role">Consultant, Brisbane</div>
+        </div>
       </div>
-      <div style="text-align:center;margin-top:12px;">
-        <p style="font-size:0.85rem;color:var(--text-muted);" data-i18n="test-swipe">Scroll or swipe to see more →</p>
+      <div class="test-nav">
+        <button onclick="scrollT(-1)" aria-label="Previous">&larr;</button>
+        <button onclick="scrollT(1)" aria-label="Next">&rarr;</button>
       </div>
+    </div>
+  </section>
+
+  <!-- Cinematic Quote (Dark) -->
+  <section class="quote-section">
+    <div class="quote-content">
+      <blockquote class="r">Real transformation doesn&rsquo;t come from more information.<br>It comes from deeper understanding.</blockquote>
+      <cite class="r rd1">&mdash; Matias Dopierala</cite>
     </div>
   </section>
 
   <section id="booking">
     <div class="container">
-      <div class="fade-in" style="text-align:center;">
-        <p class="section-label" data-i18n="book-label">Book a session</p>
-        <h2 class="section-title" data-i18n="book-title">Ready to begin?</h2>
-        <p class="section-desc" style="margin:0 auto;" data-i18n="book-desc">Fill in the form below and I'll reach out to schedule your free 45-minute discovery call. No commitment — just a real conversation about where you are and where you want to be.</p>
+      <div style="text-align:center;">
+        <p class="section-label r" data-i18n="book-label">Book a session</p>
+        <h2 class="section-title r rd1" data-i18n="book-title">Ready to begin?</h2>
+        <p class="section-desc r rd2" style="margin:0 auto;" data-i18n="book-desc">Fill in the form below and I'll reach out to schedule your free 45-minute discovery call. No commitment — just a real conversation about where you are and where you want to be.</p>
       </div>
 
       <div class="booking-grid">
         <div class="booking-info fade-in">
           <h3 data-i18n="expect-title">What to expect</h3>
-          <p data-i18n="expect-p1">A discovery call is a two-way conversation. We'll talk about what's bringing you here, what you'd like to shift, and whether we're the right fit to work together.</p>
+          <p data-i18n="expect-p1">A discovery call is a two-way conversation. I'll talk with you about what's bringing you here, what you'd like to shift, and whether I'm the right coach for you.</p>
           <p data-i18n="expect-p2">If it feels right, I'll suggest a path forward. If not, you'll walk away with clarity and maybe a new perspective — no pressure.</p>
 
           <div class="availability-box">
@@ -2496,7 +2255,6 @@
         <a href="mailto:matias.courios.coach@gmail.com">Email</a>
       </div>
       <p>&copy; 2026 Matias Dopierala Zawada.</p>
-      <p style="margin-top:4px;"><span class="admin-footer-link" id="adminOpenLink">&#x1f512; Admin panel <span id="adminBadge" class="admin-badge" style="display:none;">0</span></span></p>
     </div>
   </footer>
 
@@ -2528,18 +2286,18 @@
         'tag-5': 'LGBTQ+ affirming',
         'hero-cta': 'Book your free 45\u2032 discovery call',
         'hero-secondary': 'About me',
-        'hero-note': 'No pitch. Just a conversation to see if we\'re a good fit.',
+        'hero-note': 'No pitch. Just a conversation to see if I\'m the right coach for you.',
         'about-label': 'About me',
         'about-title': 'I\'m Matias.',
         'about-p1': 'I know what it feels like to carry fear and self-doubt while trying to figure out who you are and where you\u2019re going \u2014 because I\u2019ve lived it too. As an LGBTQ+ person, my journey has taken me through incredible highs and emotionally challenging lows. I\u2019ve had to overcome my fears, learn to stop living as someone I wasn\u2019t, embrace my life as it is, and truly love myself. Every reinvention \u2014 from Poland to Spain to Sydney, from journalism to banking to coaching \u2014 taught me that growth doesn\u2019t happen despite our struggles, it happens through them.',
-        'about-p2': 'That work of becoming who you are \u2014 I learned it doesn\u2019t happen in isolation. Whether leading transformation at Santander Group and BBVA or sitting with someone ready to rewrite their story, I\u2019ve always been drawn to the same question: how do we navigate the unknown? Being named a Santander Group Young Leader in 2024 reminded me that strategic clarity and deep empathy aren\u2019t opposites \u2014 they come from the same place. Career, confidence, purpose \u2014 they\u2019re all connected because you are.',
+        'about-p2': 'That work of becoming who you are \u2014 I learned it doesn\u2019t happen in isolation. Whether leading transformation at Santander Group and BBVA or sitting with someone ready to rewrite their story, I\u2019ve always been drawn to the same question: how do I navigate the unknown? Being named a Santander Group Young Leader in 2024 reminded me that strategic clarity and deep empathy aren\u2019t opposites \u2014 they come from the same place. Career, confidence, purpose \u2014 they\u2019re all connected because you are.',
         'about-p3': 'Today, I help others walk the same path I had to walk for myself: overcoming fear, learning to belong to yourself, and building a life that actually feels like yours. If you\u2019re queer, trans, questioning, or simply someone who wants to grow \u2014 you belong here. Let\u2019s discover your next chapter, together.',
         'about-photo-alt': 'Matias Dopierala Zawada portrait',
         'offer-label': 'What I help with',
         'offer-title': 'Three areas. One conversation.',
-        'offer-desc': 'We start wherever you are. These are the spaces I work in most \u2014 and they overlap more than you\'d think.',
+        'offer-desc': 'I start wherever you are. These are the spaces I work in most \u2014 and they overlap more than you\'d think.',
         'card-1-title': 'Fear & Self-Doubt',
-        'card-1-text': 'The inner critic, imposter syndrome, the voice that says \u201cnot yet\u201d every time you try to grow. We\'ll gently untangle where it comes from \u2014 and build a new one.',
+        'card-1-text': 'The inner critic, imposter syndrome, the voice that says \u201cnot yet\u201d every time you try to grow. I\'ll help you gently untangle where it comes from \u2014 and build a new one.',
         'card-2-title': 'Confidence & Identity',
         'card-2-text': 'Coming out, standing in your truth, owning who you are. Whether it\'s your identity, your voice, or your place in the world \u2014 let\'s amplify it together.',
         'card-3-title': 'Career & Purpose',
@@ -2548,11 +2306,37 @@
         'values-title': 'Empathy. Honesty. No masks.',
         'values-desc': 'I don\'t believe in one-size-fits-all coaching. Every session is shaped around who you are, what you\'ve been through, and where you want to go.',
         'val-1-title': 'Trauma-informed',
-        'val-1-text': 'We move at your pace. Healing isn\'t a race \u2014 it\'s a process of learning to trust yourself again.',
+        'val-1-text': 'I move at your pace. Healing isn\'t a race \u2014 it\'s a process of learning to trust yourself again.',
         'val-2-title': 'LGBTQ+ affirming',
-        'val-2-text': 'Your identity is not a problem to be solved. It\'s the foundation we build from \u2014 proudly and unapologetically.',
+        'val-2-text': 'Your identity is not a problem to be solved. It\'s the foundation I help you build from \u2014 proudly and unapologetically.',
         'val-3-title': 'Whole-person focus',
-        'val-3-text': 'Your career, your confidence, your inner world \u2014 they\'re all connected. We don\'t compartmentalise. We integrate.',
+        'val-3-text': 'Your career, your confidence, your inner world \u2014 they\'re all connected. I don\'t compartmentalise. I integrate.',
+        'nav-services': 'Services',
+        'nav-process': 'Process',
+        'services-label': 'Services',
+        'services-title': 'Choose your path',
+        'services-tag-1': '1:1 Coaching',
+        'services-card-1-title': 'Deep Self-Discovery',
+        'services-card-1-text': 'Uncover the patterns, beliefs, and emotions that have been running your life on autopilot. Together, I\'ll help you map your inner terrain and build a foundation of radical self-awareness.',
+        'services-link': 'Begin',
+        'services-tag-2': 'Signature 8-Week Program',
+        'services-card-2-title': 'Emotional Clarity',
+        'services-card-2-text': 'Learn to navigate difficult emotions without suppressing or being overwhelmed. Develop the emotional vocabulary and tools to respond to life with calm confidence.',
+        'services-link-2': 'Explore',
+        'services-tag-3': 'Bespoke Package',
+        'services-card-3-title': 'Life Transition Coaching',
+        'services-card-3-text': 'Career shifts, relationship changes, identity evolution. I specialize in helping people who are between chapters write the next one with intentionality and purpose.',
+        'services-link-3': 'Discover',
+        'process-label': 'The Process',
+        'process-title': 'Your transformation in <em>four steps</em>',
+        'step-1-title': 'Discovery Call',
+        'step-1-text': 'A free 45-minute conversation to see if I\'m the right coach for you.',
+        'step-2-title': 'Deep Dive',
+        'step-2-text': 'I map your inner landscape \u2014 values, patterns, blind spots, aspirations.',
+        'step-3-title': 'Transform',
+        'step-3-text': 'Through weekly sessions, I help you rebuild with intention, clarity, and courage.',
+        'step-4-title': 'Integrate',
+        'step-4-text': 'You walk away with tools, awareness, and a new relationship with yourself.',
         'pricing-label': 'Investment',
         'pricing-title': 'Choose what fits your journey.',
         'pricing-title-overlay': 'Investment Plans',
@@ -2568,7 +2352,7 @@
         'pay-immersion-label': 'Monthly subscription',
         'pay-immersion-price': '$1,500 AUD / month',
         'plan-1-title': 'Free Discovery Call',
-        'plan-1-desc': 'A 45-minute conversation to explore if we\'re a good fit. No commitment \u2014 just clarity.',
+        'plan-1-desc': 'A 45-minute conversation to explore if I\'m the right coach for you. No commitment \u2014 just clarity.',
         'plan-1-price': 'Free',
         'plan-1-cta': 'Book now',
         'plan-2-title': 'Personal Process',
@@ -2614,7 +2398,7 @@
         'book-title': 'Ready to begin?',
         'book-desc': 'Fill in the form below and I\'ll reach out to schedule your free 45-minute discovery call. No commitment \u2014 just a real conversation about where you are and where you want to be.',
         'expect-title': 'What to expect',
-        'expect-p1': 'A discovery call is a two-way conversation. We\'ll talk about what\'s bringing you here, what you\'d like to shift, and whether we\'re the right fit to work together.',
+        'expect-p1': 'A discovery call is a two-way conversation. I\'ll talk with you about what\'s bringing you here, what you\'d like to shift, and whether I\'m the right coach for you.',
         'expect-p2': 'If it feels right, I\'ll suggest a path forward. If not, you\'ll walk away with clarity and maybe a new perspective \u2014 no pressure.',
         'avail-title': 'Availability',
         'avail-tz': '<strong>Sydney time (AEST/AEDT)</strong>',
@@ -2690,6 +2474,32 @@
         'val-2-text': 'Tu identidad no es un problema a resolver. Es la base desde la que construimos — con orgullo y sin disculpas.',
         'val-3-title': 'Enfoque integral',
         'val-3-text': 'Tu carrera, tu confianza, tu mundo interior \u2014 todo est\u00e1 conectado. No compartimentamos. Integramos.',
+        'nav-services': 'Servicios',
+        'nav-process': 'Proceso',
+        'services-label': 'Servicios',
+        'services-title': 'Elige tu camino',
+        'services-tag-1': 'Coaching 1:1',
+        'services-card-1-title': 'Autodescubrimiento Profundo',
+        'services-card-1-text': 'Descubre los patrones, creencias y emociones que han estado dirigiendo tu vida en piloto autom\u00e1tico. Juntos, mapearemos tu terreno interior y construiremos una base de autoconciencia radical.',
+        'services-link': 'Empezar',
+        'services-tag-2': 'Programa de 8 Semanas',
+        'services-card-2-title': 'Claridad Emocional',
+        'services-card-2-text': 'Aprende a navegar emociones dif\u00edciles sin reprimirlas ni sentirte abrumado. Desarrolla el vocabulario emocional y las herramientas para responder a la vida con calma y confianza.',
+        'services-link-2': 'Explorar',
+        'services-tag-3': 'Paquete Personalizado',
+        'services-card-3-title': 'Coaching de Transici\u00f3n Vital',
+        'services-card-3-text': 'Cambios profesionales, relaciones, evoluci\u00f3n de identidad. Ayudo a personas entre cap\u00edtulos a escribir el siguiente con intenci\u00f3n y prop\u00f3sito.',
+        'services-link-3': 'Descubrir',
+        'process-label': 'El Proceso',
+        'process-title': 'Tu transformaci\u00f3n en <em>cuatro pasos</em>',
+        'step-1-title': 'Llamada de Descubrimiento',
+        'step-1-text': 'Una conversaci\u00f3n gratuita de 45 minutos para ver si soy el coach adecuado para ti.',
+        'step-2-title': 'Inmersi\u00f3n Profunda',
+        'step-2-text': 'Mapeamos tu paisaje interior \u2014 valores, patrones, puntos ciegos, aspiraciones.',
+        'step-3-title': 'Transformar',
+        'step-3-text': 'A trav\u00e9s de sesiones semanales, reconstruimos con intenci\u00f3n, claridad y coraje.',
+        'step-4-title': 'Integrar',
+        'step-4-text': 'Te vas con herramientas, conciencia y una nueva relaci\u00f3n contigo mismo.',
         'pricing-label': 'Inversi\u00f3n',
         'pricing-title': 'Elige lo que se adapte a tu camino.',
         'pricing-title-overlay': 'Planes de Inversi\u00f3n',
@@ -2827,6 +2637,32 @@
         'val-2-text': 'Twoja to\u017csamo\u015b\u0107 nie jest problemem do rozwi\u0105zania. To fundament, na kt\u00f3rym budujemy \u2014 dumnie i bez przeprosin.',
         'val-3-title': 'Holistyczne podej\u015bcie',
         'val-3-text': 'Twoja kariera, pewno\u015b\u0107 siebie, tw\u00f3j wewn\u0119trzny \u015bwiat \u2014 wszystko jest po\u0142\u0105czone. Nie dzielimy na kategorie. Integrujemy.',
+        'nav-services': 'Us\u0142ugi',
+        'nav-process': 'Proces',
+        'services-label': 'Us\u0142ugi',
+        'services-title': 'Wybierz swoj\u0105 \u015bcie\u017ck\u0119',
+        'services-tag-1': 'Coaching 1:1',
+        'services-card-1-title': 'G\u0142\u0119bokie Samopoznanie',
+        'services-card-1-text': 'Odkryj wzorce, przekonania i emocje, kt\u00f3re kierowa\u0142y Twoim \u017cyciem na autopilocie. Razem stworzymy map\u0119 Twojego wn\u0119trza i zbudujemy fundament radykalnej samo\u015bwiadomo\u015bci.',
+        'services-link': 'Rozpocznij',
+        'services-tag-2': 'Program 8-tygodniowy',
+        'services-card-2-title': 'Jasno\u015b\u0107 Emocjonalna',
+        'services-card-2-text': 'Naucz si\u0119 nawigowa\u0107 trudne emocje bez t\u0142umienia ich lub przyt\u0142oczenia. Rozwijaj s\u0142ownictwo emocjonalne i narz\u0119dzia, by reagowa\u0107 na \u017cycie ze spokojem i pewno\u015bci\u0105.',
+        'services-link-2': 'Odkryj',
+        'services-tag-3': 'Pakiet Indywidualny',
+        'services-card-3-title': 'Coaching \u017byciowych Przej\u015b\u0107',
+        'services-card-3-text': 'Zmiany zawodowe, relacje, ewolucja to\u017csamo\u015bci. Pomagam osobom mi\u0119dzy rozdzia\u0142ami napisa\u0107 nast\u0119pny z intencj\u0105 i celem.',
+        'services-link-3': 'Dowiedz si\u0119',
+        'process-label': 'Proces',
+        'process-title': 'Twoja transformacja w <em>czterech krokach</em>',
+        'step-1-title': 'Rozmowa Odkrywcza',
+        'step-1-text': 'Bezp\u0142atna 45-minutowa rozmowa, by sprawdzi\u0107, czy jestem odpowiednim coachem dla ciebie.',
+        'step-2-title': 'G\u0142\u0119bokie Zanurzenie',
+        'step-2-text': 'Mapujemy Tw\u00f3j wewn\u0119trzny krajobraz \u2014 warto\u015bci, wzorce, \u015blepe punkty, aspiracje.',
+        'step-3-title': 'Transformacja',
+        'step-3-text': 'Poprzez cotygodniowe sesje odbudowujemy z intencj\u0105, jasno\u015bci\u0105 i odwag\u0105.',
+        'step-4-title': 'Integracja',
+        'step-4-text': 'Odchodzisz z narz\u0119dziami, \u015bwiadomo\u015bci\u0105 i now\u0105 relacj\u0105 z samym sob\u0105.',
         'pricing-label': 'Inwestycja',
         'pricing-title': 'Wybierz to, co pasuje do Twojej drogi.',
         'pricing-title-overlay': 'Plany Inwestycyjne',
@@ -2964,6 +2800,32 @@
         'val-2-text': 'Sua identidade n\u00e3o \u00e9 um problema a ser resolvido. \u00c9 a base sobre a qual constru\u00edmos \u2014 com orgulho e sem desculpas.',
         'val-3-title': 'Foco na pessoa integral',
         'val-3-text': 'Sua carreira, sua confian\u00e7a, seu mundo interior \u2014 tudo est\u00e1 conectado. N\u00e3o compartimentamos. Integramos.',
+        'nav-services': 'Servi\u00e7os',
+        'nav-process': 'Processo',
+        'services-label': 'Servi\u00e7os',
+        'services-title': 'Escolha seu caminho',
+        'services-tag-1': 'Coaching 1:1',
+        'services-card-1-title': 'Autodescoberta Profunda',
+        'services-card-1-text': 'Descubra os padr\u00f5es, cren\u00e7as e emo\u00e7\u00f5es que t\u00eam dirigido sua vida no piloto autom\u00e1tico. Juntos, mapearemos seu terreno interior e construiremos uma base de autoconsci\u00eancia radical.',
+        'services-link': 'Come\u00e7ar',
+        'services-tag-2': 'Programa de 8 Semanas',
+        'services-card-2-title': 'Clareza Emocional',
+        'services-card-2-text': 'Aprenda a navegar emo\u00e7\u00f5es dif\u00edceis sem suprimi-las ou ser dominado por elas. Desenvolva o vocabul\u00e1rio emocional e ferramentas para responder \u00e0 vida com calma e confian\u00e7a.',
+        'services-link-2': 'Explorar',
+        'services-tag-3': 'Pacote Personalizado',
+        'services-card-3-title': 'Coaching de Transi\u00e7\u00e3o de Vida',
+        'services-card-3-text': 'Mudan\u00e7as de carreira, relacionamentos, evolu\u00e7\u00e3o de identidade. Ajudo pessoas entre cap\u00edtulos a escrever o pr\u00f3ximo com inten\u00e7\u00e3o e prop\u00f3sito.',
+        'services-link-3': 'Descobrir',
+        'process-label': 'O Processo',
+        'process-title': 'Sua transforma\u00e7\u00e3o em <em>quatro passos</em>',
+        'step-1-title': 'Sess\u00e3o de Descoberta',
+        'step-1-text': 'Uma conversa gratuita de 45 minutos para ver se sou o coach certo para voc\u00ea.',
+        'step-2-title': 'Imers\u00e3o Profunda',
+        'step-2-text': 'Mapeamos sua paisagem interior \u2014 valores, padr\u00f5es, pontos cegos, aspira\u00e7\u00f5es.',
+        'step-3-title': 'Transformar',
+        'step-3-text': 'Atrav\u00e9s de sess\u00f5es semanais, reconstru\u00edmos com inten\u00e7\u00e3o, clareza e coragem.',
+        'step-4-title': 'Integrar',
+        'step-4-text': 'Voc\u00ea sai com ferramentas, consci\u00eancia e um novo relacionamento consigo mesmo.',
         'pricing-label': 'Investimento',
         'pricing-title': 'Escolha o que se adapta \u00e0 sua jornada.',
         'pricing-title-overlay': 'Planos de Investimento',
@@ -3371,6 +3233,23 @@
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+    // Scroll reveal for .r class (v2 design)
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('v');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.r').forEach(function(el) { revealObserver.observe(el); });
+
+    // Nav scroll handler
+    window.addEventListener('scroll', function() {
+      var navEl = document.querySelector('nav');
+      if (navEl) navEl.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         const id = this.getAttribute('href');
@@ -3498,6 +3377,17 @@
 
     if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
       emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+
+    // ─── Testimonial carousel navigation ───
+    function scrollT(dir) {
+      var track = document.getElementById('testTrack');
+      if (!track) return;
+      var card = track.querySelector('.testimonial-card');
+      if (!card) return;
+      var cardW = card.offsetWidth;
+      var gap = parseInt(getComputedStyle(track).gap) || 16;
+      track.scrollBy({ left: dir * (cardW + gap), behavior: 'smooth' });
     }
 
     // ─── Supabase setup ───
@@ -4374,11 +4264,14 @@
 
     // ─── Hamburger menu ───
     var menuOverlay = document.getElementById('menuOverlay');
-    document.getElementById('hamburgerBtn').addEventListener('click', function () { menuOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; });
-    document.getElementById('menuClose').addEventListener('click', function () { menuOverlay.classList.remove('open'); document.body.style.overflow = ''; });
-    menuOverlay.addEventListener('click', function (e) { if (e.target === menuOverlay) { menuOverlay.classList.remove('open'); document.body.style.overflow = ''; } });
+    var hamburgerBtn = document.getElementById('hamburgerBtn');
+    function openMenu() { menuOverlay.classList.add('open'); hamburgerBtn.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeMenu() { menuOverlay.classList.remove('open'); hamburgerBtn.classList.remove('active'); document.body.style.overflow = ''; }
+    hamburgerBtn.addEventListener('click', function () { if (menuOverlay.classList.contains('open')) { closeMenu(); } else { openMenu(); } });
+    document.getElementById('menuClose').addEventListener('click', closeMenu);
+    menuOverlay.addEventListener('click', function (e) { if (e.target === menuOverlay) closeMenu(); });
     document.querySelectorAll('.menu-link').forEach(function (a) {
-      a.addEventListener('click', function () { menuOverlay.classList.remove('open'); document.body.style.overflow = ''; });
+      a.addEventListener('click', closeMenu);
     });
 
     // ─── Page routing (pricing & payment subpages) ───
