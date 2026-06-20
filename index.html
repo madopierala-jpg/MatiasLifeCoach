@@ -113,16 +113,15 @@
     .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
 
     /* Nav HTML aliases */
-    .logo{font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--text);letter-spacing:-.02em;z-index:1001}
+    .logo{font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--text);letter-spacing:-.02em;z-index:1001;position:relative;display:inline-block}
     .logo span{display:block;font-family:var(--sans);font-size:.7rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-top:-2px}
     .nav-left{display:flex;align-items:center;gap:24px}
     .nav-right{display:flex;align-items:center;gap:16px;margin-left:auto}
     .nav-cta{font-size:.8rem;font-weight:500;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:8px 18px;border-radius:100px;transition:all .3s ease;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
     .nav-cta:hover{background:var(--accent);color:#fff}
-    .nav-admin-link{font-size:1rem;cursor:pointer;opacity:.5;transition:opacity .3s;display:flex;align-items:center;min-height:44px;padding:0 6px}
-    .nav-admin-link:hover{opacity:1}
-    .nav-admin-link .admin-badge{position:absolute;top:-2px;right:-6px;font-size:.55rem;padding:1px 5px}
-    .nav-admin-link{position:relative}
+
+    /* admin notif dot — tiny red dot next to logo when new submissions exist */
+    .admin-notif-dot{position:absolute;top:-2px;right:-8px;width:8px;height:8px;background:#e74c3c;border-radius:50%;display:none;pointer-events:none}
 
     /* ==================== HERO ==================== */
     .hero{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:calc(var(--nav-h) + 3rem) clamp(1.25rem,4vw,2rem) 4rem;background:var(--bg-light);position:relative}
@@ -1049,20 +1048,7 @@
     /* Payment statuses */
     .status-select.s-paid { background: #d4edda; color: #155724; border-color: #c3e6cb; }
     .status-select.s-pending { background: #fff3cd; color: #856404; border-color: #ffeeba; }
-    .status-select.s-unpaid { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
-
-    .admin-badge {
-      display: inline-block;
-      background: #e74c3c;
-      color: #fff;
-      font-size: 0.6rem;
-      font-weight: 600;
-      padding: 1px 5px;
-      border-radius: 100px;
-      vertical-align: super;
-      line-height: 1.2;
-      margin-left: 2px;
-    }
+    .status-select.s-unpaid { background: #f8d7da; color: #721c24; border-color: #f5c6cb;     }
 
     @media (max-width: 768px) {
       .hero { min-height: auto; padding: 40px 0 80px; }
@@ -1133,9 +1119,10 @@
 
   <nav class="nav">
     <div class="nav-left">
-      <a href="#" class="logo">
+      <a href="#" class="logo" id="logoLink">
         Matias Dopierala Zawada
         <span data-i18n="nav-subtitle">Lifecoach</span>
+        <span class="admin-notif-dot" id="adminNotifDot"></span>
       </a>
     </div>
     <div class="nav-right">
@@ -1146,7 +1133,6 @@
         <button class="lang-btn" data-lang="pt">PT</button>
       </div>
       <a href="#booking" class="nav-cta" data-i18n="nav-cta">Book a free call</a>
-      <span class="nav-admin-link" id="adminOpenLink" title="Admin panel">&#x1f512;<span id="adminBadge" class="admin-badge" style="display:none;">0</span></span>
       <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -4157,7 +4143,29 @@
       }
     }
 
-    document.getElementById('adminOpenLink').addEventListener('click', openAdmin);
+    // ─── Discreet admin access ───
+    var logoLink = document.getElementById('logoLink');
+    var logoTaps = 0, logoTapTimer = null;
+    logoLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      logoTaps++;
+      if (logoTaps >= 5) {
+        logoTaps = 0;
+        if (logoTapTimer) { clearTimeout(logoTapTimer); logoTapTimer = null; }
+        openAdmin();
+        return;
+      }
+      if (!logoTapTimer) {
+        logoTapTimer = setTimeout(function () { logoTaps = 0; logoTapTimer = null; }, 2000);
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        openAdmin();
+      }
+    });
     document.getElementById('adminClose').addEventListener('click', closeAdmin);
     overlay.addEventListener('click', function (e) { if (e.target === overlay) closeAdmin(); });
     loginBtn.addEventListener('click', doLogin);
@@ -4235,7 +4243,7 @@
     document.getElementById('adminNotifClose').addEventListener('click', function () { notifOverlay.classList.remove('open'); });
     notifOverlay.addEventListener('click', function (e) { if (e.target === notifOverlay) notifOverlay.classList.remove('open'); });
 
-    // ─── Admin badge update on footer link ───
+    // ─── Admin notification dot ───
     async function updateAdminBadge() {
       var lastLogin = localStorage.getItem(ADMIN_LAST_LOGIN_KEY);
       if (!lastLogin) { localStorage.setItem(ADMIN_LAST_LOGIN_KEY, Date.now().toString()); return; }
@@ -4251,9 +4259,9 @@
         var d = new Date(allSubs[i].date).getTime();
         if (!isNaN(d) && d > lastLoginTime) newCount++;
       }
-      var badge = document.getElementById('adminBadge');
-      if (newCount > 0) { badge.textContent = newCount; badge.style.display = ''; }
-      else { badge.style.display = 'none'; }
+      var dot = document.getElementById('adminNotifDot');
+      if (newCount > 0) { dot.style.display = ''; }
+      else { dot.style.display = 'none'; }
     }
     // Update badge on page load and every 60 seconds
     updateAdminBadge();
