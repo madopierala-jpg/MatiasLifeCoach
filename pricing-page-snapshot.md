@@ -1,0 +1,35 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - link "Matias Dopierala Zawada Lifecoach" [ref=e5] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=e7]
+  - main [ref=e18]:
+    - generic [ref=e21]:
+      - paragraph [ref=e22]: Life Coaching & Professional Growth
+      - heading "Your next chapter starts here." [level=1] [ref=e23]
+      - paragraph [ref=e25]: Fear, self-doubt, career crossroads — you don't have to navigate them alone. Whether you're queer, trans, questioning, or simply figuring things out, this is a space where you can show up as you are and build from there.
+      - generic [ref=e26]
+      - generic [ref=e32]
+      - paragraph [ref=e35]: No pitch. Just a conversation to see if we're a good fit.
+    - generic [ref=e38]:
+      - generic [ref=e39]
+      - img "Matias Dopierala Zawada portrait" [ref=e151]
+    - generic [ref=e47]:
+      - generic [ref=e48]
+      - generic [ref=e52]
+    - generic [ref=e66]:
+      - generic [ref=e67]
+      - generic [ref=e71]
+    - generic [ref=e82]:
+      - generic [ref=e83]
+      - generic [ref=e87]
+      - paragraph [ref=e89]: Scroll or swipe to see more →
+    - generic [ref=e91]:
+      - generic [ref=e92]
+      - generic [ref=e96]
+  - contentinfo [ref=e140]:
+    - generic [ref=e141]:
+      - generic [ref=e142]
+      - paragraph [ref=e147]: © 2026 Matias Dopierala Zawada.
+      - paragraph [ref=e148]

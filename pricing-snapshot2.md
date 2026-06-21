@@ -1,0 +1,40 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - link "Matias Dopierala Zawada Lifecoach" [ref=e5] [cursor=pointer]:
+        - /url: "#"
+        - text: Matias Dopierala Zawada
+        - generic [ref=e6]: Lifecoach
+      - generic [ref=e7]:
+        - generic [ref=e8]
+        - link "Book a free call" [ref=e13] [cursor=pointer]:
+          - /url: "#booking"
+        - button "Menu" [ref=e14] [cursor=pointer]
+  - main [ref=e18]:
+    - generic [ref=e213]:
+      - generic [ref=e214]:
+        - link "← Back to home" [ref=e215] [cursor=pointer]:
+          - /url: "#"
+        - paragraph [ref=e216]: Investment
+        - heading "Investment Plans" [level=2] [ref=e217]
+        - paragraph [ref=e218]: Every path is different. Pick the one that resonates with where you are right now.
+      - generic [ref=e219]:
+        - generic [ref=e220]
+        - generic [ref=e225]
+        - generic [ref=e230]
+        - generic [ref=e236]
+    - text: “” “” “” “” “” “” “” “” “” “” “” “”
+  - contentinfo [ref=e140]:
+    - generic [ref=e141]:
+      - generic [ref=e142]:
+        - link "TikTok" [ref=e143] [cursor=pointer]:
+          - /url: https://www.tiktok.com/@curious.matias
+        - link "Instagram" [ref=e144] [cursor=pointer]:
+          - /url: https://www.instagram.com/matias.lifecoach/
+        - link "LinkedIn" [ref=e145] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/maciej-dopierala-digital-business-transformation-manager/
+        - link "Email" [ref=e146] [cursor=pointer]:
+          - /url: mailto:matias.courios.coach@gmail.com
+      - paragraph [ref=e147]: © 2026 Matias Dopierala Zawada.
+      - paragraph [ref=e148]:
+        - generic [ref=e149] [cursor=pointer]: 🔒 Admin panel
