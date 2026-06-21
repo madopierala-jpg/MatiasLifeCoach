@@ -1051,7 +1051,7 @@
     .status-select.s-unpaid { background: #f8d7da; color: #721c24; border-color: #f5c6cb;     }
 
     @media (max-width: 768px) {
-      .hero { min-height: auto; padding: 40px 0 80px; }
+      .hero { min-height: auto; padding: calc(var(--nav-h) + 5rem) 0 5rem; }
       .hero-content h1 { font-size: 2rem; }
       .hero-note { font-size: 0.8rem; }
       .about-grid { display: flex; flex-direction: column; gap: 16px; align-items: center; }
@@ -1061,7 +1061,7 @@
       .values-grid { grid-template-columns: 1fr; gap: 16px; }
       .booking-grid { grid-template-columns: 1fr; gap: 36px; }
       .booking-form { padding: 28px; }
-      section { padding: 64px 0; }
+      section { padding: calc(var(--nav-h) + 5rem) 0 4rem; }
       .hero-actions { flex-direction: column; align-items: stretch; }
       .hero-actions a { text-align: center; }
       .hero-tag { margin-bottom: 16px; font-size: 0.75rem; }
