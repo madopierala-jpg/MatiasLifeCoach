@@ -1761,18 +1761,20 @@
             <button id="adminClearVisits" class="danger">Clear local visits</button>
           </div>
           <div id="visitCountries" style="margin-top: 16px;"></div>
+          <div id="visitISPs" style="margin-top: 12px;"></div>
           <div class="admin-table-wrap" style="margin-top: 12px;">
             <table class="admin-table">
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Country</th>
                   <th>City</th>
+                  <th>Country</th>
+                  <th>ISP / ASN</th>
                   <th>Page</th>
                 </tr>
               </thead>
               <tbody id="visitsTableBody">
-                <tr class="empty"><td colspan="4">No visits recorded yet.</td></tr>
+                <tr class="empty"><td colspan="5">No visits recorded yet.</td></tr>
               </tbody>
             </table>
           </div>
@@ -3436,7 +3438,6 @@
     // The admin panel reads from Supabase centrally, so all visitors' data is visible.
     const VISITS_KEY = 'coaching_visits';
     const VISIT_LOG_KEY = '_visit_log';
-    let visitorGeo = null;
 
     function getVisits() {
       try { return JSON.parse(localStorage.getItem(VISITS_KEY) || '[]'); }
@@ -3484,17 +3485,57 @@
       if (visited) return;
       sessionStorage.setItem('visit_tracked', '1');
 
-      // Try to get geolocation
+      var geo = {
+        ip: '', city: '', country: '', timezone: '',
+        isp: '', org: '', asn: '',
+        lat: null, lon: null
+      };
+
+      // Try ip.guide first (richer data), fall back to ip-api.com
       try {
-        const res = await fetch('https://ip-api.com/json/?fields=country,city,query');
-        if (res.ok) visitorGeo = await res.json();
-      } catch(e) {}
+        const r = await fetch('https://ip.guide/');
+        if (r.ok) {
+          const d = await r.json();
+          geo.ip = d.ip || '';
+          geo.city = (d.location && d.location.city) || '';
+          geo.country = (d.location && d.location.country) || '';
+          geo.timezone = (d.location && d.location.timezone) || '';
+          geo.lat = (d.location && d.location.latitude) || null;
+          geo.lon = (d.location && d.location.longitude) || null;
+          geo.org = (d.network && d.network.autonomous_system && d.network.autonomous_system.organization) || '';
+          geo.isp = (d.network && d.network.autonomous_system && d.network.autonomous_system.name) || '';
+          geo.asn = d.network && d.network.autonomous_system ? '' + d.network.autonomous_system.asn : '';
+        }
+      } catch(e) {
+        // Fallback: ip-api.com with enriched fields
+        try {
+          const r = await fetch('https://ip-api.com/json/?fields=query,city,country,countryCode,lat,lon,timezone,isp,org,as');
+          if (r.ok) {
+            const d = await r.json();
+            geo.ip = d.query || '';
+            geo.city = d.city || '';
+            geo.country = d.country || '';
+            geo.timezone = d.timezone || '';
+            geo.lat = d.lat || null;
+            geo.lon = d.lon || null;
+            geo.isp = d.isp || '';
+            geo.org = d.org || '';
+            geo.asn = d.as ? '' + d.as : '';
+          }
+        } catch(e2) {}
+      }
 
       const entry = {
         date: new Date().toISOString(),
-        country: visitorGeo ? visitorGeo.country : '',
-        city: visitorGeo ? visitorGeo.city : '',
-        ip: visitorGeo ? visitorGeo.query : '',
+        ip: geo.ip,
+        city: geo.city,
+        country: geo.country,
+        timezone: geo.timezone,
+        lat: geo.lat,
+        lon: geo.lon,
+        isp: geo.isp,
+        org: geo.org,
+        asn: geo.asn,
         page: location.pathname
       };
 
@@ -3535,8 +3576,11 @@
 
       // Country breakdown
       const countries = {};
+      const isps = {};
       visits.forEach(v => {
         if (v.country) countries[v.country] = (countries[v.country] || 0) + 1;
+        var ispName = v.isp || v.org || '';
+        if (ispName) isps[ispName] = (isps[ispName] || 0) + 1;
       });
       const countryHtml = Object.entries(countries)
         .sort((a, b) => b[1] - a[1])
@@ -3546,13 +3590,24 @@
         ? `<strong style="font-size:0.85rem;color:var(--text-muted);display:block;margin-bottom:6px;">By country</strong><div>${countryHtml}</div>`
         : '';
 
+      // ISP breakdown
+      const ispHtml = Object.entries(isps)
+        .sort((a, b) => b[1] - a[1])
+        .map(([i, n]) => `<span style="display:inline-block;background:var(--section-alt);padding:4px 12px;border-radius:100px;font-size:0.8rem;margin:3px;">${esc(i)}: ${n}</span>`)
+        .join('');
+      document.getElementById('visitISPs').innerHTML = ispHtml
+        ? `<strong style="font-size:0.85rem;color:var(--text-muted);display:block;margin-bottom:6px;">By ISP</strong><div>${ispHtml}</div>`
+        : '';
+
       // Table rows
       const tbody = document.getElementById('visitsTableBody');
       tbody.innerHTML = visits.length === 0
-        ? `<tr class="empty"><td colspan="4">No visits recorded yet.</td></tr>`
+        ? `<tr class="empty"><td colspan="5">No visits recorded yet.</td></tr>`
         : visits.slice(0, 50).map(v => {
             const d = v.date ? new Date(v.date).toLocaleString() : '-';
-            return `<tr><td>${esc(d)}</td><td>${esc(v.country || '-')}</td><td>${esc(v.city || '-')}</td><td>${esc(v.page || '-')}</td></tr>`;
+            var ispInfo = v.isp || v.org || '';
+            if (v.asn) ispInfo = (ispInfo ? ispInfo + ' ' : '') + '(AS' + v.asn + ')';
+            return `<tr><td style="white-space:nowrap;font-size:0.8rem;">${esc(d)}</td><td>${esc(v.city || '-')}</td><td>${esc(v.country || '-')}</td><td style="font-size:0.8rem;">${esc(ispInfo)}</td><td style="font-size:0.8rem;">${esc(v.page || '-')}</td></tr>`;
       }).join('');
     }
 
