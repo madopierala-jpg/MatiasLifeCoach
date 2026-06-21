@@ -181,7 +181,8 @@
     /* ==================== ABOUT ==================== */
     .about{padding:clamp(4rem,10vw,8rem) 0}
     .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,6vw,6rem);align-items:center}
-    .about-photo{aspect-ratio:3/4;border-radius:20px;background:linear-gradient(135deg,#e8ddd4,#d4c4b5);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:1px solid var(--border);background-image:url('matias-photo.png');background-size:cover;background-position:50% 50%}
+    .about-text{order:1}
+    .about-photo{order:2;aspect-ratio:3/4;border-radius:20px;background:linear-gradient(135deg,#e8ddd4,#d4c4b5);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:1px solid var(--border);background-image:url('matias-photo.png');background-size:cover;background-position:50% 50%}
     .about-photo-initials{font-family:var(--serif);font-size:clamp(3.5rem,6vw,5rem);font-weight:300;color:rgba(184,120,92,.4);letter-spacing:.05em}
     .about-label{font-size:clamp(.65rem,.7rem,.75rem);font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem}
     .about-text h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:300;line-height:1.25;color:var(--text);margin-bottom:2rem;letter-spacing:-.02em}
@@ -1218,6 +1219,7 @@
   <section id="about" class="alt">
     <div class="container">
       <div class="about-grid">
+        <div class="about-photo fade-in" role="img" aria-label="Matias Dopierala Zawada" data-i18n-aria="about-photo-alt"></div>
         <div class="about-text fade-in">
           <p class="section-label" data-i18n="about-label">About me</p>
           <h2 class="section-title" data-i18n="about-title">I'm Matias.</h2>
@@ -1225,7 +1227,6 @@
           <p data-i18n="about-p2">That work of becoming who you are — I learned it doesn't happen in isolation. Whether leading transformation at Santander Group and BBVA or sitting with someone ready to rewrite their story, I've always been drawn to the same question: how do I navigate the unknown? Being named a Santander Group Young Leader in 2024 reminded me that strategic clarity and deep empathy aren't opposites — they come from the same place. Career, confidence, purpose — they're all connected because you are.</p>
           <p data-i18n="about-p3">Today, I help others walk the same path I had to walk for myself: overcoming fear, learning to belong to yourself, and building a life that actually feels like yours. If you're queer, trans, questioning, or simply someone who wants to grow — you belong here. Let's discover your next chapter, together.</p>
         </div>
-        <div class="about-photo fade-in" role="img" aria-label="Matias Dopierala Zawada" data-i18n-aria="about-photo-alt"></div>
       </div>
     </div>
   </section>
