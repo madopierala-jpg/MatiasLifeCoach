@@ -1054,8 +1054,9 @@
       .hero { min-height: auto; padding: calc(var(--nav-h) + 5rem) 0 5rem; }
       .hero-content h1 { font-size: 2rem; }
       .hero-note { font-size: 0.8rem; }
-      .about-grid { display: flex; flex-direction: column; gap: 16px; align-items: center; }
-      .about-photo { width: 100%; max-width: 220px; order: -1; aspect-ratio: 3/4; border-radius: 16px; }
+      .about-grid { display: flex; flex-direction: row; gap: 20px; align-items: flex-start; }
+      .about-photo { width: 100px; max-width: 100px; flex-shrink: 0; aspect-ratio: 3/4; border-radius: 12px; }
+      .about-text { flex: 1; min-width: 0; }
       .about-text { text-align: left; }
       .offerings-grid { grid-template-columns: 1fr; gap: 20px; }
       .values-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -1097,7 +1098,6 @@
       .btn-primary, .btn-secondary { font-size: 0.8rem; padding: 10px 20px; }
       .section-title { font-size: 1.4rem; }
       .section-desc { font-size: 0.85rem; }
-      .about-photo { width: 100%; max-width: 220px; }
       .testimonial-card { flex: 0 0 240px; padding: 20px; }
       .testimonial-card blockquote { font-size: 0.82rem; }
       .footer-social a { font-size: 0.78rem; }
