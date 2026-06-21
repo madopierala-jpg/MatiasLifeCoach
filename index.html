@@ -4303,6 +4303,12 @@
       dashboardEl.classList.remove('show');
     }
 
+    function confirmCloseAdmin() {
+      if (confirm('Are you sure you want to leave the admin panel?')) {
+        closeAdmin();
+      }
+    }
+
     function doLogin() {
       const input = pwInput.value.trim();
       if (input === adminPassword) {
@@ -4338,9 +4344,12 @@
         e.preventDefault();
         openAdmin();
       }
+      if (e.key === 'Escape' && overlay.classList.contains('open')) {
+        closeAdmin();
+      }
     });
-    document.getElementById('adminClose').addEventListener('click', closeAdmin);
-    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeAdmin(); });
+    document.getElementById('adminClose').addEventListener('click', confirmCloseAdmin);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) confirmCloseAdmin(); });
     loginBtn.addEventListener('click', doLogin);
     pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
 
