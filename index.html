@@ -332,6 +332,11 @@
     .footer-div{border-top:1px solid var(--border-dark)}
     footer{padding:clamp(2rem,3vw,3rem) 0;background:var(--bg-dark);padding-bottom:calc(var(--safe-bottom) + clamp(2rem,3vw,3rem))}
 
+    /* ==================== TERMS & CONDITIONS ==================== */
+    .terms-container{max-width:720px;margin:0 auto}
+    .terms-container h3{font-family:var(--sans);font-size:clamp(1rem,1.1vw,1.15rem);font-weight:600;color:var(--text-light);margin-top:2rem;margin-bottom:.75rem}
+    .terms-container p{font-size:clamp(.85rem,.9vw,.95rem);color:var(--text-light-muted);line-height:1.8;margin-bottom:.75rem;font-weight:300}
+
     /* ==================== RESPONSIVE ==================== */
     @media(max-width:1024px){
       .about-grid{grid-template-columns:1fr;gap:3rem}
@@ -2237,7 +2242,42 @@
     </div>
   </div>
 
-  <footer>
+  <section id="terms-section" class="alt" style="display:none;">
+    <div class="container">
+      <div class="terms-container">
+        <h2 class="section-title" data-i18n="terms-title">Terms &amp; Conditions</h2>
+
+        <h3 data-i18n="terms-privacy-title">1. Privacy Policy</h3>
+        <p data-i18n="terms-privacy-p1">I collect and store only the personal information you voluntarily provide through the contact form, booking system, or payment process — including your name, email address, phone number, and payment details. This data is used solely to deliver coaching services, process payments, and communicate with you.</p>
+        <p data-i18n="terms-privacy-p2">Your data is stored securely via Supabase (database), Stripe (payment processing), and Cal.com (meeting scheduling). I do not sell, rent, or share your personal information with third parties for marketing purposes. I retain your data only as long as necessary to provide services or comply with legal obligations.</p>
+        <p data-i18n="terms-privacy-p3">You have the right to request access to, correction of, or deletion of your personal data at any time by contacting me at matias.courios.coach@gmail.com. I will respond within 30 days.</p>
+
+        <h3 data-i18n="terms-cookies-title">2. Cookies &amp; Tracking</h3>
+        <p data-i18n="terms-cookies-p1">This website uses minimal cookies and tracking solely for operational purposes — visitor analytics (aggregated, anonymized location data) and session management. No advertising or profiling cookies are used. By continuing to use this site, you consent to this limited data collection.</p>
+
+        <h3 data-i18n="terms-coaching-title">3. Coaching Services — Terms of Service</h3>
+        <p data-i18n="terms-coaching-p1">Coaching is a collaborative partnership focused on personal and professional development. It is not psychotherapy, counselling, or medical advice. I do not diagnose, treat, or prescribe for any mental health condition. If you are experiencing a mental health crisis, please contact your local emergency services or a licensed mental health professional.</p>
+        <p data-i18n="terms-coaching-p2">Sessions are 45 minutes and conducted via Google Meet or phone. Payment is processed through Stripe before each session or session package. Refunds are available within 14 days of purchase for unused sessions. Cancellations with less than 24 hours notice may be forfeited at my discretion.</p>
+        <p data-i18n="terms-coaching-p3">I reserve the right to pause or terminate the coaching relationship if I determine it is not a good fit, with a full refund for any prepaid unused sessions.</p>
+
+        <h3 data-i18n="terms-liability-title">4. Limitation of Liability</h3>
+        <p data-i18n="terms-liability-p1">Coaching results vary and are not guaranteed. I am not liable for any direct, indirect, incidental, or consequential damages arising from your use of coaching services or this website. You acknowledge that coaching is not a substitute for professional mental health care, medical treatment, or legal advice.</p>
+
+        <h3 data-i18n="terms-brand-title">5. Intellectual Property &amp; Brand Protection</h3>
+        <p data-i18n="terms-brand-p1">All content on this website — including text, images, logos, and design — is the intellectual property of Matias Dopierala Zawada unless otherwise stated. You may not reproduce, distribute, modify, or republish any content without prior written permission.</p>
+        <p data-i18n="terms-brand-p2">The name "Matias Dopierala Zawada" and associated brand elements are protected. Unauthorized use of my name, likeness, or brand for commercial purposes, impersonation, or misrepresentation is strictly prohibited and may result in legal action.</p>
+
+        <h3 data-i18n="terms-changes-title">6. Changes to These Terms</h3>
+        <p data-i18n="terms-changes-p1">I reserve the right to update these Terms &amp; Conditions at any time. Changes will be posted on this page with an updated effective date. Continued use of the website or services after changes constitutes acceptance of the new terms.</p>
+
+        <p style="margin-top:2rem;color:var(--text-muted);font-size:0.85rem;" data-i18n="terms-effective">Effective date: June 21, 2026</p>
+
+        <button class="btn-secondary" onclick="document.getElementById('terms-section').style.display='none';window.scrollTo({top:document.querySelector('footer').offsetTop,behavior:'smooth'})" data-i18n="terms-close">Close</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>...
     <div class="container">
       <div class="footer-social">
         <a href="https://www.tiktok.com/@curious.matias" target="_blank">TikTok</a>
@@ -2245,7 +2285,7 @@
         <a href="https://www.linkedin.com/in/maciej-dopierala-digital-business-transformation-manager/" target="_blank">LinkedIn</a>
         <a href="mailto:matias.courios.coach@gmail.com">Email</a>
       </div>
-      <p>&copy; 2026 Matias Dopierala Zawada.</p>
+      <p>&copy; 2026 Matias Dopierala Zawada. <a href="#" onclick="event.preventDefault();var s=document.getElementById('terms-section');if(s.style.display==='none'||!s.style.display){s.style.display='';s.scrollIntoView({behavior:'smooth'})}else{s.style.display='none'}" style="color:var(--text-muted);text-decoration:underline;font-size:0.85rem;" data-i18n="footer-terms">Terms &amp; Conditions</a></p>
     </div>
   </footer>
 
@@ -2414,6 +2454,28 @@
         'email-subject': 'Thanks for your request \u2014 Matias Dopierala Zawada',
         'alert-success': 'Request received. I\'ll reply within 24 hours.',
         'pw-error': 'Incorrect password',
+        'footer-terms': 'Terms &amp; Conditions',
+        'terms-title': 'Terms &amp; Conditions',
+        'terms-privacy-title': '1. Privacy Policy',
+        'terms-privacy-p1': 'I collect and store only the personal information you voluntarily provide through the contact form, booking system, or payment process — including your name, email address, phone number, and payment details. This data is used solely to deliver coaching services, process payments, and communicate with you.',
+        'terms-privacy-p2': 'Your data is stored securely via Supabase (database), Stripe (payment processing), and Cal.com (meeting scheduling). I do not sell, rent, or share your personal information with third parties for marketing purposes. I retain your data only as long as necessary to provide services or comply with legal obligations.',
+        'terms-privacy-p3': 'You have the right to request access to, correction of, or deletion of your personal data at any time by contacting me at matias.courios.coach@gmail.com. I will respond within 30 days.',
+        'terms-cookies-title': '2. Cookies &amp; Tracking',
+        'terms-cookies-p1': 'This website uses minimal cookies and tracking solely for operational purposes — visitor analytics (aggregated, anonymized location data) and session management. No advertising or profiling cookies are used. By continuing to use this site, you consent to this limited data collection.',
+        'terms-coaching-title': '3. Coaching Services — Terms of Service',
+        'terms-coaching-p1': 'Coaching is a collaborative partnership focused on personal and professional development. It is not psychotherapy, counselling, or medical advice. I do not diagnose, treat, or prescribe for any mental health condition. If you are experiencing a mental health crisis, please contact your local emergency services or a licensed mental health professional.',
+        'terms-coaching-p2': 'Sessions are 45 minutes and conducted via Google Meet or phone. Payment is processed through Stripe before each session or session package. Refunds are available within 14 days of purchase for unused sessions. Cancellations with less than 24 hours notice may be forfeited at my discretion.',
+        'terms-coaching-p3': 'I reserve the right to pause or terminate the coaching relationship if I determine it is not a good fit, with a full refund for any prepaid unused sessions.',
+        'terms-liability-title': '4. Limitation of Liability',
+        'terms-liability-p1': 'Coaching results vary and are not guaranteed. I am not liable for any direct, indirect, incidental, or consequential damages arising from your use of coaching services or this website. You acknowledge that coaching is not a substitute for professional mental health care, medical treatment, or legal advice.',
+        'terms-brand-title': '5. Intellectual Property &amp; Brand Protection',
+        'terms-brand-p1': 'All content on this website — including text, images, logos, and design — is the intellectual property of Matias Dopierala Zawada unless otherwise stated. You may not reproduce, distribute, modify, or republish any content without prior written permission.',
+        'terms-brand-p2': 'The name "Matias Dopierala Zawada" and associated brand elements are protected. Unauthorized use of my name, likeness, or brand for commercial purposes, impersonation, or misrepresentation is strictly prohibited and may result in legal action.',
+        'terms-changes-title': '6. Changes to These Terms',
+        'terms-changes-p1': 'I reserve the right to update these Terms &amp; Conditions at any time. Changes will be posted on this page with an updated effective date. Continued use of the website or services after changes constitutes acceptance of the new terms.',
+        'terms-effective': 'Effective date: June 21, 2026',
+        'terms-close': 'Close',
+        'terms': ['terms-title', 'terms-privacy-title', 'terms-privacy-p1', 'terms-privacy-p2', 'terms-privacy-p3', 'terms-cookies-title', 'terms-cookies-p1', 'terms-coaching-title', 'terms-coaching-p1', 'terms-coaching-p2', 'terms-coaching-p3', 'terms-liability-title', 'terms-liability-p1', 'terms-brand-title', 'terms-brand-p1', 'terms-brand-p2', 'terms-changes-title', 'terms-changes-p1', 'terms-effective', 'terms-close'],
       },
       es: {
         'meta-title': 'Matias Dopierala Zawada — Coach de Vida y Profesional | Afirmativo LGBTQ+, Informado en Trauma',
@@ -2577,6 +2639,27 @@
         'email-subject': 'Gracias por tu solicitud \u2014 Matias Dopierala Zawada',
         'alert-success': 'Solicitud recibida. Te responder\u00e9 en menos de 24 horas.',
         'pw-error': 'Contrase\u00f1a incorrecta',
+        'footer-terms': 'Terms &amp; Conditions',
+        'terms-title': 'Terms &amp; Conditions',
+        'terms-privacy-title': '1. Privacy Policy',
+        'terms-privacy-p1': 'I collect and store only the personal information you voluntarily provide through the contact form, booking system, or payment process — including your name, email address, phone number, and payment details. This data is used solely to deliver coaching services, process payments, and communicate with you.',
+        'terms-privacy-p2': 'Your data is stored securely via Supabase (database), Stripe (payment processing), and Cal.com (meeting scheduling). I do not sell, rent, or share your personal information with third parties for marketing purposes. I retain your data only as long as necessary to provide services or comply with legal obligations.',
+        'terms-privacy-p3': 'You have the right to request access to, correction of, or deletion of your personal data at any time by contacting me at matias.courios.coach@gmail.com. I will respond within 30 days.',
+        'terms-cookies-title': '2. Cookies &amp; Tracking',
+        'terms-cookies-p1': 'This website uses minimal cookies and tracking solely for operational purposes — visitor analytics (aggregated, anonymized location data) and session management. No advertising or profiling cookies are used. By continuing to use this site, you consent to this limited data collection.',
+        'terms-coaching-title': '3. Coaching Services — Terms of Service',
+        'terms-coaching-p1': 'Coaching is a collaborative partnership focused on personal and professional development. It is not psychotherapy, counselling, or medical advice. I do not diagnose, treat, or prescribe for any mental health condition. If you are experiencing a mental health crisis, please contact your local emergency services or a licensed mental health professional.',
+        'terms-coaching-p2': 'Sessions are 45 minutes and conducted via Google Meet or phone. Payment is processed through Stripe before each session or session package. Refunds are available within 14 days of purchase for unused sessions. Cancellations with less than 24 hours notice may be forfeited at my discretion.',
+        'terms-coaching-p3': 'I reserve the right to pause or terminate the coaching relationship if I determine it is not a good fit, with a full refund for any prepaid unused sessions.',
+        'terms-liability-title': '4. Limitation of Liability',
+        'terms-liability-p1': 'Coaching results vary and are not guaranteed. I am not liable for any direct, indirect, incidental, or consequential damages arising from your use of coaching services or this website. You acknowledge that coaching is not a substitute for professional mental health care, medical treatment, or legal advice.',
+        'terms-brand-title': '5. Intellectual Property &amp; Brand Protection',
+        'terms-brand-p1': 'All content on this website — including text, images, logos, and design — is the intellectual property of Matias Dopierala Zawada unless otherwise stated. You may not reproduce, distribute, modify, or republish any content without prior written permission.',
+        'terms-brand-p2': 'The name "Matias Dopierala Zawada" and associated brand elements are protected. Unauthorized use of my name, likeness, or brand for commercial purposes, impersonation, or misrepresentation is strictly prohibited and may result in legal action.',
+        'terms-changes-title': '6. Changes to These Terms',
+        'terms-changes-p1': 'I reserve the right to update these Terms &amp; Conditions at any time. Changes will be posted on this page with an updated effective date. Continued use of the website or services after changes constitutes acceptance of the new terms.',
+        'terms-effective': 'Effective date: June 21, 2026',
+        'terms-close': 'Close',
       },
       pl: {
         'meta-title': 'Matias Dopierala Zawada — Coach \u017Cycia i Rozwoju Zawodowego | LGBTQ+ Affirming, Trauma-Informed',
@@ -2740,6 +2823,27 @@
         'email-subject': 'Dzi\u0119kuj\u0119 za zapytanie \u2014 Matias Dopierala Zawada',
         'alert-success': 'Zapytanie otrzymane. Odpowiem w ci\u0105gu 24 godzin.',
         'pw-error': 'Nieprawid\u0142owe has\u0142o',
+        'footer-terms': 'Terms &amp; Conditions',
+        'terms-title': 'Terms &amp; Conditions',
+        'terms-privacy-title': '1. Privacy Policy',
+        'terms-privacy-p1': 'I collect and store only the personal information you voluntarily provide through the contact form, booking system, or payment process — including your name, email address, phone number, and payment details. This data is used solely to deliver coaching services, process payments, and communicate with you.',
+        'terms-privacy-p2': 'Your data is stored securely via Supabase (database), Stripe (payment processing), and Cal.com (meeting scheduling). I do not sell, rent, or share your personal information with third parties for marketing purposes. I retain your data only as long as necessary to provide services or comply with legal obligations.',
+        'terms-privacy-p3': 'You have the right to request access to, correction of, or deletion of your personal data at any time by contacting me at matias.courios.coach@gmail.com. I will respond within 30 days.',
+        'terms-cookies-title': '2. Cookies &amp; Tracking',
+        'terms-cookies-p1': 'This website uses minimal cookies and tracking solely for operational purposes — visitor analytics (aggregated, anonymized location data) and session management. No advertising or profiling cookies are used. By continuing to use this site, you consent to this limited data collection.',
+        'terms-coaching-title': '3. Coaching Services — Terms of Service',
+        'terms-coaching-p1': 'Coaching is a collaborative partnership focused on personal and professional development. It is not psychotherapy, counselling, or medical advice. I do not diagnose, treat, or prescribe for any mental health condition. If you are experiencing a mental health crisis, please contact your local emergency services or a licensed mental health professional.',
+        'terms-coaching-p2': 'Sessions are 45 minutes and conducted via Google Meet or phone. Payment is processed through Stripe before each session or session package. Refunds are available within 14 days of purchase for unused sessions. Cancellations with less than 24 hours notice may be forfeited at my discretion.',
+        'terms-coaching-p3': 'I reserve the right to pause or terminate the coaching relationship if I determine it is not a good fit, with a full refund for any prepaid unused sessions.',
+        'terms-liability-title': '4. Limitation of Liability',
+        'terms-liability-p1': 'Coaching results vary and are not guaranteed. I am not liable for any direct, indirect, incidental, or consequential damages arising from your use of coaching services or this website. You acknowledge that coaching is not a substitute for professional mental health care, medical treatment, or legal advice.',
+        'terms-brand-title': '5. Intellectual Property &amp; Brand Protection',
+        'terms-brand-p1': 'All content on this website — including text, images, logos, and design — is the intellectual property of Matias Dopierala Zawada unless otherwise stated. You may not reproduce, distribute, modify, or republish any content without prior written permission.',
+        'terms-brand-p2': 'The name "Matias Dopierala Zawada" and associated brand elements are protected. Unauthorized use of my name, likeness, or brand for commercial purposes, impersonation, or misrepresentation is strictly prohibited and may result in legal action.',
+        'terms-changes-title': '6. Changes to These Terms',
+        'terms-changes-p1': 'I reserve the right to update these Terms &amp; Conditions at any time. Changes will be posted on this page with an updated effective date. Continued use of the website or services after changes constitutes acceptance of the new terms.',
+        'terms-effective': 'Effective date: June 21, 2026',
+        'terms-close': 'Close',
       },
       pt: {
         'meta-title': 'Matias Dopierala Zawada — Coach de Vida e Profissional | Afirmativo LGBTQ+, Informado em Trauma',
@@ -2903,6 +3007,27 @@
         'email-subject': 'Obrigado pelo seu pedido \u2014 Matias Dopierala Zawada',
         'alert-success': 'Pedido recebido. Responderei em at\u00e9 24 horas.',
         'pw-error': 'Palavra-passe incorreta',
+        'footer-terms': 'Terms &amp; Conditions',
+        'terms-title': 'Terms &amp; Conditions',
+        'terms-privacy-title': '1. Privacy Policy',
+        'terms-privacy-p1': 'I collect and store only the personal information you voluntarily provide through the contact form, booking system, or payment process — including your name, email address, phone number, and payment details. This data is used solely to deliver coaching services, process payments, and communicate with you.',
+        'terms-privacy-p2': 'Your data is stored securely via Supabase (database), Stripe (payment processing), and Cal.com (meeting scheduling). I do not sell, rent, or share your personal information with third parties for marketing purposes. I retain your data only as long as necessary to provide services or comply with legal obligations.',
+        'terms-privacy-p3': 'You have the right to request access to, correction of, or deletion of your personal data at any time by contacting me at matias.courios.coach@gmail.com. I will respond within 30 days.',
+        'terms-cookies-title': '2. Cookies &amp; Tracking',
+        'terms-cookies-p1': 'This website uses minimal cookies and tracking solely for operational purposes — visitor analytics (aggregated, anonymized location data) and session management. No advertising or profiling cookies are used. By continuing to use this site, you consent to this limited data collection.',
+        'terms-coaching-title': '3. Coaching Services — Terms of Service',
+        'terms-coaching-p1': 'Coaching is a collaborative partnership focused on personal and professional development. It is not psychotherapy, counselling, or medical advice. I do not diagnose, treat, or prescribe for any mental health condition. If you are experiencing a mental health crisis, please contact your local emergency services or a licensed mental health professional.',
+        'terms-coaching-p2': 'Sessions are 45 minutes and conducted via Google Meet or phone. Payment is processed through Stripe before each session or session package. Refunds are available within 14 days of purchase for unused sessions. Cancellations with less than 24 hours notice may be forfeited at my discretion.',
+        'terms-coaching-p3': 'I reserve the right to pause or terminate the coaching relationship if I determine it is not a good fit, with a full refund for any prepaid unused sessions.',
+        'terms-liability-title': '4. Limitation of Liability',
+        'terms-liability-p1': 'Coaching results vary and are not guaranteed. I am not liable for any direct, indirect, incidental, or consequential damages arising from your use of coaching services or this website. You acknowledge that coaching is not a substitute for professional mental health care, medical treatment, or legal advice.',
+        'terms-brand-title': '5. Intellectual Property &amp; Brand Protection',
+        'terms-brand-p1': 'All content on this website — including text, images, logos, and design — is the intellectual property of Matias Dopierala Zawada unless otherwise stated. You may not reproduce, distribute, modify, or republish any content without prior written permission.',
+        'terms-brand-p2': 'The name "Matias Dopierala Zawada" and associated brand elements are protected. Unauthorized use of my name, likeness, or brand for commercial purposes, impersonation, or misrepresentation is strictly prohibited and may result in legal action.',
+        'terms-changes-title': '6. Changes to These Terms',
+        'terms-changes-p1': 'I reserve the right to update these Terms &amp; Conditions at any time. Changes will be posted on this page with an updated effective date. Continued use of the website or services after changes constitutes acceptance of the new terms.',
+        'terms-effective': 'Effective date: June 21, 2026',
+        'terms-close': 'Close',
       }
     };
 
@@ -3904,13 +4029,14 @@
         testimonials: ['test-label', 'test-title', 'test-desc', 'test-swipe'],
         booking: ['book-label', 'book-title', 'book-desc', 'expect-title', 'expect-p1', 'expect-p2', 'avail-title', 'avail-tz', 'avail-hours', 'avail-note', 'questions-label', 'reach-out', 'or'],
         form: ['form-name-ph', 'form-email-ph', 'form-phone-ph', 'form-social-ph', 'form-time-label', 'form-tz-label', 'form-tz-ph', 'form-email-required', 'form-msg-label', 'form-msg-ph', 'form-submit', 'form-footer', 'data-note'],
+        terms: ['footer-terms', 'terms-title', 'terms-privacy-title', 'terms-privacy-p1', 'terms-privacy-p2', 'terms-privacy-p3', 'terms-cookies-title', 'terms-cookies-p1', 'terms-coaching-title', 'terms-coaching-p1', 'terms-coaching-p2', 'terms-coaching-p3', 'terms-liability-title', 'terms-liability-p1', 'terms-brand-title', 'terms-brand-p1', 'terms-brand-p2', 'terms-changes-title', 'terms-changes-p1', 'terms-effective', 'terms-close'],
       };
 
       const groupLabels = {
         seo: 'SEO (Meta Tags)',
         nav: 'Navigation', hero: 'Hero Section', about: 'About Me',
         offers: 'Offerings', values: 'Values', pricing: 'Pricing', testimonials: 'Testimonials Section',
-        booking: 'Booking', form: 'Form'
+        booking: 'Booking', form: 'Form', terms: 'Terms &amp; Conditions'
       };
 
       let html = '';
