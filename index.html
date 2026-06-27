@@ -773,6 +773,60 @@
       .payment-badge { left: 50%; transform: translateX(-50%); }
     }
 
+    /* ─── Shop page ─── */
+    #shop-page { display: none; padding: 10rem 0; min-height: 80vh; }
+    .show-shop .hero,
+    .show-shop .trust,
+    .show-shop .problem,
+    .show-shop #about,
+    .show-shop #offerings,
+    .show-shop #values,
+    .show-shop #services-section,
+    .show-shop #process,
+    .show-shop #pricing-page,
+    .show-shop #payment-page,
+    .show-shop #testimonials,
+    .show-shop .quote-section,
+    .show-shop #booking { display: none; }
+    .show-shop #shop-page { display: block; }
+
+    .shop-grid {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .shop-placeholder {
+      text-align: center;
+      padding: 60px 40px;
+      background: var(--bg-light);
+      border: 1px dashed var(--border);
+      border-radius: 20px;
+    }
+    .shop-placeholder-icon {
+      color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0.6;
+    }
+    .shop-placeholder h3 {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .shop-placeholder p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      #shop-page { padding: 10rem 0; }
+      #shop-page .section-title { font-size: 1.5rem; }
+      .shop-placeholder { padding: 40px 24px; }
+    }
+
     .admin-panel {
       background: var(--bg);
       border-radius: 20px;
@@ -1162,6 +1216,7 @@
         <a href="#process" class="menu-link" data-i18n="nav-process">Process</a>
         <a href="#pricing" class="menu-link" data-i18n="nav-pricing">Pricing</a>
         <a href="#payment" class="menu-link" data-i18n="nav-payment">Payment</a>
+        <a href="#shop" class="menu-link" data-i18n="nav-shop">Shop</a>
         <a href="#testimonials" class="menu-link" data-i18n="nav-testimonials">Stories</a>
         <a href="#booking" class="menu-link" data-i18n="nav-booking">Contact</a>
       </nav>
@@ -1448,6 +1503,27 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- Shop subpage (hidden by default, shown via page routing) -->
+  <section id="shop-page">
+    <div class="container">
+      <div class="fade-in visible" style="text-align:center;padding-bottom:8px;">
+        <a href="#" class="pricing-back" id="shopBack">&larr; <span data-i18n="pricing-back">Back to home</span></a>
+        <p class="section-label" data-i18n="shop-label">Mindful Wear</p>
+        <h2 class="section-title" data-i18n="shop-title">Clothes with meaning</h2>
+        <p class="section-desc" style="margin:0 auto;" data-i18n="shop-desc">Mental health sentences on clothing — coming soon.</p>
+      </div>
+      <div class="shop-grid">
+        <div class="shop-placeholder">
+          <div class="shop-placeholder-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+          <h3 data-i18n="shop-coming-soon">Shop coming soon</h3>
+          <p data-i18n="shop-coming-soon-text">I'm building a collection of clothing with mental health sentences — reminders you can wear. The shop will be powered by Shopify and will launch soon.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -2308,6 +2384,7 @@
         'nav-values': 'How I work',
         'nav-pricing': 'Pricing',
         'nav-payment': 'Payment',
+        'nav-shop': 'Shop',
         'nav-testimonials': 'Testimonials',
         'nav-booking': 'Booking',
         'nav-cta': 'Book a free call',
@@ -2488,6 +2565,11 @@
         'terms': ['terms-title', 'terms-privacy-title', 'terms-privacy-p1', 'terms-privacy-p2', 'terms-privacy-p3', 'terms-cookies-title', 'terms-cookies-p1', 'terms-coaching-title', 'terms-coaching-p1', 'terms-coaching-p2', 'terms-coaching-p3', 'terms-liability-title', 'terms-liability-p1', 'terms-law-title', 'terms-law-p1', 'terms-brand-title', 'terms-brand-p1', 'terms-brand-p2', 'terms-changes-title', 'terms-changes-p1', 'terms-effective', 'terms-close'],
         'quote-text': 'Real transformation doesn&rsquo;t come from more information.<br>It comes from deeper understanding.',
         'quote-attribution': '&mdash; Matias Dopierala',
+        'shop-label': 'Mindful Wear',
+        'shop-title': 'Clothes with meaning',
+        'shop-desc': 'Mental health sentences on clothing \u2014 coming soon.',
+        'shop-coming-soon': 'Shop coming soon',
+        'shop-coming-soon-text': "I'm building a collection of clothing with mental health sentences \u2014 reminders you can wear. The shop will be powered by Shopify and will launch soon.",
       },
       es: {
         'quote-text': 'La verdadera transformaci\u00f3n no viene de m\u00e1s informaci\u00f3n.<br>Viene de una comprensi\u00f3n m\u00e1s profunda.',
@@ -2502,6 +2584,7 @@
         'nav-values': 'C\u00f3mo trabajo',
         'nav-pricing': 'Precios',
         'nav-payment': 'Pago',
+        'nav-shop': 'Tienda',
         'nav-testimonials': 'Testimonios',
         'nav-booking': 'Reservar',
         'nav-cta': 'Llama gratis',
@@ -2679,6 +2762,11 @@
         'terms-changes-p1': 'I reserve the right to update these Terms & Conditions at any time. Changes will be posted on this page with an updated effective date. Continued use of the website or services after changes constitutes acceptance of the new terms.',
         'terms-effective': 'Effective date: June 21, 2026',
         'terms-close': 'Close',
+        'shop-label': 'Mindful Wear',
+        'shop-title': 'Clothes with meaning',
+        'shop-desc': 'Frases de salud mental en ropa \u2014 pr\u00f3ximamente.',
+        'shop-coming-soon': 'Tienda pr\u00f3ximamente',
+        'shop-coming-soon-text': 'Estoy creando una colecci\u00f3n de ropa con frases de salud mental \u2014 recordatorios que puedes llevar puestos. La tienda funcionar\u00e1 con Shopify y se lanzar\u00e1 pronto.',
       },
       pt: {
         'meta-title': 'Matias Dopierala Zawada — Coach de Vida e Profissional | Afirmativo LGBTQ+, Informado em Trauma',
@@ -2694,6 +2782,7 @@
         'nav-values': 'Como trabalho',
         'nav-pricing': 'Pre\u00e7os',
         'nav-payment': 'Pagamento',
+        'nav-shop': 'Loja',
         'nav-testimonials': 'Depoimentos',
         'nav-booking': 'Reservar',
         'nav-cta': 'Liga\u00e7\u00e3o gratuita',
@@ -2871,6 +2960,11 @@
         'terms-changes-p1': 'I reserve the right to update these Terms & Conditions at any time. Changes will be posted on this page with an updated effective date. Continued use of the website or services after changes constitutes acceptance of the new terms.',
         'terms-effective': 'Effective date: June 21, 2026',
         'terms-close': 'Close',
+        'shop-label': 'Mindful Wear',
+        'shop-title': 'Roupas com significado',
+        'shop-desc': 'Frases de sa\u00fade mental em roupas \u2014 em breve.',
+        'shop-coming-soon': 'Loja em breve',
+        'shop-coming-soon-text': 'Estou criando uma cole\u00e7\u00e3o de roupas com frases de sa\u00fade mental \u2014 lembretes que voc\u00ea pode vestir. A loja ser\u00e1 integrada ao Shopify e ser\u00e1 lan\u00e7ada em breve.',
       },
       pl: {
         'meta-title': 'Matias Dopierala Zawada — Coach \u017Cycia i Rozwoju Zawodowego | LGBTQ+ Affirming, Trauma-Informed',
@@ -2883,6 +2977,7 @@
         'nav-values': 'Jak pracuj\u0119',
         'nav-pricing': 'Cennik',
         'nav-payment': 'P\u0142atno\u015bci',
+        'nav-shop': 'Sklep',
         'nav-testimonials': 'Opinie',
         'nav-booking': 'Rezerwacja',
         'nav-cta': 'Darmowa rozmowa',
@@ -3062,6 +3157,11 @@
         'terms-close': 'Close',
         'quote-text': 'Prawdziwa transformacja nie pochodzi z wi\u0119kszej ilo\u015bci informacji.<br>Pochodzi z g\u0142\u0119bszego zrozumienia.',
         'quote-attribution': '&mdash; Matias Dopierala',
+        'shop-label': 'Mindful Wear',
+        'shop-title': 'Ubrania ze znaczeniem',
+        'shop-desc': 'Has\u0142a o zdrowiu psychicznym na odzie\u017cy \u2014 już wkrótce.',
+        'shop-coming-soon': 'Sklep wkrótce',
+        'shop-coming-soon-text': 'Tworzę kolekcję odzieży z has\u0142ami o zdrowiu psychicznym \u2014 przypomnieniami, które można nosić. Sklep będzie zasilany przez Shopify i uruchomię go wkrótce.',
       }
     };
 
@@ -4031,7 +4131,7 @@
       
       const groups = {
         seo: ['meta-title', 'meta-desc', 'og-title', 'og-desc'],
-        nav: ['nav-subtitle', 'nav-about', 'nav-offerings', 'nav-services', 'nav-process', 'nav-values', 'nav-pricing', 'nav-payment', 'nav-testimonials', 'nav-booking', 'nav-cta'],
+        nav: ['nav-subtitle', 'nav-about', 'nav-offerings', 'nav-services', 'nav-process', 'nav-values', 'nav-pricing', 'nav-payment', 'nav-shop', 'nav-testimonials', 'nav-booking', 'nav-cta'],
         hero: ['hero-tag', 'hero-heading', 'hero-sub', 'tag-1', 'tag-2', 'tag-3', 'tag-4', 'hero-cta', 'hero-secondary', 'hero-note'],
         problem: ['problem-heading', 'problem-accent', 'problem-desc'],
         about: ['about-label', 'about-title', 'about-p1', 'about-p2', 'about-p3', 'about-photo-alt'],
@@ -4045,13 +4145,14 @@
         booking: ['book-label', 'book-title', 'book-desc', 'expect-title', 'expect-p1', 'expect-p2', 'avail-title', 'avail-tz', 'avail-hours', 'avail-note', 'questions-label', 'reach-out', 'or'],
         form: ['form-name-ph', 'form-email-ph', 'form-phone-ph', 'form-social-ph', 'form-time-label', 'form-tz-label', 'form-tz-ph', 'form-email-required', 'form-msg-label', 'form-msg-ph', 'form-submit', 'form-footer', 'data-note'],
         terms: ['footer-terms', 'terms-title', 'terms-privacy-title', 'terms-privacy-p1', 'terms-privacy-p2', 'terms-privacy-p3', 'terms-cookies-title', 'terms-cookies-p1', 'terms-coaching-title', 'terms-coaching-p1', 'terms-coaching-p2', 'terms-coaching-p3', 'terms-liability-title', 'terms-liability-p1', 'terms-law-title', 'terms-law-p1', 'terms-brand-title', 'terms-brand-p1', 'terms-brand-p2', 'terms-changes-title', 'terms-changes-p1', 'terms-effective', 'terms-close'],
+        shop: ['shop-label', 'shop-title', 'shop-desc', 'shop-coming-soon', 'shop-coming-soon-text'],
       };
 
       const groupLabels = {
         seo: 'SEO (Meta Tags)',
         nav: 'Navigation', hero: 'Hero Section', problem: 'Problem Section', about: 'About Me',
         offers: 'Offerings', services: 'Services', process: 'Process', values: 'Values', quote: 'Quote Section', pricing: 'Pricing', testimonials: 'Testimonials Section',
-        booking: 'Booking', form: 'Form', terms: 'Terms & Conditions'
+        booking: 'Booking', form: 'Form', terms: 'Terms & Conditions', shop: 'Shop Section'
       };
 
       let html = '';
@@ -4491,19 +4592,25 @@
 
     // ─── Page routing (pricing & payment subpages) ───
     function showPricing() {
-      document.body.classList.remove('show-payment');
+      document.body.classList.remove('show-payment', 'show-shop');
       document.body.classList.add('show-pricing');
       window.location.hash = 'pricing';
       window.scrollTo(0, 0);
     }
     function showPayment() {
-      document.body.classList.remove('show-pricing');
+      document.body.classList.remove('show-pricing', 'show-shop');
       document.body.classList.add('show-payment');
       window.location.hash = 'payment';
       window.scrollTo(0, 0);
     }
-    function showMain() {
+    function showShop() {
       document.body.classList.remove('show-pricing', 'show-payment');
+      document.body.classList.add('show-shop');
+      window.location.hash = 'shop';
+      window.scrollTo(0, 0);
+    }
+    function showMain() {
+      document.body.classList.remove('show-pricing', 'show-payment', 'show-shop');
       window.location.hash = '';
       window.scrollTo(0, 0);
     }
@@ -4513,8 +4620,12 @@
     document.querySelectorAll('a[href="#payment"]').forEach(function (a) {
       a.addEventListener('click', function (e) { e.preventDefault(); showPayment(); });
     });
+    document.querySelectorAll('a[href="#shop"]').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.preventDefault(); showShop(); });
+    });
     document.getElementById('pricingBack').addEventListener('click', function (e) { e.preventDefault(); showMain(); });
     document.getElementById('paymentBack').addEventListener('click', function (e) { e.preventDefault(); showMain(); });
+    document.getElementById('shopBack').addEventListener('click', function (e) { e.preventDefault(); showMain(); });
     document.querySelectorAll('#pricing-page .pricing-cta').forEach(function (a) {
       a.addEventListener('click', function (e) { e.preventDefault(); showMain(); window.location.hash = 'booking'; });
     });
@@ -4523,8 +4634,8 @@
       var anchor = e.target.closest('a[href^="#"]');
       if (!anchor) return;
       var href = anchor.getAttribute('href');
-      if (href === '#pricing' || href === '#payment') return; // already handled by dedicated handlers
-      if (document.body.classList.contains('show-pricing') || document.body.classList.contains('show-payment')) {
+      if (href === '#pricing' || href === '#payment' || href === '#shop') return; // already handled by dedicated handlers
+      if (document.body.classList.contains('show-pricing') || document.body.classList.contains('show-payment') || document.body.classList.contains('show-shop')) {
         e.preventDefault();
         showMain();
         var id = href.substring(1);
@@ -4538,6 +4649,7 @@
 
     if (window.location.hash === '#pricing') { setTimeout(showPricing, 100); }
     if (window.location.hash === '#payment') { setTimeout(showPayment, 100); }
+    if (window.location.hash === '#shop') { setTimeout(showShop, 100); }
 
     // ─── Customer database ───
     const CUSTOMERS_KEY = '_customers';
