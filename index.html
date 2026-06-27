@@ -4181,6 +4181,7 @@
     function sendConfirmationEmail(name, email, lang) {
       if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
       const subject = (i18n[lang] && i18n[lang]['email-subject']) || 'Thank you for your request';
+      const bodyText = (i18n[lang] && i18n[lang]['email-body']) || 'Hi {name},\n\nThank you for reaching out.';
       const innerBody = bodyText.replace('{name}', name).split('\n').join('</p><p style="margin:0 0 12px;line-height:1.7;color:#1a1817">');
 
       const body =
