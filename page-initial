@@ -1,0 +1,205 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "Matias Dopierala Zawada Lifecoach" [ref=e4] [cursor=pointer]:
+      - /url: "#"
+      - text: Matias Dopierala Zawada
+      - generic [ref=e5]: Lifecoach
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - button "EN" [ref=e8] [cursor=pointer]
+        - button "ES" [ref=e9] [cursor=pointer]
+        - button "PT" [ref=e10] [cursor=pointer]
+        - button "PL" [ref=e11] [cursor=pointer]
+      - link "Book a free discovery call" [ref=e239] [cursor=pointer]:
+        - /url: "#booking"
+      - button "Menu" [ref=e13] [cursor=pointer]
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - paragraph [ref=e20]: Life Coaching & Professional Growth
+        - heading "Your next chapter starts here." [level=1] [ref=e21]:
+          - text: Your next chapter
+          - text: starts
+          - emphasis [ref=e240]: here
+          - text: .
+        - paragraph [ref=e23]: Fear, self-doubt, career crossroads — you don't have to navigate them alone. This is a space where you don't have to come out as anything to be taken seriously. No bracing, no explaining, no editing yourself before you speak. Show up as you are, and build from there.
+        - generic [ref=e24]:
+          - generic [ref=e25]: Fear & Self-Doubt
+          - generic [ref=e26]: Confidence & Identity
+          - generic [ref=e27]: Career & Direction
+          - generic [ref=e28]: LGBTQ+ Affirming
+        - generic [ref=e29]:
+          - link "Book your free 45′ discovery call" [ref=e241] [cursor=pointer]:
+            - /url: "#booking"
+          - link "About me" [ref=e31] [cursor=pointer]:
+            - /url: "#about"
+        - paragraph [ref=e32]: No pitch. Just a conversation to see if we're a good fit.
+      - generic [ref=e34]: Scroll
+    - generic [ref=e37]:
+      - generic [ref=e38]: 15+ Years Experience
+      - generic [ref=e39]: ·
+      - generic [ref=e40]: 3 Continents
+      - generic [ref=e41]: ·
+      - generic [ref=e42]: Multilingual EN/ES/PT/PL
+      - generic [ref=e43]: ·
+      - generic [ref=e44]: Certified Coach
+    - generic [ref=e46]:
+      - heading "You've built the career. Hit the milestones. Checked every box." [level=2] [ref=e242]
+      - generic [ref=e48]: So why does something still feel… off?
+      - paragraph [ref=e49]: You're not broken. You're not lazy. You've just been performing instead of living — and you're finally ready to stop and listen.
+    - generic [ref=e52]:
+      - img "Matias Dopierala Zawada portrait" [ref=e243]
+      - generic [ref=e54]:
+        - paragraph [ref=e55]: About me
+        - heading "I'm Matias." [level=2] [ref=e56]
+        - paragraph [ref=e57]: "I know what it feels like to carry fear and self-doubt while trying to figure out who you are and where you're going — because I've lived it. My own path has taken me through some genuinely difficult lows, and through them, I learned something I now build my whole practice around: you don't have to come out as anything to be taken seriously, anywhere, by anyone — including yourself. Every reinvention I've lived — from Poland to Spain to Sydney, from journalism to banking to coaching — taught me that growth doesn't happen despite our struggles. It happens through them."
+        - paragraph [ref=e58]: "That work of becoming who you are doesn't happen in isolation. Whether leading transformation at Santander Group and BBVA, or sitting with someone ready to rewrite their story, I've always been drawn to the same question: how do you navigate the unknown? Being named a Santander Group Young Leader in 2024 reminded me that strategic clarity and deep empathy aren't opposites — they come from the same place. And yes — as a gay man, this is personal for me too. Career, confidence, purpose: they're all connected, because you are."
+        - paragraph [ref=e59]: "Today, I help people walk the path I had to walk myself: facing fear, learning to belong to yourself, and building a life that actually feels like yours. Wherever you're starting from, you belong here. Let's discover your next chapter, together."
+    - generic [ref=e61]:
+      - generic [ref=e62]:
+        - paragraph [ref=e63]: What I help with
+        - heading "Three areas. One conversation." [level=2] [ref=e64]
+        - paragraph [ref=e65]: We start wherever you are. These are the spaces I work in most — and they overlap more than you'd think.
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - generic [ref=e68]: "01"
+          - heading "Fear & Self-Doubt" [level=3] [ref=e69]
+          - paragraph [ref=e70]: The inner critic, imposter syndrome, the voice that says “not yet” every time you try to grow. We'll gently untangle where it comes from — and build a new one.
+        - generic [ref=e71]:
+          - generic [ref=e72]: "02"
+          - heading "Confidence & Identity" [level=3] [ref=e73]
+          - paragraph [ref=e74]: Standing in your truth. Owning who you are, without translation or apology. Whether it's your identity, your voice, or your place in the world — let's amplify it together.
+        - generic [ref=e75]:
+          - generic [ref=e76]: "03"
+          - heading "Career & Purpose" [level=3] [ref=e77]
+          - paragraph [ref=e78]: You deserve work that aligns with who you are. From career pivots to leading with authenticity — let's design a path that actually feels like yours.
+    - generic [ref=e80]:
+      - generic [ref=e81]:
+        - paragraph [ref=e82]: How I work
+        - heading "Empathy. Honesty. No masks." [level=2] [ref=e83]
+        - paragraph [ref=e84]: I don't believe in one-size-fits-all coaching. Every session is shaped around who you are, what you've been through, and where you want to go.
+      - generic [ref=e85]:
+        - generic [ref=e86]:
+          - heading "Trauma-Informed Approach" [level=3] [ref=e244]
+          - paragraph [ref=e88]: We move at your pace. Healing isn't a race — it's a process of learning to trust yourself again.
+        - generic [ref=e89]:
+          - heading "LGBTQ+ affirming" [level=3] [ref=e90]
+          - paragraph [ref=e91]: Your identity is not a problem to be solved. It's the foundation we build from — proudly and unapologetically.
+        - generic [ref=e92]:
+          - heading "Whole-person focus" [level=3] [ref=e93]
+          - paragraph [ref=e94]: Your career, your confidence, your inner world — they're all connected. We don't compartmentalise. We integrate.
+    - generic [ref=e96]:
+      - generic [ref=e97]:
+        - paragraph [ref=e98]: Services
+        - heading "Choose your path" [level=2] [ref=e99]
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - generic [ref=e102]: 1:1 Coaching
+          - heading "Deep Self-Discovery" [level=3] [ref=e103]
+          - paragraph [ref=e104]: Uncover the patterns, beliefs, and emotions that have been running your life on autopilot. Together, I'll help you map your inner terrain and build a foundation of radical self-awareness.
+          - link "Begin" [ref=e245] [cursor=pointer]:
+            - /url: "#booking"
+        - generic [ref=e107]:
+          - generic [ref=e108]: Signature 12-Week Program
+          - heading "Emotional Clarity" [level=3] [ref=e109]
+          - paragraph [ref=e110]: Learn to navigate difficult emotions without suppressing or being overwhelmed. Develop the emotional vocabulary and tools to respond to life with calm confidence.
+          - link "Explore" [ref=e246] [cursor=pointer]:
+            - /url: "#booking"
+        - generic [ref=e113]:
+          - generic [ref=e114]: Bespoke Package
+          - heading "Life Transition Coaching" [level=3] [ref=e115]
+          - paragraph [ref=e116]: Career shifts, relationship changes, identity evolution. I specialize in helping people who are between chapters write the next one with intentionality and purpose.
+          - link "Discover" [ref=e247] [cursor=pointer]:
+            - /url: "#booking"
+    - generic [ref=e120]:
+      - generic [ref=e121]:
+        - paragraph [ref=e122]: The Process
+        - heading "Your transformation in four steps" [level=2] [ref=e123]
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - generic [ref=e127]: "1"
+          - heading "Discovery Call" [level=4] [ref=e128]
+          - paragraph [ref=e129]: A free 45-minute conversation — no pitch, no pressure. An honest look at where you are and whether we feel like the right fit for each other.
+        - generic [ref=e130]:
+          - generic [ref=e131]: "2"
+          - heading "Deep Dive" [level=4] [ref=e132]
+          - paragraph [ref=e133]: Together we map what's been running under the surface — your values, your patterns, the version of yourself you haven't fully met yet.
+        - generic [ref=e134]:
+          - generic [ref=e135]: "3"
+          - heading "Transform" [level=4] [ref=e136]
+          - paragraph [ref=e137]: Week by week, session by session — we work through what's holding you back and build toward what you actually want. Not from a script. From you.
+        - generic [ref=e138]:
+          - generic [ref=e139]: "4"
+          - heading "Integrate" [level=4] [ref=e140]
+          - paragraph [ref=e141]: "You leave with tools, awareness, and something more lasting: a new relationship with yourself that doesn't disappear when the sessions end."
+    - generic [ref=e143]:
+      - generic [ref=e144]:
+        - paragraph [ref=e145]: What clients say
+        - heading "Real voices. Real change." [level=2] [ref=e248]
+      - generic [ref=e148]:
+        - generic [ref=e149]:
+          - generic [ref=e150]: ★★★★★
+          - paragraph [ref=e151]: “Matias has a rare ability to hold space without judgment. In our sessions, I discovered patterns I’d been blind to for years. His calm, deep approach changed everything for me.”
+          - generic [ref=e153]: Sarah M.
+          - generic [ref=e154]: Marketing Director, Sydney
+        - generic [ref=e155]:
+          - generic [ref=e156]: ★★★★★
+          - paragraph [ref=e157]: “I came to Matias feeling completely stuck in my career. His questions cut through the noise and helped me see what I actually wanted — not what I thought I should want.”
+          - generic [ref=e159]: James T.
+          - generic [ref=e160]: Software Engineer, Melbourne
+        - generic [ref=e161]:
+          - generic [ref=e162]: ★★★★★
+          - paragraph [ref=e163]: “Trabajar con Matias fue una experiencia transformadora. Su enfoque tranquilo y profundo me ayudó a reconectar conmigo misma de una manera que no creí posible.”
+          - generic [ref=e165]: Lucía R.
+          - generic [ref=e166]: Emprendedora, Madrid
+        - generic [ref=e167]:
+          - generic [ref=e168]: ★★★★★
+          - paragraph [ref=e169]: “What sets Matias apart is his genuine empathy. He doesn’t push — he guides. After three months, I have more clarity about who I am than I’ve had in my entire life.”
+          - generic [ref=e171]: Alex K.
+          - generic [ref=e172]: Consultant, Brisbane
+      - generic [ref=e173]:
+        - button "Previous" [ref=e174] [cursor=pointer]: ←
+        - button "Next" [ref=e175] [cursor=pointer]: →
+    - generic [ref=e176]:
+      - text: “
+      - generic [ref=e177]:
+        - blockquote [ref=e178]: Real transformation doesn’t come from more information. It comes from deeper understanding.
+        - generic [ref=e179]: "- Matias Dopierala -"
+    - generic [ref=e181]:
+      - generic [ref=e182]:
+        - paragraph [ref=e183]: Book a session
+        - heading "Ready to begin?" [level=2] [ref=e184]
+        - paragraph [ref=e185]: This is where it starts. Fill in the form and I'll reach out personally to schedule your free 45-minute discovery call.
+      - generic [ref=e186]:
+        - generic [ref=e187]:
+          - heading "What to expect" [level=3] [ref=e188]
+          - paragraph [ref=e189]: A discovery call is a two-way conversation — we'll talk about what's bringing you here, what you'd like to shift, and whether we're the right fit to work together.
+          - paragraph [ref=e190]: If it feels right, I'll suggest a path forward. If it doesn't, you'll walk away with clarity and a fresh perspective either way. No pressure. No commitment.
+          - generic [ref=e191]
+          - paragraph [ref=e198]
+        - generic [ref=e203]:
+          - generic [ref=e204]
+          - generic [ref=e207]
+          - generic [ref=e210]
+          - generic [ref=e213]
+          - generic [ref=e216]
+          - generic [ref=e219]
+          - generic [ref=e222]
+          - button "Send request" [ref=e225] [cursor=pointer]
+          - paragraph [ref=e226]: I'll reply within 24 hours to schedule your free call. Your information is never shared.
+          - generic [ref=e227]
+  - contentinfo [ref=e230]:
+    - text: ...
+    - generic [ref=e231]:
+      - generic [ref=e232]:
+        - link "TikTok" [ref=e233] [cursor=pointer]:
+          - /url: https://www.tiktok.com/@curious.matias
+        - link "Instagram" [ref=e234] [cursor=pointer]:
+          - /url: https://www.instagram.com/matias.lifecoach/
+        - link "LinkedIn" [ref=e235] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/maciej-dopierala-digital-business-transformation-manager/
+        - link "Email" [ref=e236] [cursor=pointer]:
+          - /url: mailto:matias.courios.coach@gmail.com
+        - link "Terms & Conditions" [ref=e237] [cursor=pointer]:
+          - /url: "#"
+      - paragraph [ref=e238]: © 2026 Matias Dopierala Zawada.

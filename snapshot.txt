@@ -1,0 +1,249 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "Matias Dopierala Zawada Life Coach" [ref=e240] [cursor=pointer]:
+      - /url: "#"
+      - text: Matias Dopierala Zawada
+      - generic [ref=e5]: Life Coach
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - button "EN" [ref=e8] [cursor=pointer]
+        - button "ES" [ref=e9] [cursor=pointer]
+        - button "PT" [ref=e10] [cursor=pointer]
+        - button "PL" [ref=e11] [cursor=pointer]
+      - link "Zarezerwuj darmową konsultację" [ref=e241] [cursor=pointer]:
+        - /url: "#booking"
+      - button "Menu" [ref=e13] [cursor=pointer]
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - paragraph [ref=e20]: Coaching Rozwoju Osobistego i Zawodowego
+        - heading "Twój następny rozdział zaczyna się tutaj." [level=1] [ref=e242]:
+          - text: Twój następny rozdział
+          - text: zaczyna się
+          - emphasis [ref=e243]: tutaj
+          - text: .
+        - paragraph [ref=e23]: Strach, niepewność, rozdroża zawodowe — nie musisz mierzyć się z tym sam. Tutaj nie musisz się z niczego tłumaczyć, żeby być traktowanym poważnie. Bez napinania się na czyjąś reakcję, bez tłumaczenia się, bez poprawiania siebie, zanim coś powiesz. Przyjdź taki, jaki jesteś, i zbudujemy coś od tego.
+        - generic [ref=e24]:
+          - generic [ref=e25]: Lęk i Niepewność
+          - generic [ref=e26]: Pewność Siebie i Tożsamość
+          - generic [ref=e27]: Rozwój Zawodowy
+          - generic [ref=e28]: Podejście Uwzględniające Traumę
+          - generic [ref=e29]: Przestrzeń Afirmująca Osoby LGBTQ+
+        - generic [ref=e30]:
+          - link "Zarezerwuj bezpłatną 45-minutową rozmowę" [ref=e244] [cursor=pointer]:
+            - /url: "#booking"
+          - link "O mnie" [ref=e245] [cursor=pointer]:
+            - /url: "#about"
+        - paragraph [ref=e33]: Bez zobowiązań. Rozmowa, by sprawdzić, czy pasujemy do siebie.
+      - generic [ref=e35]: Scroll
+    - generic [ref=e38]:
+      - generic [ref=e39]: 15+ Years Experience
+      - generic [ref=e40]: ·
+      - generic [ref=e41]: 3 Continents
+      - generic [ref=e42]: ·
+      - generic [ref=e43]: Multilingual EN/ES/PT/PL
+      - generic [ref=e44]: ·
+      - generic [ref=e45]: Certified Coach
+    - generic [ref=e47]:
+      - heading "Zbudowałeś karierę. Osiągnąłeś kamienie milowe. Odhaczyłeś każdy punkt." [level=2] [ref=e246]
+      - generic [ref=e49]: Więc dlaczego coś wciąż wydaje się… nie tak?
+      - paragraph [ref=e50]: Nie jesteś zepsuty. Nie jesteś leniwy. Po prostu grałeś rolę zamiast żyć — i w końcu jesteś gotowy, by się zatrzymać i posłuchać
+    - generic [ref=e53]:
+      - img "Portret Matiasa Lubomirskiego" [ref=e247]
+      - generic [ref=e55]:
+        - paragraph [ref=e56]: O mnie
+        - heading "Jestem Matias." [level=2] [ref=e248]
+        - paragraph [ref=e58]: "Wiem, jak to jest dźwigać lęk i niepewność, próbując odkryć, kim jesteś i dokąd zmierzasz — bo sam to przeżyłem. Moja własna droga prowadziła przez naprawdę trudne chwile, a dzięki nim nauczyłem się czegoś, na czym dziś buduję całą swoją praktykę: nie musisz się z niczego tłumaczyć, żeby być traktowanym poważnie — nigdzie, przez nikogo — łącznie z samym sobą. Każda reinwencja, którą przeżyłem — z Polski do Hiszpanii, do Sydney, od dziennikarstwa przez bankowość po coaching — nauczyła mnie, że rozwój nie dzieje się mimo naszych zmagań. Dzieje się dzięki nim."
+        - paragraph [ref=e59]: "Ta praca nad stawaniem się sobą nie dzieje się w izolacji. Czy to prowadząc transformację w Santander Group i BBVA, czy siedząc z kimś gotowym na nowo napisać swoją historię, zawsze przyciągało mnie to samo pytanie: jak poruszać się w nieznanym? Otrzymanie tytułu Santander Group Young Leader w 2024 roku przypomniało mi, że strategiczna jasność i głęboka empatia nie są przeciwieństwami — pochodzą z tego samego miejsca. I tak — jako gej, to też jest dla mnie osobiste. Kariera, pewność siebie, sens: wszystko jest połączone, bo ty jesteś połączony."
+        - paragraph [ref=e60]: "Dziś pomagam innym przejść drogę, którą sam musiałem przejść: mierzyć się ze strachem, uczyć się należeć do samego siebie i budować życie, które naprawdę wydaje się twoje. Bez względu na to, skąd zaczynasz, tu jest twoje miejsce. Odkryjmy razem twój następny rozdział."
+    - generic [ref=e62]:
+      - generic [ref=e63]:
+        - paragraph [ref=e64]: W czym pomagam
+        - heading "Trzy obszary. Jedna rozmowa." [level=2] [ref=e249]
+        - paragraph [ref=e66]: Zaczynamy tam, gdzie jesteś teraz. To przestrzenie, w których pracuję najczęściej — i przenikają się bardziej, niż mogłoby się wydawać.
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - generic [ref=e69]: "01"
+          - heading "Lęk i Niepewność" [level=3] [ref=e250]
+          - paragraph [ref=e71]: Wewnętrzny krytyk, syndrom oszusta, głos, który mówi „nie teraz” za każdym razem, gdy próbujesz się rozwijać. Delikatnie rozplączemy, skąd pochodzi — i zbudujemy nowy.
+        - generic [ref=e72]:
+          - generic [ref=e73]: "02"
+          - heading "Pewność Siebie i Tożsamość" [level=3] [ref=e251]
+          - paragraph [ref=e75]: Stanięcie w swojej prawdzie. Bycie sobą — bez tłumaczenia się i bez przepraszania. Niezależnie czy chodzi o twoją tożsamość, twój głos, czy twoje miejsce w świecie — wzmocnijmy to razem.
+        - generic [ref=e76]:
+          - generic [ref=e77]: "03"
+          - heading "Kariera i Sens" [level=3] [ref=e252]
+          - paragraph [ref=e79]: Zasługujesz na pracę zgodną z tym, kim jesteś. Od zmian kariery po przywództwo oparte na autentyczności — zaprojektujmy ścieżkę, która naprawdę będzie twoja.
+    - generic [ref=e81]:
+      - generic [ref=e82]:
+        - paragraph [ref=e83]: Jak pracuję
+        - heading "Empatia. Szczerość. Bez masek." [level=2] [ref=e253]
+        - paragraph [ref=e85]: Nie wierzę w coaching uniwersalny dla wszystkich. Każda sesja jest dopasowana do tego, kim jesteś, co przeżyłeś/aś i dokąd chcesz zmierzać.
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - heading "Podejście uwzględniające traumę" [level=3] [ref=e254]
+          - paragraph [ref=e89]: Idziemy w twoim tempie. Uzdrowienie to nie wyścig — to proces uczenia się, jak znów zaufać sobie.
+        - generic [ref=e90]:
+          - heading "Przestrzeń Afirmująca Osoby LGBTQ+" [level=3] [ref=e255]
+          - paragraph [ref=e92]: Twoja tożsamość nie jest problemem do rozwiązania. To fundament, na którym budujemy — dumnie i bez przeprosin.
+        - generic [ref=e93]:
+          - heading "Holistyczne podejście" [level=3] [ref=e256]
+          - paragraph [ref=e95]: Twoja kariera, twoja pewność siebie, twój wewnętrzny świat — wszystko jest połączone. Nie dzielimy na części. Integrujemy.
+    - generic [ref=e97]:
+      - generic [ref=e98]:
+        - paragraph [ref=e99]: Usługi
+        - heading "Wybierz swoją ścieżkę" [level=2] [ref=e257]
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - generic [ref=e103]: Coaching 1:1
+          - heading "Głębokie Samopoznanie" [level=3] [ref=e258]
+          - paragraph [ref=e105]: Odkryj wzorce, przekonania i emocje, które kierowały Twoim życiem na autopilocie. Razem stworzymy mapę Twojego wnętrza i zbudujemy fundament radykalnej samoświadomości.
+          - link "Rozpocznij" [ref=e259] [cursor=pointer]:
+            - /url: "#booking"
+        - generic [ref=e108]:
+          - generic [ref=e109]: Program 8-tygodniowy
+          - heading "Jasność Emocjonalna" [level=3] [ref=e260]
+          - paragraph [ref=e111]: Naucz się nawigować trudne emocje bez tłumienia ich lub przytłoczenia. Rozwijaj słownictwo emocjonalne i narzędzia, by reagować na życie ze spokojem i pewnością.
+          - link "Odkryj" [ref=e261] [cursor=pointer]:
+            - /url: "#booking"
+        - generic [ref=e114]:
+          - generic [ref=e115]: Pakiet Indywidualny
+          - heading "Coaching Życiowych Przejść" [level=3] [ref=e262]
+          - paragraph [ref=e117]: Zmiany zawodowe, relacje, ewolucja tożsamości. Pomagam osobom między rozdziałami napisać następny z intencją i celem.
+          - link "Dowiedz się" [ref=e263] [cursor=pointer]:
+            - /url: "#booking"
+    - generic [ref=e121]:
+      - generic [ref=e122]:
+        - paragraph [ref=e123]: Proces
+        - heading "Twoja transformacja w <em>czterech krokach</em>" [level=2] [ref=e264]
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]: "1"
+          - heading "Rozmowa Odkrywcza" [level=4] [ref=e265]
+          - paragraph [ref=e130]: Bezpłatna 45-minutowa rozmowa, by sprawdzić, czy jestem odpowiednim coachem dla ciebie.
+        - generic [ref=e131]:
+          - generic [ref=e132]: "2"
+          - heading "Głębokie Zanurzenie" [level=4] [ref=e266]
+          - paragraph [ref=e134]: Mapujemy Twój wewnętrzny krajobraz — wartości, wzorce, ślepe punkty, aspiracje.
+        - generic [ref=e135]:
+          - generic [ref=e136]: "3"
+          - heading "Transformacja" [level=4] [ref=e267]
+          - paragraph [ref=e138]: Poprzez cotygodniowe sesje odbudowujemy z intencją, jasnością i odwagą.
+        - generic [ref=e139]:
+          - generic [ref=e140]: "4"
+          - heading "Integracja" [level=4] [ref=e268]
+          - paragraph [ref=e142]: Odchodzisz z narzędziami, świadomością i nową relacją z samym sobą.
+    - generic [ref=e144]:
+      - generic [ref=e145]:
+        - paragraph [ref=e146]: Co mówią klienci
+        - heading "Prawdziwe głosy. Prawdziwa zmiana." [level=2] [ref=e269]
+      - generic [ref=e149]:
+        - generic [ref=e150]:
+          - generic [ref=e151]: ★★★★★
+          - paragraph [ref=e152]: “Matias has a rare ability to hold space without judgment. In our sessions, I discovered patterns I’d been blind to for years. His calm, deep approach changed everything for me.”
+          - generic [ref=e154]: Sarah M.
+          - generic [ref=e155]: Marketing Director, Sydney
+        - generic [ref=e156]:
+          - generic [ref=e157]: ★★★★★
+          - paragraph [ref=e158]: “I came to Matias feeling completely stuck in my career. His questions cut through the noise and helped me see what I actually wanted — not what I thought I should want.”
+          - generic [ref=e160]: James T.
+          - generic [ref=e161]: Software Engineer, Melbourne
+        - generic [ref=e162]:
+          - generic [ref=e163]: ★★★★★
+          - paragraph [ref=e164]: “Trabajar con Matias fue una experiencia transformadora. Su enfoque tranquilo y profundo me ayudó a reconectar conmigo misma de una manera que no creí posible.”
+          - generic [ref=e166]: Lucía R.
+          - generic [ref=e167]: Emprendedora, Madrid
+        - generic [ref=e168]:
+          - generic [ref=e169]: ★★★★★
+          - paragraph [ref=e170]: “What sets Matias apart is his genuine empathy. He doesn’t push — he guides. After three months, I have more clarity about who I am than I’ve had in my entire life.”
+          - generic [ref=e172]: Alex K.
+          - generic [ref=e173]: Consultant, Brisbane
+      - generic [ref=e174]:
+        - button "Previous" [ref=e175] [cursor=pointer]: ←
+        - button "Next" [ref=e176] [cursor=pointer]: →
+    - generic [ref=e177]:
+      - text: “
+      - generic [ref=e178]:
+        - blockquote [ref=e179]:
+          - text: Real transformation doesn’t come from more information.
+          - text: It comes from deeper understanding.
+        - generic [ref=e180]: — Matias Dopierala
+    - generic [ref=e182]:
+      - generic [ref=e183]:
+        - paragraph [ref=e184]: Zarezerwuj sesję
+        - heading "Gotów, by zacząć?" [level=2] [ref=e270]
+        - paragraph [ref=e186]: Wypełnij formularz poniżej, a odezwę się, by umówić bezpłatną 45-minutową rozmowę odkrywczą. Bez zobowiązań — po prostu prawdziwa rozmowa o tym, gdzie jesteś i dokąd chcesz zmierzać.
+      - generic [ref=e187]:
+        - generic [ref=e188]:
+          - heading "Czego się spodziewać" [level=3] [ref=e271]
+          - paragraph [ref=e190]: Rozmowa odkrywcza to dwustronna konwersacja. Porozmawiamy o tym, co cię tu sprowadza, co chciałbyś zmienić i czy pasujemy do wspólnej pracy.
+          - paragraph [ref=e191]: Jeśli to będzie właściwe, zaproponuję ścieżkę naprzód. Jeśli nie, odejdziesz z jasnością i może nową perspektywą — bez presji.
+          - generic [ref=e192]:
+            - heading "Dostępność" [level=4] [ref=e272]
+            - paragraph [ref=e194]: <strong>Czas Sydney (AEST/AEDT)</strong>
+            - paragraph [ref=e196]: "Poniedziałek – Sobota: 7:00 – 19:00"
+            - paragraph [ref=e197]: Sesje przez wideorozmowę. Elastyczny harmonogram.
+          - paragraph [ref=e199]:
+            - strong [ref=e200]: Pytania?
+            - text: Napisz do mnie na
+            - link "Instagram" [ref=e201] [cursor=pointer]:
+              - /url: https://www.instagram.com/matias.lifecoach/
+            - text: ","
+            - link "TikTok" [ref=e202] [cursor=pointer]:
+              - /url: https://www.tiktok.com/@curious.matias
+            - text: lub
+            - link "LinkedIn" [ref=e203] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/maciej-dopierala-digital-business-transformation-manager/
+            - text: .
+        - generic [ref=e204]:
+          - generic [ref=e205]:
+            - generic [ref=e206]: Name & Surname
+            - textbox "Name & Surname" [ref=e207]:
+              - /placeholder: Np. Alex Kowalski
+          - generic [ref=e208]:
+            - generic [ref=e209]: Email *
+            - textbox "Email *" [ref=e210]:
+              - /placeholder: alex@przykład.pl
+          - generic [ref=e211]:
+            - generic [ref=e212]: Phone
+            - textbox "Phone" [ref=e213]:
+              - /placeholder: +48 XXX XXX XXX
+          - generic [ref=e214]:
+            - generic [ref=e215]: Social media reference
+            - textbox "Social media reference" [ref=e216]:
+              - /placeholder: Instagram / TikTok lub gdzie mnie znalazłeś
+          - generic [ref=e217]:
+            - generic [ref=e218]: Preferowany czas kontaktu
+            - combobox "Preferowany czas kontaktu" [ref=e273] [cursor=pointer]:
+              - option "Any time (within my availability)" [selected]
+              - option "Morning (7:00 – 12:00 Sydney time)"
+              - option "Afternoon (12:00 – 17:00 Sydney time)"
+              - option "Evening (17:00 – 19:00 Sydney time)"
+          - generic [ref=e220]:
+            - generic [ref=e221]: Kraj / Strefa czasowa
+            - combobox "Kraj / Strefa czasowa" [ref=e274]
+          - generic [ref=e223]:
+            - generic [ref=e224]: Co cię tu sprowadza? (opcjonalne)
+            - textbox "Co cię tu sprowadza? (opcjonalne)" [ref=e275]:
+              - /placeholder: Kilka słów o tym, co chciałbyś zbadać...
+          - button "Wyślij zapytanie" [ref=e276] [cursor=pointer]
+          - paragraph [ref=e227]: Odpowiem w ciągu 24 godzin, by umówić bezpłatną rozmowę. Twoje dane nigdy nie są udostępniane.
+          - generic [ref=e228]:
+            - generic [ref=e229]: 🔒
+            - generic [ref=e230]: Twoje dane są przechowywane bezpiecznie i używane tylko w celu kontaktu w sprawie coachingu. Możesz w każdej chwili poprosić o ich usunięcie.
+  - contentinfo [ref=e231]:
+    - text: ...
+    - generic [ref=e232]:
+      - generic [ref=e233]:
+        - link "TikTok" [ref=e234] [cursor=pointer]:
+          - /url: https://www.tiktok.com/@curious.matias
+        - link "Instagram" [ref=e235] [cursor=pointer]:
+          - /url: https://www.instagram.com/matias.lifecoach/
+        - link "LinkedIn" [ref=e236] [cursor=pointer]:
+          - /url: https://www.linkedin.com/in/maciej-dopierala-digital-business-transformation-manager/
+        - link "Email" [ref=e237] [cursor=pointer]:
+          - /url: mailto:matias.courios.coach@gmail.com
+      - paragraph [ref=e238]:
+        - text: © 2026 Matias Dopierala Zawada.
+        - link "Terms & Conditions" [ref=e239] [cursor=pointer]:
+          - /url: "#"
