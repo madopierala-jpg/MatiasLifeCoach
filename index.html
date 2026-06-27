@@ -2537,6 +2537,7 @@
         'form-footer': 'I\'ll reply within 24 hours to schedule your free call. Your information is never shared.',
         'data-note': 'Your data is stored securely and only used to contact you about coaching. You can request deletion at any time.',
         'email-subject': 'Thanks for your request \u2014 Matias Dopierala Zawada',
+        'email-body': 'Hi {name},\n\nThank you for reaching out. I\'ve received your request for a free 45-minute discovery call and I\'ll be in touch within 24\u201348 hours to schedule it.\n\nThis call is a real conversation \u2014 no pitch, no pressure. Just a chance to explore where you are and whether we\'re the right fit to work together.\n\nIf you have any questions in the meantime, feel free to reply to this email or reach out on Instagram or TikTok.\n\nWith empathy,\nMatias',
         'alert-success': 'Request received. I\'ll reply within 24 hours.',
         'pw-error': 'Incorrect password',
         'footer-terms': 'Terms & Conditions',
@@ -2737,6 +2738,7 @@
         'form-footer': 'Te responder\u00e9 en menos de 24 horas para agendar tu llamada gratuita. Tu informaci\u00f3n nunca se comparte.',
         'data-note': 'Tus datos se almacenan de forma segura y solo se usan para contactarte sobre coaching. Puedes solicitar su eliminaci\u00f3n en cualquier momento.',
         'email-subject': 'Gracias por tu solicitud \u2014 Matias Dopierala Zawada',
+        'email-body': 'Hola {name},\n\nGracias por contactarme. He recibido tu solicitud para una llamada de descubrimiento gratuita de 45 minutos y me pondr\u00e9 en contacto dentro de 24\u201348 horas para programarla.\n\nEsta llamada es una conversaci\u00f3n real \u2014 sin discurso, sin presi\u00f3n. Solo una oportunidad para explorar d\u00f3nde est\u00e1s y si somos la combinaci\u00f3n adecuada para trabajar juntos.\n\nSi tienes alguna pregunta mientras tanto, no dudes en responder a este correo o contactarme en Instagram o TikTok.\n\nCon empat\u00eda,\nMatias',
         'alert-success': 'Solicitud recibida. Te responder\u00e9 en menos de 24 horas.',
         'pw-error': 'Contrase\u00f1a incorrecta',
         'footer-terms': 'Terms & Conditions',
@@ -2935,6 +2937,7 @@
         'form-footer': 'Responderei em at\u00e9 24 horas para agendar sua liga\u00e7\u00e3o gratuita. Suas informa\u00e7\u00f5es nunca s\u00e3o partilhadas.',
         'data-note': 'Seus dados s\u00e3o armazenados de forma segura e usados apenas para contat\u00e1-lo sobre coaching. Pode solicitar a exclus\u00e3o a qualquer momento.',
         'email-subject': 'Obrigado pelo seu pedido \u2014 Matias Dopierala Zawada',
+        'email-body': 'Ol\u00e1 {name},\n\nObrigado por entrar em contato. Recebi seu pedido para uma sess\u00e3o de descoberta gratuita de 45 minutos e entrarei em contato dentro de 24\u201348 horas para agend\u00e1-la.\n\nEsta chamada \u00e9 uma conversa real \u2014 sem discurso, sem press\u00e3o. Apenas uma chance de explorar onde voc\u00ea est\u00e1 e se somos a combina\u00e7\u00e3o certa para trabalharmos juntos.\n\nSe voc\u00ea tiver alguma d\u00favida enquanto isso, sinta-se \u00e0 vontade para responder a este e-mail ou entrar em contato no Instagram ou TikTok.\n\nCom empatia,\nMatias',
         'alert-success': 'Pedido recebido. Responderei em at\u00e9 24 horas.',
         'pw-error': 'Palavra-passe incorreta',
         'footer-terms': 'Terms & Conditions',
@@ -3130,6 +3133,7 @@
         'form-footer': 'Odpowiem w ci\u0105gu 24 godzin, by um\u00f3wi\u0107 bezp\u0142atn\u0105 rozmow\u0119. Twoje dane nigdy nie s\u0105 udost\u0119pniane.',
         'data-note': 'Twoje dane s\u0105 przechowywane bezpiecznie i u\u017cywane tylko w celu kontaktu w sprawie coachingu. Mo\u017cesz w ka\u017cdej chwili poprosi\u0107 o ich usuni\u0119cie.',
         'email-subject': 'Dzi\u0119kuj\u0119 za zapytanie \u2014 Matias Dopierala Zawada',
+        'email-body': 'Cze\u015b\u0107 {name},\n\nDzi\u0119kuj\u0119 za kontakt. Otrzyma\u0142em Twoj\u0105 pro\u015bb\u0119 o bezp\u0142atn\u0105 45-minutow\u0105 rozmow\u0119 odkrywaj\u0105c\u0105 i skontaktuj\u0119 si\u0119 w ci\u0105gu 24\u201348 godzin, aby j\u0105 um\u00f3wi\u0107.\n\nTa rozmowa to prawdziwa rozmowa \u2014 bez prezentacji, bez presji. Tylko szansa, aby zbada\u0107, gdzie jeste\u015b i czy jeste\u015bmy odpowiednim dopasowaniem do wsp\u00f3lnej pracy.\n\nJe\u015bli masz jakie\u015b pytania w mi\u0119dzyczasie, odpowiedz na tego e-maila lub skontaktuj si\u0119 ze mn\u0105 na Instagramie lub TikToku.\n\nZ empati\u0105,\nMatias',
         'alert-success': 'Zapytanie otrzymane. Odpowiem w ci\u0105gu 24 godzin.',
         'pw-error': 'Nieprawid\u0142owe has\u0142o',
         'footer-terms': 'Terms & Conditions',
@@ -4127,7 +4131,7 @@
       if (!container) return;
       contentEditLang = lang;
 
-      const defaultKeys = Object.keys(i18n[lang] || {}).filter(k => k !== 'testimonials' && k !== 'email-subject' && k !== 'alert-success' && k !== 'pw-error');
+      const defaultKeys = Object.keys(i18n[lang] || {}).filter(k => k !== 'testimonials' && k !== 'email-subject' && k !== 'email-body' && k !== 'alert-success' && k !== 'pw-error');
       
       const groups = {
         seo: ['meta-title', 'meta-desc', 'og-title', 'og-desc'],
@@ -4177,11 +4181,17 @@
     function sendConfirmationEmail(name, email, lang) {
       if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') return;
       const subject = getTranslation(lang, 'email-subject') || 'Thanks for your request \u2014 Matias Dopierala Zawada';
+      const bodyText = getTranslation(lang, 'email-body') || 'Hi {name},\n\nThank you for reaching out.';
+      const body = bodyText.replace('{name}', name).split('\n').join('<br>');
+
+      console.log('EmailJS sending: lang=' + lang + ', subject=' + subject);
 
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
         name: name,
         to_email: email,
-        subject: subject
+        subject: subject,
+        body: body,
+        lang: lang
       }).then(function(res) {
         console.log('EmailJS sent:', res.status, res.text);
       }).catch(function(err) {
