@@ -4586,7 +4586,7 @@
     hamburgerBtn.addEventListener('click', function () { if (menuOverlay.classList.contains('open')) { closeMenu(); } else { openMenu(); } });
     document.getElementById('menuClose').addEventListener('click', closeMenu);
     menuOverlay.addEventListener('click', function (e) { if (e.target === menuOverlay) closeMenu(); });
-    document.querySelectorAll('.menu-link').forEach(function (a) {
+    document.querySelectorAll('.menu-overlay a').forEach(function (a) {
       a.addEventListener('click', closeMenu);
     });
 
@@ -4623,6 +4623,15 @@
     document.querySelectorAll('a[href="#shop"]').forEach(function (a) {
       a.addEventListener('click', function (e) { e.preventDefault(); showShop(); });
     });
+    document.querySelectorAll('a[href="#booking"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        closeMenu();
+        window.location.hash = 'booking';
+        var el = document.getElementById('booking');
+        if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+      });
+    });
     document.getElementById('pricingBack').addEventListener('click', function (e) { e.preventDefault(); showMain(); });
     document.getElementById('paymentBack').addEventListener('click', function (e) { e.preventDefault(); showMain(); });
     document.getElementById('shopBack').addEventListener('click', function (e) { e.preventDefault(); showMain(); });
@@ -4634,7 +4643,7 @@
       var anchor = e.target.closest('a[href^="#"]');
       if (!anchor) return;
       var href = anchor.getAttribute('href');
-      if (href === '#pricing' || href === '#payment' || href === '#shop') return; // already handled by dedicated handlers
+      if (href === '#pricing' || href === '#payment' || href === '#shop' || href === '#booking') return; // already handled by dedicated handlers
       if (document.body.classList.contains('show-pricing') || document.body.classList.contains('show-payment') || document.body.classList.contains('show-shop')) {
         e.preventDefault();
         showMain();
