@@ -239,13 +239,13 @@
     #services-section .section-label{color:var(--accent)}
     #services-section .section-title{color:var(--text-light)}
     .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,2rem)}
-    .service-card{padding:clamp(2rem,3vw,3rem) clamp(1.5rem,2.5vw,2.5rem);border:1px solid var(--border-dark);border-radius:16px;transition:all .5s var(--ease);position:relative;overflow:hidden}
+    .service-card{padding:clamp(2rem,3vw,3rem) clamp(1.5rem,2.5vw,2.5rem);border:1px solid var(--border-dark);border-radius:16px;transition:all .5s var(--ease);position:relative;overflow:hidden;display:flex;flex-direction:column}
     .service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transition:transform .4s var(--ease)}
     .service-card:hover{border-color:rgba(184,120,92,.3);transform:translateY(-4px)}
     .service-card:hover::before{transform:scaleX(1)}
     .service-tag{font-size:clamp(.6rem,.65rem,.7rem);font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;display:block}
     .service-card h3{font-family:var(--serif);font-size:clamp(1.3rem,1.5vw,1.6rem);font-weight:500;color:var(--text-light);margin-bottom:1rem;letter-spacing:-.01em}
-    .service-card p{color:var(--text-light-muted);font-size:clamp(.88rem,.95vw,.95rem);line-height:1.8;font-weight:300;margin-bottom:2rem}
+    .service-card p{color:var(--text-light-muted);font-size:clamp(.88rem,.95vw,.95rem);line-height:1.8;font-weight:300;margin-bottom:2rem;flex:1}
     .service-link{font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);transition:all .3s}
     .service-link:hover{letter-spacing:.12em}
     .service-link span{transition:transform .3s;display:inline-block;margin-left:.5rem}
