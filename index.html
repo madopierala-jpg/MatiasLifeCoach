@@ -3660,6 +3660,7 @@
     // Load custom translations from Supabase, then apply language
     loadCustomTranslations().then(() => {
       applyLanguage(currentLang);
+      loadAdminPassword();
     });
 
     // Sync customers and meetings from Supabase for cross-device persistence
@@ -4284,8 +4285,26 @@
 
     // ─── Admin panel ───
     const ADMIN_PW_KEY = 'coaching_admin_pw';
+    const ADMIN_PW_SUPABASE_KEY = '_admin_pw';
     const defaultPw = 'admin123';
     let adminPassword = localStorage.getItem(ADMIN_PW_KEY) || defaultPw;
+
+    async function loadAdminPassword() {
+      if (!supabaseClient) return;
+      try {
+        var res = await supabaseClient.from('translations')
+          .select('value')
+          .eq('lang', 'en')
+          .eq('key', ADMIN_PW_SUPABASE_KEY)
+          .maybeSingle();
+        if (res.data && res.data.value) {
+          adminPassword = res.data.value;
+          localStorage.setItem(ADMIN_PW_KEY, res.data.value);
+        }
+      } catch(e) {
+        console.warn('Failed to load admin password from Supabase:', e);
+      }
+    }
     let adminAuthed = sessionStorage.getItem('coaching_admin_auth') === '1';
 
     const overlay = document.getElementById('adminOverlay');
@@ -5959,12 +5978,16 @@
       }
     });
 
-    document.getElementById('adminSavePassword').addEventListener('click', function () {
+    document.getElementById('adminSavePassword').addEventListener('click', async function () {
       const newPw = document.getElementById('adminChangePassword').value.trim();
       if (!newPw) { showToast('Enter a new password'); return; }
       if (newPw.length < 4) { showToast('Password must be at least 4 characters'); return; }
       adminPassword = newPw;
       localStorage.setItem(ADMIN_PW_KEY, newPw);
+      if (supabaseClient) {
+        await supabaseClient.from('translations').delete().eq('lang', 'en').eq('key', ADMIN_PW_SUPABASE_KEY);
+        await supabaseClient.from('translations').insert({ lang: 'en', key: ADMIN_PW_SUPABASE_KEY, value: newPw });
+      }
       document.getElementById('adminChangePassword').value = '';
       showToast('Password updated \u2713');
     });
